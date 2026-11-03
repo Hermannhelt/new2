@@ -1,0 +1,553 @@
+{
+ "currency": "dkk",
+ "freeShippingFrom": 5000,
+ "shipping": 250,
+ "prints": [
+  {
+   "id": "0-0",
+   "title": "Ms. Lan",
+   "series": "Flower Shop",
+   "image": "img/flowers/flower-shop-01.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "0-1",
+   "title": "Ms. Duyen",
+   "series": "Flower Shop",
+   "image": "img/flowers/flower-shop-02.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "0-4",
+   "title": "Mr. Du",
+   "series": "Flower Shop",
+   "image": "img/flowers/flower-shop-05.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "0-5",
+   "title": "Ms. Hanh",
+   "series": "Flower Shop",
+   "image": "img/flowers/flower-shop-06.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "0-8",
+   "title": "Ms. Do Thi Hoa",
+   "series": "Flower Shop",
+   "image": "img/flowers/flower-shop-09.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-0",
+   "title": "Bökh No. 1",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-01.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "30 × 40 cm",
+     "price": 2250,
+     "edition": "15"
+    },
+    {
+     "k": 1,
+     "label": "50 × 70 cm",
+     "price": 4500,
+     "edition": "15"
+    },
+    {
+     "k": 2,
+     "label": "70 × 100 cm",
+     "price": 8000,
+     "edition": "15"
+    }
+   ]
+  },
+  {
+   "id": "1-1",
+   "title": "Bökh No. 2",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-02.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "30 × 40 cm",
+     "price": 2250,
+     "edition": "15"
+    },
+    {
+     "k": 1,
+     "label": "50 × 70 cm",
+     "price": 4500,
+     "edition": "15"
+    },
+    {
+     "k": 2,
+     "label": "70 × 100 cm",
+     "price": 8000,
+     "edition": "15"
+    }
+   ]
+  },
+  {
+   "id": "1-3",
+   "title": "Bökh No. 4",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-04.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "30 × 40 cm",
+     "price": 2250,
+     "edition": "15"
+    },
+    {
+     "k": 1,
+     "label": "50 × 70 cm",
+     "price": 4500,
+     "edition": "15"
+    },
+    {
+     "k": 2,
+     "label": "70 × 100 cm",
+     "price": 8000,
+     "edition": "15"
+    }
+   ]
+  },
+  {
+   "id": "1-9",
+   "title": "Bökh No. 10",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-10.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "30 × 40 cm",
+     "price": 2250,
+     "edition": "15"
+    },
+    {
+     "k": 1,
+     "label": "50 × 70 cm",
+     "price": 4500,
+     "edition": "15"
+    },
+    {
+     "k": 2,
+     "label": "70 × 100 cm",
+     "price": 8000,
+     "edition": "15"
+    }
+   ]
+  },
+  {
+   "id": "3-0",
+   "title": "Flower Men No. 1",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-01.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-1",
+   "title": "Flower Men No. 2",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-02.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-2",
+   "title": "Flower Men No. 3",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-03.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-3",
+   "title": "Flower Men No. 4",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-04.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-4",
+   "title": "Flower Men No. 5",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-05.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-5",
+   "title": "Flower Men No. 6",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-06.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-6",
+   "title": "Flower Men No. 7",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-07.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-7",
+   "title": "Flower Men No. 8",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-08.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-8",
+   "title": "Flower Men No. 9",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-09.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-9",
+   "title": "Flower Men No. 10",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-10.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-10",
+   "title": "Flower Men No. 11",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-11.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  },
+  {
+   "id": "3-11",
+   "title": "Flower Men No. 12",
+   "series": "Flower Men",
+   "image": "img/flowermen/flower-men-12.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "41 × 55 cm",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "96 × 128 cm",
+     "price": 22500,
+     "edition": "7 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "120 × 155 cm",
+     "price": 30000,
+     "edition": "3 + 1 AP"
+    }
+   ]
+  }
+ ]
+}
