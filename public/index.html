@@ -184,6 +184,8 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-video{margin:0 0 10vh}
 .pv-video video{width:100%;max-height:86vh;display:block;background:#111}
 .feature.no-thumbs .feat-thumbs,.feature.no-thumbs .feat-bar{display:none}
+/* photos shot on white: let the white melt into the page colour */
+.feature.blend .feat-main img{mix-blend-mode:multiply}
 /* white border around the main image, like a print */
 .feature.matte .feat-main{background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.12),0 10px 24px -14px rgba(0,0,0,.25)}
 .feature.matte .feat-main{--m:clamp(12px,2.2vw,26px)}
@@ -721,6 +723,7 @@ const projects=[
     coda:"To recognize the extraordinary within the ordinary.",date:null,n:10,img:i=>`img/flowers/flower-shop-${String(i+1).padStart(2,"0")}.jpg`,ratios:[0.774,0.774,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75]},
   {title:"Well of Death",layout:"video",client:"India",date:null,n:0,
     video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9,start:8}},
+  {title:"Let’s Dance",layout:"feature",noThumbs:true,blend:true,client:"India",date:null,n:1,img:i=>`img/letsdance/lets-dance-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.8},
 ];
 const ratios=[.8,.75,1,.8,.667,.8,1.25,.75,.8];
 
@@ -735,7 +738,7 @@ function paint(el,p,i,pi){
 const ov=document.getElementById("overview");
 function buildFeature(s,p,pi){
   s.querySelector(".strip").remove();
-  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"");
+  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"")+(p.blend?" blend":"");
   const pad=n=>String(n).padStart(2,"0");
   const st=p.start||0;
   f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${i===st||i<2?"eager":"lazy"}" class="${i===st?"on":""}">`).join("")}</button>
