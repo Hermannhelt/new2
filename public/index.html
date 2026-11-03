@@ -1057,14 +1057,14 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
 // ---- Projects fade out as they scroll up under the header ----
 (()=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
   const hdrEl=document.querySelector("header");let ticking=false;
-  const fade=()=>{ticking=false;const top=hdrEl.getBoundingClientRect().bottom,range=Math.max(140,innerHeight*.22);
+  const fade=()=>{ticking=false;const top=hdrEl.getBoundingClientRect().bottom,range=Math.max(180,innerHeight*.33);
     // titles and text fade quickly and fully as the project leaves under the header
     document.querySelectorAll("#overview .project").forEach(el=>{const r=el.getBoundingClientRect();
       const o=Math.min(1,Math.max(0,(r.bottom-top)/range));
       el.style.opacity=o<1?o.toFixed(3):"";el.style.transform=o<1?`translateY(${((1-o)*-10).toFixed(1)}px)`:""});
     // images fade to white as soon as they start to slide under the header, so the menu stays readable
     document.querySelectorAll("#overview .feat-main, #overview .strip").forEach(el=>{const r=el.getBoundingClientRect();
-      const covered=top+40-r.top,o=Math.min(1,Math.max(0,1-covered/Math.max(120,r.height*.38)));
+      const covered=top+20-r.top,o=Math.min(1,Math.max(0,1-covered/Math.max(160,r.height*.58)));
       el.style.opacity=o<1?o.toFixed(3):""})};
   addEventListener("scroll",()=>{if(!ticking){ticking=true;requestAnimationFrame(fade)}},{passive:true});
   addEventListener("resize",fade);fade()})();
