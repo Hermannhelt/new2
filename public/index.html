@@ -720,7 +720,7 @@ const projects=[
       "In Hanoi, the bicycle flower sellers are not just vendors; they are keepers of tradition. Ken Hermann’s work seeks to encapsulate this relationship between nature and urbanity. Through a combination of candid street photography and carefully composed images, he conveys their daily lives into a work of art."],
     coda:"To recognize the extraordinary within the ordinary.",date:null,n:10,img:i=>`img/flowers/flower-shop-${String(i+1).padStart(2,"0")}.jpg`,ratios:[0.774,0.774,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75]},
   {title:"Well of Death",layout:"video",client:"India",date:null,n:0,
-    video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9}},
+    video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9,start:8}},
 ];
 const ratios=[.8,.75,1,.8,.667,.8,1.25,.75,.8];
 
@@ -787,9 +787,12 @@ projects.forEach((p,pi)=>{
     s.appendChild(t)};
   if(p.layout==="video"){s.querySelector(".strip").remove();
     const v=document.createElement("div");v.className="vid";
-    v.innerHTML=`<video src="${p.video.src}" poster="${p.video.poster}" muted loop playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video>
+    v.innerHTML=`<video src="${p.video.src}#t=${p.video.start||0}" poster="${p.video.poster}" muted playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video>
       <div class="vid-bar"><button class="paren vid-sound" aria-pressed="false">Sound on</button><button class="paren vid-open">Watch the film</button></div>`;
-    const vid=v.querySelector("video"),snd=v.querySelector(".vid-sound");
+    const vid=v.querySelector("video"),snd=v.querySelector(".vid-sound"),t0=p.video.start||0;
+    // start past the black title card, and loop back to the same point
+    vid.addEventListener("loadedmetadata",()=>{if(vid.currentTime<t0)vid.currentTime=t0});
+    vid.addEventListener("ended",()=>{vid.currentTime=t0;vid.play().catch(()=>{})});
     snd.onclick=()=>{vid.muted=!vid.muted;snd.textContent=vid.muted?"Sound on":"Sound off";snd.setAttribute("aria-pressed",!vid.muted);if(!vid.muted)vid.play().catch(()=>{})};
     v.querySelector(".vid-open").onclick=()=>openProject(pi,0);
     vid.onclick=()=>openProject(pi,0);
