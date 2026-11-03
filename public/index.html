@@ -99,6 +99,11 @@ main{padding-block:6vh 10vh}
 #overview .project{padding-block:14px}
 .p-head{display:grid;grid-template-columns:3.2em 1fr auto;gap:12px;align-items:baseline}
 .numeral{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:18px}
+/* centred project titles on the front page: numeral and title as one centred line */
+#overview .p-head{display:flex;justify-content:center;align-items:baseline;gap:10px;text-align:center;margin-left:calc(3.2em + 12px)}
+#overview .p-head .p-title{flex:0 1 auto}
+#overview .p-head .p-open{text-align:center}
+#overview .p-text{margin-inline:auto;justify-items:center;text-align:center}
 .p-open{font:inherit;color:inherit;text-align:left}
 .p-open:hover{color:var(--accent)}
 .p-title{font-family:var(--serif);font-size:clamp(22px,2.7vw,33px);line-height:1;font-weight:400;margin:0;text-wrap:balance;min-width:0}
@@ -472,6 +477,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   header{grid-template-columns:1fr;gap:8px}
   header nav{justify-self:start;justify-content:flex-start}
   .p-head{grid-template-columns:2.2em 1fr}
+  #overview .p-head{margin-left:0}
   .p-meta{grid-column:2;text-align:left}
   .strip{margin-left:0}
   .feature{margin-left:0}
