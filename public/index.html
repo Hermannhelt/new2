@@ -175,6 +175,10 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .feature{margin-left:calc(3.2em + 12px);display:grid;gap:8px;min-width:0;--mh:min(68vh,760px)}
 .feat-main{position:relative;cursor:zoom-in;padding:0;display:block;margin-inline:auto;aspect-ratio:var(--r,.75);width:min(100%,calc(var(--mh) * var(--r,.75)));transition:width .45s ease,aspect-ratio .45s ease}
 .feat-main{overflow:hidden}
+/* white border around the main image, like a print */
+.feature.matte .feat-main{background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.12),0 10px 24px -14px rgba(0,0,0,.25)}
+.feature.matte .feat-main{--m:clamp(12px,2.2vw,26px)}
+.feature.matte .feat-main img{inset:auto!important;left:var(--m)!important;top:var(--m)!important;width:calc(100% - 2 * var(--m))!important;height:calc(100% - 2 * var(--m))!important;object-fit:cover}
 .feat-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;opacity:0;transform:scale(1);transition:opacity .55s ease,transform 10s cubic-bezier(.25,.6,.3,1)}
 /* slow, slight zoom in once the image is on screen */
 .feature.seen .feat-main img.on{transform:scale(1.10)}
@@ -679,7 +683,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 const ROMAN=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
 // Placeholder projects: replace titles, dates and frames with real work
 const projects=[
-  {title:"Flower Men",layout:"feature",bleed:true,cover:{src:"img/flowermen/flower-men-cover.gif",r:800/1050},client:"Kolkata",
+  {title:"Flower Men",layout:"feature",bleed:true,matte:true,cover:{src:"img/flowermen/flower-men-cover.gif",r:800/1050},client:"Kolkata",
     text:["A few years ago I was on an assignment in India. I had a day off, so I went to the Mullick Ghat flower market in Kolkata. It’s one of the largest floral wholesalers in Asia—a huge warren of stalls, more than a century old, with some 2,000 vendors setting up every day.",
       "Seasonal flowers arrive on trucks early each morning. The crazy, hectic atmosphere fascinated me. But more than anything, I was drawn to the way the male sellers carried their flowers. They were macho men, but they held their petals in an almost ladylike way. One guy looked like he was wearing a floral dress. Intrigued by this masculine-feminine contrast, I went back two years later to shoot a series of portraits.",
       "Flowers are used for everything in India, from festivals and parties to religious rituals. The variety is enormous: brightly hued hibiscuses, vivid crimson roses, jasmine bouquets, fragrant lotus and magnolia flowers. But I decided to photograph only the species that I saw the vendors carrying. I originally thought about including both sexes in this series, but the women I asked told me they were reluctant to have their pictures taken. So I focused exclusively on the male vendors.",
@@ -716,7 +720,7 @@ function paint(el,p,i,pi){
 const ov=document.getElementById("overview");
 function buildFeature(s,p,pi){
   s.querySelector(".strip").remove();
-  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"");
+  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.matte?" matte":"");
   const pad=n=>String(n).padStart(2,"0");
   const st=p.start||0;
   f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${i===st||i<2?"eager":"lazy"}" class="${i===st?"on":""}">`).join("")}</button>
