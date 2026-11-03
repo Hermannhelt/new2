@@ -456,6 +456,8 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   .sd-intro{margin-top:-3vh}
   .project{scroll-margin-top:calc(110px + env(safe-area-inset-top,0px))}
   .feature{--mh:min(58vh,560px)}
+  /* edge-to-edge main image on phones */
+  .feature.bleed .feat-main{width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
   .feat-thumbs{width:min(calc(100% - 56px),232px)}
   .year li{grid-template-columns:2.2em 1fr}
   .year li .client{grid-column:2}
@@ -691,7 +693,7 @@ const projects=[
       "Some of the street characters do a really good job acting as look-alikes, and they actually look a lot like some of the big Hollywood stars, while others just look like silly grown-ups in poor and dirty costumes. Most of the street characters have one thing in common, though. They are – or once were – pursuing the American dream of becoming someone special and famous. And it is this struggle, mixed with the childish fantasy world, I find interesting.",
       "When I first visited Hollywood Boulevard, I was fascinated by the big contrast between the good look-alikes and the poor ones. I also noticed that the success of the street characters wasn’t about being the most perfect character – it also depended upon acting as the most hyped or popular character, or maybe just having a fun and crazy attitude.",
       "My idea was to give the viewer a glimpse of the person behind the mask and to show a more serious aspect of the character. Normally the street characters are pictured with a funny face in lively settings, but instead I was aiming for the more personal expression of the real person behind the mask. In order to enhance this, several of the portraits were also taken in the characters’ own homes or neighbourhoods."],start:7,client:"Los Angeles",date:null,n:13,img:i=>`img/hollywood/hollywood-${String(i+1).padStart(2,"0")}.jpg`,ratios:[1.266,0.731,0.763,1.386,1.475,0.741,0.769,1.439,0.74,0.747,1.505,0.759,1.427]},
-  {title:"Flower Men",layout:"feature",cover:{src:"img/flowermen/flower-men-cover.gif",r:800/1050},client:"Kolkata",
+  {title:"Flower Men",layout:"feature",bleed:true,cover:{src:"img/flowermen/flower-men-cover.gif",r:800/1050},client:"Kolkata",
     text:["A few years ago I was on an assignment in India. I had a day off, so I went to the Mullick Ghat flower market in Kolkata. It’s one of the largest floral wholesalers in Asia—a huge warren of stalls, more than a century old, with some 2,000 vendors setting up every day.",
       "Seasonal flowers arrive on trucks early each morning. The crazy, hectic atmosphere fascinated me. But more than anything, I was drawn to the way the male sellers carried their flowers. They were macho men, but they held their petals in an almost ladylike way. One guy looked like he was wearing a floral dress. Intrigued by this masculine-feminine contrast, I went back two years later to shoot a series of portraits.",
       "Flowers are used for everything in India, from festivals and parties to religious rituals. The variety is enormous: brightly hued hibiscuses, vivid crimson roses, jasmine bouquets, fragrant lotus and magnolia flowers. But I decided to photograph only the species that I saw the vendors carrying. I originally thought about including both sexes in this series, but the women I asked told me they were reluctant to have their pictures taken. So I focused exclusively on the male vendors.",
@@ -714,7 +716,7 @@ function paint(el,p,i,pi){
 const ov=document.getElementById("overview");
 function buildFeature(s,p,pi){
   s.querySelector(".strip").remove();
-  const f=document.createElement("div");f.className="feature";
+  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"");
   const pad=n=>String(n).padStart(2,"0");
   const st=p.start||0;
   f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${i===st||i<2?"eager":"lazy"}" class="${i===st?"on":""}">`).join("")}</button>
