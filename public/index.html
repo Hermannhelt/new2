@@ -356,6 +356,16 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 }
 @media (prefers-reduced-motion:reduce){.nl,.nl-scrim{transition:none}}
 
+#v-comm[aria-pressed="true"]{text-decoration:underline;text-underline-offset:3px}
+.comm{max-width:62ch;margin-left:calc(3.2em + 12px);padding-block:2vh 12vh;display:grid;gap:14px}
+.comm h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,44px);line-height:1;margin:0 0 6px}
+.comm p{margin:0;line-height:1.6}
+.comm .comm-lede{font-family:var(--serif);font-size:clamp(19px,2.1vw,25px);line-height:1.3}
+.comm-contact{margin:18px 0 0;display:grid;gap:8px}
+.comm-contact div{display:grid;grid-template-columns:7em 1fr;gap:10px}
+.comm-contact dt{color:var(--muted)}.comm-contact dd{margin:0}
+.comm-contact a{text-decoration:underline;text-underline-offset:3px}
+@media (max-width:640px){.comm{margin-left:0}}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--fg);color:var(--bg);padding:14px 18px;font-size:var(--fs-m);max-width:calc(100% - 32px);box-shadow:0 10px 30px rgba(0,0,0,.2)}
 /* Shop */
 .shop-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:baseline;border-top:1px solid var(--line);padding-block:22px 28px}
@@ -491,6 +501,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   <span class="role muted">Photographer &amp; Director</span>
   <nav>
     <button id="open-menu" aria-expanded="false" aria-controls="submenu">Projects ( + )</button>
+    <button id="v-comm" aria-pressed="false">Commissions</button>
     <div class="views" role="group" aria-label="View">
       <button id="v-overview" aria-pressed="true">Overview</button><span class="muted">/</span>
       <button id="v-index" aria-pressed="false">Index</button><span class="muted">/</span>
@@ -508,6 +519,17 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   <section id="overview" aria-label="Selected projects"></section>
   <section id="index" class="index" aria-label="Archive" hidden></section>
   <section id="project" aria-label="Project" hidden></section>
+  <section id="commissions" class="comm" aria-labelledby="comm-title" hidden>
+    <h2 id="comm-title">Commissions</h2>
+    <p class="comm-lede">Ken Hermann takes on commissions for editorial, advertising and portraiture, in Denmark and abroad.</p>
+    <p>For assignments, licensing of existing work and print enquiries, please get in touch by email or phone.</p>
+    <dl class="comm-contact">
+      <div><dt>Email</dt><dd>ken@kenhermann.dk</dd></div>
+      <div><dt>Phone</dt><dd><a href="tel:+4527379717">+45 27 37 97 17</a></dd></div>
+      <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/kenhermann/" target="_blank" rel="noopener">@kenhermann</a></dd></div>
+      <div><dt>Studio</dt><dd>Copenhagen, Denmark</dd></div>
+    </dl>
+  </section>
   <section id="shop" aria-label="Prints" hidden>
     <div class="shop-head" id="shop-head"><h2>Prints</h2><p>Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. Each size is a separate, limited edition. Shipped flat or rolled worldwide.</p></div>
     <div id="series" class="covers"></div>
@@ -939,8 +961,11 @@ document.getElementById("overview").addEventListener("click",e=>{const b=e.targe
 
 const _setView=setView;
 setView=function(v){projEl.querySelectorAll("video").forEach(x=>x.pause());projEl.hidden=true;_setView(v);if(typeof seriesDetail!=="undefined"){seriesDetail.hidden=true;seriesWrap.hidden=false;shopHead.hidden=false}shopEl.hidden=v!=="s";vS.setAttribute("aria-pressed",v==="s");
-  document.querySelector(".intro").hidden=v==="s"};
+  document.querySelector(".intro").hidden=v==="s"||v==="c";
+  document.getElementById("commissions").hidden=v!=="c";document.getElementById("v-comm").setAttribute("aria-pressed",v==="c");
+  if(v==="c"){ov.hidden=true;document.getElementById("index").hidden=true;vO.setAttribute("aria-pressed",false);vI.setAttribute("aria-pressed",false)}};
 vO.onclick=()=>setView("o");vI.onclick=()=>setView("i");
+document.getElementById("v-comm").onclick=()=>{setView("c");scrollTo(0,0)};
 try{const v=localStorage.getItem("view");if(v)setView(v)}catch(e){}
 
 const prod=document.getElementById("product");let curP=null;
