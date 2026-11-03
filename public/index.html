@@ -1024,7 +1024,8 @@ function renderMenu(){
   wasFull=full;
   const vis=!sm.hidden;smBtn.setAttribute("aria-expanded",vis);smBtn.textContent=vis?"Projects ( − )":"Projects ( + )";
 }
-function menu(open){manualOpen=open;if(open&&window.closePrintMenu)window.closePrintMenu();if(open){openedAt=Date.now();userClosed=false}renderMenu()}
+function menu(open){manualOpen=open;if(open&&window.closePrintMenu)window.closePrintMenu();if(open){openedAt=Date.now();openedY=scrollY;userClosed=false}renderMenu()}
+let openedY=0;
 smBtn.onclick=()=>{if(manualOpen&&Date.now()-openedAt<500)return;
   if(!sm.hidden&&sm.classList.contains("compact")){userClosed=true;renderMenu();return}
   if(userClosed&&scrollY>START){userClosed=false;renderMenu();return}
@@ -1041,7 +1042,10 @@ document.addEventListener("click",e=>{if(sm.hidden)return;
   if(manualOpen&&(!hdr.contains(e.target)||other))menu(false);
   else if(other&&sm.classList.contains("compact")){userClosed=true;renderMenu()}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!sm.hidden){if(manualOpen)menu(false);else{userClosed=true;renderMenu()}smBtn.focus()}});
-addEventListener("scroll",()=>requestAnimationFrame(renderMenu),{passive:true});addEventListener("resize",renderMenu);renderMenu();
+addEventListener("scroll",()=>{
+  // the opened Projects list (with thumbnails) closes as soon as the visitor starts scrolling
+  if(manualOpen&&Math.abs(scrollY-openedY)>24){manualOpen=false;userClosed=scrollY>40}
+  requestAnimationFrame(renderMenu)},{passive:true});addEventListener("resize",renderMenu);renderMenu();
 
 // ---- Hold and drag to scroll rows with a mouse (touch scrolls natively) ----
 function dragScroll(el){
