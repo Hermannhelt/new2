@@ -1034,7 +1034,12 @@ if(matchMedia("(hover:hover)").matches){
   smBtn.addEventListener("mouseenter",()=>{clearTimeout(smT);if(sm.hidden)menu(true)});
   [hdr,sm].forEach(el=>{el.addEventListener("mouseleave",()=>{if(manualOpen)smT=setTimeout(()=>menu(false),250)});el.addEventListener("mouseenter",()=>clearTimeout(smT))});
 }
-document.addEventListener("click",e=>{if(manualOpen&&!hdr.contains(e.target)&&!sm.contains(e.target))menu(false)});
+// close the Projects list on any click outside it, including the other menu buttons
+document.addEventListener("click",e=>{if(sm.hidden)return;
+  if(sm.contains(e.target)||smBtn.contains(e.target))return;
+  const other=e.target.closest("button,a");
+  if(manualOpen&&(!hdr.contains(e.target)||other))menu(false);
+  else if(other&&sm.classList.contains("compact")){userClosed=true;renderMenu()}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!sm.hidden){if(manualOpen)menu(false);else{userClosed=true;renderMenu()}smBtn.focus()}});
 addEventListener("scroll",()=>requestAnimationFrame(renderMenu),{passive:true});addEventListener("resize",renderMenu);renderMenu();
 
