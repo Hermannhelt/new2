@@ -460,6 +460,9 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   .sd-intro{margin-top:-3vh}
   .project{scroll-margin-top:calc(110px + env(safe-area-inset-top,0px))}
   .feature{--mh:min(58vh,560px)}
+  /* main images: 10px from the screen edge on phones (page gutter is 16px) */
+  .feature:not(.bleed) .feat-main{width:min(calc(100% + 12px),calc(var(--mh) * var(--r,.75)));margin-left:-6px;margin-right:-6px}
+  .feature:not(.bleed) .feat-main{justify-self:center}
   /* edge-to-edge main image on phones */
   .feature.bleed .feat-main{width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
   .feat-thumbs{width:min(calc(100% - 56px),232px)}
