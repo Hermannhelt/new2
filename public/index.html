@@ -679,10 +679,15 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 const ROMAN=["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
 // Placeholder projects: replace titles, dates and frames with real work
 const projects=[
-  {title:"Flower Shop",layout:"feature",cover:{src:"img/flowers/flower-shop-cover.gif",r:525/700},client:"Hanoi",
-    text:["Flower Shop is an exhibition of an art photography series by Danish photographer Ken Hermann, depicting the bicycle flower sellers of Hanoi.",
-      "In Hanoi, the bicycle flower sellers are not just vendors; they are keepers of tradition. Ken Hermann’s work seeks to encapsulate this relationship between nature and urbanity. Through a combination of candid street photography and carefully composed images, he conveys their daily lives into a work of art."],
-    coda:"To recognize the extraordinary within the ordinary.",date:null,n:10,img:i=>`img/flowers/flower-shop-${String(i+1).padStart(2,"0")}.jpg`,ratios:[0.774,0.774,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75]},
+  {title:"Flower Men",layout:"feature",bleed:true,cover:{src:"img/flowermen/flower-men-cover.gif",r:800/1050},client:"Kolkata",
+    text:["A few years ago I was on an assignment in India. I had a day off, so I went to the Mullick Ghat flower market in Kolkata. It’s one of the largest floral wholesalers in Asia—a huge warren of stalls, more than a century old, with some 2,000 vendors setting up every day.",
+      "Seasonal flowers arrive on trucks early each morning. The crazy, hectic atmosphere fascinated me. But more than anything, I was drawn to the way the male sellers carried their flowers. They were macho men, but they held their petals in an almost ladylike way. One guy looked like he was wearing a floral dress. Intrigued by this masculine-feminine contrast, I went back two years later to shoot a series of portraits.",
+      "Flowers are used for everything in India, from festivals and parties to religious rituals. The variety is enormous: brightly hued hibiscuses, vivid crimson roses, jasmine bouquets, fragrant lotus and magnolia flowers. But I decided to photograph only the species that I saw the vendors carrying. I originally thought about including both sexes in this series, but the women I asked told me they were reluctant to have their pictures taken. So I focused exclusively on the male vendors.",
+      "A lot of these guys speak only Bengali. Some are there illegally; gaining their trust was a challenge. But after a few days my assistant and I connected with one of them—a local guy who speaks Bengali and Hindi. His help made it easier for us to get permission and access.",
+      "The market was too congested to frame the kind of clean pictures I like, so I photographed the men along the Hugli River, a tributary of the Ganges. I took my pictures from 12 to 3 p.m., to capture the moody mixture of sunlight and smog. I also used a studio filter to soften the harsh midday light.",
+      "Over the course of eight days I photographed about 55 vendors. Most of the portraits took 10 or 15 minutes. That doesn’t sound like much, but it was so hot it felt as if we were burning. At the end of each day’s shoot, I had to go back to my hotel to change all my clothes. I was literally covered with sweat.",
+      "My work is an attempt to get beyond stereotypes. Some people think that everyone in India is poor and miserable. This project—a series of beautiful images made in a rough, unlikely environment—is my way of showing otherwise."],
+    credit:'Told to Jeremy Berlin, published in <a href="https://kenhermann.dk/wp-content/uploads/2017/05/Flower-Men_MJ1066_999.pdf" target="_blank" rel="noopener">National Geographic</a>',date:null,n:12,img:i=>`img/flowermen/flower-men-${String(i+1).padStart(2,"0")}.jpg`,ratio:.75},
   {title:"Bökh",client:"Inner Mongolia",date:null,n:10,
     text:["When a boy is born in Inner Mongolia, his family pray for him to become a wrestler. This ancient tradition is the cornerstone of Mongolian culture, dating back centuries to Genghis Khan’s reign, when he used it to keep his soldiers battle-ready. Khan famously compared wrestling to war, explaining that in both you face enemies who are stronger and more powerful than you, and you must attack. It’s a sentiment these young wrestlers keep very much in mind.",
       "This unique form of wrestling governs status for young men within the community, as it is used as a marker of manliness. The bouts take place in the remote and desolate Grasslands, empty to the horizon except for a few scattered yurts and flocks of sheep. Mongolian wrestling feels like a dance. Opponents meet in the ring with hands outstretched, moving around each other until one of them takes the lead. They engage in long, dramatic grapples which at times resemble intimate embraces. In an instant it’s over."],
@@ -693,15 +698,10 @@ const projects=[
       "Some of the street characters do a really good job acting as look-alikes, and they actually look a lot like some of the big Hollywood stars, while others just look like silly grown-ups in poor and dirty costumes. Most of the street characters have one thing in common, though. They are – or once were – pursuing the American dream of becoming someone special and famous. And it is this struggle, mixed with the childish fantasy world, I find interesting.",
       "When I first visited Hollywood Boulevard, I was fascinated by the big contrast between the good look-alikes and the poor ones. I also noticed that the success of the street characters wasn’t about being the most perfect character – it also depended upon acting as the most hyped or popular character, or maybe just having a fun and crazy attitude.",
       "My idea was to give the viewer a glimpse of the person behind the mask and to show a more serious aspect of the character. Normally the street characters are pictured with a funny face in lively settings, but instead I was aiming for the more personal expression of the real person behind the mask. In order to enhance this, several of the portraits were also taken in the characters’ own homes or neighbourhoods."],start:7,client:"Los Angeles",date:null,n:13,img:i=>`img/hollywood/hollywood-${String(i+1).padStart(2,"0")}.jpg`,ratios:[1.266,0.731,0.763,1.386,1.475,0.741,0.769,1.439,0.74,0.747,1.505,0.759,1.427]},
-  {title:"Flower Men",layout:"feature",bleed:true,cover:{src:"img/flowermen/flower-men-cover.gif",r:800/1050},client:"Kolkata",
-    text:["A few years ago I was on an assignment in India. I had a day off, so I went to the Mullick Ghat flower market in Kolkata. It’s one of the largest floral wholesalers in Asia—a huge warren of stalls, more than a century old, with some 2,000 vendors setting up every day.",
-      "Seasonal flowers arrive on trucks early each morning. The crazy, hectic atmosphere fascinated me. But more than anything, I was drawn to the way the male sellers carried their flowers. They were macho men, but they held their petals in an almost ladylike way. One guy looked like he was wearing a floral dress. Intrigued by this masculine-feminine contrast, I went back two years later to shoot a series of portraits.",
-      "Flowers are used for everything in India, from festivals and parties to religious rituals. The variety is enormous: brightly hued hibiscuses, vivid crimson roses, jasmine bouquets, fragrant lotus and magnolia flowers. But I decided to photograph only the species that I saw the vendors carrying. I originally thought about including both sexes in this series, but the women I asked told me they were reluctant to have their pictures taken. So I focused exclusively on the male vendors.",
-      "A lot of these guys speak only Bengali. Some are there illegally; gaining their trust was a challenge. But after a few days my assistant and I connected with one of them—a local guy who speaks Bengali and Hindi. His help made it easier for us to get permission and access.",
-      "The market was too congested to frame the kind of clean pictures I like, so I photographed the men along the Hugli River, a tributary of the Ganges. I took my pictures from 12 to 3 p.m., to capture the moody mixture of sunlight and smog. I also used a studio filter to soften the harsh midday light.",
-      "Over the course of eight days I photographed about 55 vendors. Most of the portraits took 10 or 15 minutes. That doesn’t sound like much, but it was so hot it felt as if we were burning. At the end of each day’s shoot, I had to go back to my hotel to change all my clothes. I was literally covered with sweat.",
-      "My work is an attempt to get beyond stereotypes. Some people think that everyone in India is poor and miserable. This project—a series of beautiful images made in a rough, unlikely environment—is my way of showing otherwise."],
-    credit:'Told to Jeremy Berlin, published in <a href="https://kenhermann.dk/wp-content/uploads/2017/05/Flower-Men_MJ1066_999.pdf" target="_blank" rel="noopener">National Geographic</a>',date:null,n:12,img:i=>`img/flowermen/flower-men-${String(i+1).padStart(2,"0")}.jpg`,ratio:.75},
+  {title:"Flower Shop",layout:"feature",cover:{src:"img/flowers/flower-shop-cover.gif",r:525/700},client:"Hanoi",
+    text:["Flower Shop is an exhibition of an art photography series by Danish photographer Ken Hermann, depicting the bicycle flower sellers of Hanoi.",
+      "In Hanoi, the bicycle flower sellers are not just vendors; they are keepers of tradition. Ken Hermann’s work seeks to encapsulate this relationship between nature and urbanity. Through a combination of candid street photography and carefully composed images, he conveys their daily lives into a work of art."],
+    coda:"To recognize the extraordinary within the ordinary.",date:null,n:10,img:i=>`img/flowers/flower-shop-${String(i+1).padStart(2,"0")}.jpg`,ratios:[0.774,0.774,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75]},
 ];
 const ratios=[.8,.75,1,.8,.667,.8,1.25,.75,.8];
 
@@ -826,17 +826,17 @@ document.addEventListener("keydown",e=>{
 const kr=n=>new Intl.NumberFormat("da-DK",{style:"currency",currency:"DKK",maximumFractionDigits:0}).format(n);
 const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:2250},{p:"50 × 70 cm",l:"70 × 50 cm",price:4500},{p:"70 × 100 cm",l:"100 × 70 cm",price:8000}];
 // Sizes per series (project index); prices are placeholders until real ones are set
-const SERIES_SIZES={3:null,0:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
-const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===3?SERIES_SIZES[0]:SIZES);
+const SERIES_SIZES={0:null,3:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
+const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[3]:SIZES);
 const edOf=sz=>sz.ed||15;
 const edLabel=sz=>`${edOf(sz)}${sz.ap?` + ${sz.ap} AP`:""}`;
 // Print titles by photo (project index - image index)
-const PRINT_NAMES={"0-0":"Ms. Lan","0-1":"Ms. Duyen","0-4":"Mr. Du","0-5":"Ms. Hanh","0-8":"Ms. Do Thi Hoa"};
-const prints=[[0,0,[38,6,2]],[0,1,[44,6,2]],[0,4,[31,6,2]],[0,5,[47,6,2]],[0,8,[26,6,2]],[1,0,[9,6,3]],[1,1,[12,8,2]],[1,3,[14,10,5]],[1,9,[7,4,0]],[3,0,[50,7,3]],[3,1,[50,7,3]],[3,2,[50,7,3]],[3,3,[50,7,3]],[3,4,[50,7,3]],[3,5,[50,7,3]],[3,6,[50,7,3]],[3,7,[50,7,3]],[3,8,[50,7,3]],[3,9,[50,7,3]],[3,10,[50,7,3]],[3,11,[50,7,3]]]
+const PRINT_NAMES={"3-0":"Ms. Lan","3-1":"Ms. Duyen","3-4":"Mr. Du","3-5":"Ms. Hanh","3-8":"Ms. Do Thi Hoa"};
+const prints=[[3,0,[38,6,2]],[3,1,[44,6,2]],[3,4,[31,6,2]],[3,5,[47,6,2]],[3,8,[26,6,2]],[1,0,[9,6,3]],[1,1,[12,8,2]],[1,3,[14,10,5]],[1,9,[7,4,0]],[0,0,[50,7,3]],[0,1,[50,7,3]],[0,2,[50,7,3]],[0,3,[50,7,3]],[0,4,[50,7,3]],[0,5,[50,7,3]],[0,6,[50,7,3]],[0,7,[50,7,3]],[0,8,[50,7,3]],[0,9,[50,7,3]],[0,10,[50,7,3]],[0,11,[50,7,3]]]
   .map(([pi,i,left],k)=>{const p=projects[pi],r=p.ratios?p.ratios[i]:p.ratio;
     return{id:`${pi}-${i}`,pi,title:PRINT_NAMES[`${pi}-${i}`]||`${p.title} No. ${i+1}`,series:p.title,src:p.img(i),land:r>1,left}});
 // Prints that are presented as physical prints on a wall (id: "project-image")
-const PAPER={"3-0":{wall:"#aeb4a6"},"3-1":{wall:"#aeb4a6"},"3-2":{wall:"#aeb4a6"},"3-3":{wall:"#aeb4a6"},"3-4":{wall:"#aeb4a6"},"3-5":{wall:"#aeb4a6"},"3-6":{wall:"#aeb4a6"},"3-7":{wall:"#aeb4a6"},"3-8":{wall:"#aeb4a6"},"3-9":{wall:"#aeb4a6"},"3-10":{wall:"#aeb4a6"},"3-11":{wall:"#aeb4a6"},"1-0":{wall:"#aeb4a6"},"0-0":{wall:"#aeb4a6"},"0-1":{wall:"#aeb4a6"},"0-4":{wall:"#aeb4a6"},"0-5":{wall:"#aeb4a6"},"0-8":{wall:"#aeb4a6"}};
+const PAPER={"0-0":{wall:"#aeb4a6"},"0-1":{wall:"#aeb4a6"},"0-2":{wall:"#aeb4a6"},"0-3":{wall:"#aeb4a6"},"0-4":{wall:"#aeb4a6"},"0-5":{wall:"#aeb4a6"},"0-6":{wall:"#aeb4a6"},"0-7":{wall:"#aeb4a6"},"0-8":{wall:"#aeb4a6"},"0-9":{wall:"#aeb4a6"},"0-10":{wall:"#aeb4a6"},"0-11":{wall:"#aeb4a6"},"1-0":{wall:"#aeb4a6"},"3-0":{wall:"#aeb4a6"},"3-1":{wall:"#aeb4a6"},"3-4":{wall:"#aeb4a6"},"3-5":{wall:"#aeb4a6"},"3-8":{wall:"#aeb4a6"}};
 const printImg=(pr,alt="")=>{const pp=PAPER[pr.id];if(!pp)return null;
   return`<span class="paper${pr.land?" land":""}" style="--r:${projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75)}"><span class="photo"><img src="${pr.src}" alt="${alt}" loading="lazy"></span></span>`};
 const thumbFor=(pr,alt="")=>{const pp=PAPER[pr.id];return pp?`<div class="thumb">${printImg(pr,alt)}</div>`:`<div class="thumb"><img src="${pr.src}" alt="${alt}" loading="lazy"></div>`};
@@ -943,9 +943,9 @@ function openProduct(pr){curP=pr;
   document.getElementById("added").hidden=true;prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
 
-let cart=[];try{cart=JSON.parse(localStorage.getItem("cart")||"[]")}catch(e){}
+let cart=[];try{cart=JSON.parse(localStorage.getItem("cart-v2")||"[]")}catch(e){}
 cart=cart.filter(c=>prints.some(p=>p.id===c.id));
-function saveCart(){try{localStorage.setItem("cart",JSON.stringify(cart))}catch(e){}renderCart()}
+function saveCart(){try{localStorage.setItem("cart-v2",JSON.stringify(cart))}catch(e){}renderCart()}
 document.getElementById("add-btn").onclick=()=>{const sel=document.querySelector('#product-sizes input:checked');if(!sel)return;
   const k=+sel.value,ex=cart.find(c=>c.id===curP.id&&c.k===k);
   if(ex)ex.q++;else cart.push({id:curP.id,k,q:1});saveCart();document.getElementById("added").hidden=false};
