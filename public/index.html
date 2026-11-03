@@ -127,17 +127,21 @@ main{padding-block:6vh 10vh}
 .year li button{text-align:left}
 .year .client{font-size:var(--fs-s);color:var(--muted)}
 
-footer{display:grid;gap:40px;font-size:var(--fs-s);color:var(--muted);padding-block:44px 32px;border-top:1px solid var(--line)}
-.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);gap:24px;align-items:start}
-.contact h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,3vw,38px);line-height:1;color:var(--fg);margin:0}
-.contact dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px 28px}
-.contact dt{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
-.contact dd{margin:0;color:var(--fg);font-size:var(--fs-m);line-height:1.45;max-width:30ch}
+footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-block:22px 22px;border-top:1px solid var(--line)}
+.contact{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 28px}
+.contact h2{font-size:var(--fs-s);font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--fg);margin:0}
+.contact dl{margin:0;display:flex;flex-wrap:wrap;gap:6px 22px}
+.contact dl>div{display:flex;gap:6px;align-items:baseline}
+.contact dt{font-size:var(--fs-s);color:var(--muted)}
+.contact dt::after{content:"."}
+.contact dd{margin:0;color:var(--fg);font-size:var(--fs-s);line-height:1.45}
 .contact dd a{text-decoration:underline;text-underline-offset:3px}
-.contact .copy{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.contact .copy{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
 .contact .copy button{font-size:var(--fs-s);color:var(--muted)}
-.foot-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:18px;border-top:1px solid var(--line)}
-@media (max-width:640px){.contact{grid-template-columns:1fr}}
+.contact .c-note{display:none}
+.contact .c-place dd{color:var(--muted)}
+.foot-bottom{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media (max-width:640px){.contact,.contact dl{flex-direction:column;gap:4px}}
 
 /* Info panel */
 .panel{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:var(--bg);border-left:1px solid var(--line);z-index:20;
@@ -507,11 +511,11 @@ footer{display:grid;gap:40px;font-size:var(--fs-s);color:var(--muted);padding-bl
   <div class="contact">
     <h2>Contact</h2>
     <dl>
-      <div><dt>Email</dt><dd class="copy"><span>ken@kenhermann.dk</span><button class="paren" data-copy="ken@kenhermann.dk">Copy</button><small id="copied" hidden>Copied</small></dd></div>
-      <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/kenhermann/" target="_blank" rel="noopener">@kenhermann</a></dd></div>
-      <div><dt>Studio</dt><dd>Copenhagen, Denmark</dd></div>
-      <div><dt>Phone</dt><dd><a href="tel:+4527379717">+45 27 37 97 17</a></dd></div>
-      <div><dt>Commissions &amp; prints</dt><dd>Write by email for assignments, licensing and print enquiries.</dd></div>
+      <div><dt>E</dt><dd class="copy"><span>ken@kenhermann.dk</span><button class="paren" data-copy="ken@kenhermann.dk">Copy</button><small id="copied" hidden>Copied</small></dd></div>
+      <div><dt>IG</dt><dd><a href="https://www.instagram.com/kenhermann/" target="_blank" rel="noopener">@kenhermann</a></dd></div>
+      <div><dt>T</dt><dd><a href="tel:+4527379717">+45 27 37 97 17</a></dd></div>
+      <div class="c-place"><dd>Copenhagen, Denmark</dd></div>
+      <div class="c-note"><dt>Commissions &amp; prints</dt><dd>Write by email for assignments, licensing and print enquiries.</dd></div>
     </dl>
   </div>
   <div class="foot-bottom"><span>© Ken Hermann</span><span class="foot-links"><button class="paren" data-terms>Terms of sale</button><span>kenhermann.dk</span></span></div>
