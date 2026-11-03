@@ -177,6 +177,12 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .feature{margin-left:calc(3.2em + 12px);display:grid;gap:8px;min-width:0;--mh:min(68vh,760px)}
 .feat-main{position:relative;cursor:zoom-in;padding:0;display:block;margin-inline:auto;aspect-ratio:var(--r,.75);width:min(100%,calc(var(--mh) * var(--r,.75)));transition:width .45s ease,aspect-ratio .45s ease}
 .feat-main{overflow:hidden}
+/* film project */
+.vid{margin-left:calc(3.2em + 12px);display:grid;gap:8px}
+.vid video{width:100%;max-height:78vh;object-fit:cover;display:block;background:#111;cursor:pointer}
+.vid-bar{display:flex;justify-content:space-between;gap:12px;font-size:var(--fs-s);color:var(--muted)}
+.pv-video{margin:0 0 10vh}
+.pv-video video{width:100%;max-height:86vh;display:block;background:#111}
 .feature.no-thumbs .feat-thumbs,.feature.no-thumbs .feat-bar{display:none}
 /* white border around the main image, like a print */
 .feature.matte .feat-main{background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.12),0 10px 24px -14px rgba(0,0,0,.25)}
@@ -457,6 +463,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   .p-meta{grid-column:2;text-align:left}
   .strip{margin-left:0}
   .feature{margin-left:0}
+  .vid{margin-left:-6px;margin-right:-6px}
   .sd-grid,.sd-intro{margin-left:0}
   .sd-grid{gap:48px}
   #series-detail .card .thumb,#series .cover .thumb{height:auto;aspect-ratio:4/5}
@@ -712,6 +719,8 @@ const projects=[
     text:["Flower Shop is an exhibition of an art photography series by Danish photographer Ken Hermann, depicting the bicycle flower sellers of Hanoi.",
       "In Hanoi, the bicycle flower sellers are not just vendors; they are keepers of tradition. Ken Hermann’s work seeks to encapsulate this relationship between nature and urbanity. Through a combination of candid street photography and carefully composed images, he conveys their daily lives into a work of art."],
     coda:"To recognize the extraordinary within the ordinary.",date:null,n:10,img:i=>`img/flowers/flower-shop-${String(i+1).padStart(2,"0")}.jpg`,ratios:[0.774,0.774,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75]},
+  {title:"Well of Death",layout:"video",client:"India",date:null,n:0,
+    video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9}},
 ];
 const ratios=[.8,.75,1,.8,.667,.8,1.25,.75,.8];
 
@@ -776,6 +785,18 @@ projects.forEach((p,pi)=>{
     const b=t.querySelector(".p-toggle"),m=t.querySelector(".p-more");
     b.onclick=()=>{m.hidden=!m.hidden;b.setAttribute("aria-expanded",!m.hidden);b.textContent=m.hidden?"Read":"Close"};
     s.appendChild(t)};
+  if(p.layout==="video"){s.querySelector(".strip").remove();
+    const v=document.createElement("div");v.className="vid";
+    v.innerHTML=`<video src="${p.video.src}" poster="${p.video.poster}" muted loop playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video>
+      <div class="vid-bar"><button class="paren vid-sound" aria-pressed="false">Sound on</button><button class="paren vid-open">Watch the film</button></div>`;
+    const vid=v.querySelector("video"),snd=v.querySelector(".vid-sound");
+    snd.onclick=()=>{vid.muted=!vid.muted;snd.textContent=vid.muted?"Sound on":"Sound off";snd.setAttribute("aria-pressed",!vid.muted);if(!vid.muted)vid.play().catch(()=>{})};
+    v.querySelector(".vid-open").onclick=()=>openProject(pi,0);
+    vid.onclick=()=>openProject(pi,0);
+    // play only while on screen, to save data and battery
+    if(!matchMedia("(prefers-reduced-motion: reduce)").matches)
+      new IntersectionObserver(es=>{es[0].isIntersecting?vid.play().catch(()=>{}):vid.pause()},{threshold:.25}).observe(vid);
+    s.appendChild(v);addText();ov.appendChild(s);return}
   if(p.layout==="feature"){buildFeature(s,p,pi);addText();ov.appendChild(s);return}
   const strip=s.querySelector(".strip");
   for(let i=0;i<p.n;i++){
@@ -888,9 +909,11 @@ function openProject(pi,start){
     if(al==="pair"&&i+1<p.n){rows+=`<div class="pv-row pair c">${fig(i,ws[0],mws[0])}${fig(i+1,ws[1],mws[1])}</div>`;i+=2}
     else{const a=al==="pair"?"c":al;rows+=`<div class="pv-row ${a}">${fig(i,ws[0],mws[0])}</div>`;i++}}
   const nx=(pi+1)%projects.length;
+  projEl.querySelectorAll("video").forEach(v=>v.pause());
   projEl.innerHTML=`<div class="pv-head"><button class="pv-back paren" id="pv-back">Back to overview</button>
     <span class="numeral">${ROMAN[pi]}</span><h1>${p.title}</h1></div>
     ${p.text?`<div class="pv-text">${p.sub?`<p class="coda sub">${p.sub}</p>`:""}${p.text.map(x=>`<p>${x}</p>`).join("")}${p.coda?`<p class="coda">${p.coda}</p>`:""}${p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`:""}
+    ${p.video?`<div class="pv-video"><video src="${p.video.src}" poster="${p.video.poster}" controls playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video></div>`:""}
     <div class="pv-flow">${rows}</div>
     <div class="pv-next"><button id="pv-next"><small>Next project · ${ROMAN[nx]}</small>${projects[nx].title}</button><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button></div>`;
   if(!p.img)projEl.querySelectorAll(".pv-fig").forEach(f=>{const d=f.querySelector(".pv-ph");paint(d,p,+f.dataset.i,pi)});
@@ -908,7 +931,7 @@ function openProject(pi,start){
 document.getElementById("overview").addEventListener("click",e=>{const b=e.target.closest("[data-open]");if(b)openProject(+b.dataset.open,0)});
 
 const _setView=setView;
-setView=function(v){projEl.hidden=true;_setView(v);if(typeof seriesDetail!=="undefined"){seriesDetail.hidden=true;seriesWrap.hidden=false;shopHead.hidden=false}shopEl.hidden=v!=="s";vS.setAttribute("aria-pressed",v==="s");
+setView=function(v){projEl.querySelectorAll("video").forEach(x=>x.pause());projEl.hidden=true;_setView(v);if(typeof seriesDetail!=="undefined"){seriesDetail.hidden=true;seriesWrap.hidden=false;shopHead.hidden=false}shopEl.hidden=v!=="s";vS.setAttribute("aria-pressed",v==="s");
   document.querySelector(".intro").hidden=v==="s"};
 vO.onclick=()=>setView("o");vI.onclick=()=>setView("i");
 try{const v=localStorage.getItem("view");if(v)setView(v)}catch(e){}
@@ -1007,9 +1030,9 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!prod.hidden)pro
 // Opens by hover/click at the top of the page; unfolds by itself, in step with scrolling, further down.
 const sm=document.getElementById("submenu"),smBtn=document.getElementById("open-menu"),hdr=document.querySelector("header");
 projects.forEach((p,pi)=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",pi);b.title=p.title;
-  b.innerHTML=`<span class="sm-thumb">${p.img?`<img src="${p.img(0)}" alt="" loading="lazy">`:""}<i class="sm-num">${ROMAN[pi]}</i></span>
-    <small>${ROMAN[pi]} · ${p.n} images</small><b>${p.title}</b><span class="sm-label"><i>${ROMAN[pi]}</i>${p.title}</span>`;
-  if(!p.img)paint(b.querySelector(".sm-thumb"),p,0,pi);
+  b.innerHTML=`<span class="sm-thumb">${p.img?`<img src="${p.img(0)}" alt="" loading="lazy">`:p.video?`<img src="${p.video.poster}" alt="" loading="lazy">`:""}<i class="sm-num">${ROMAN[pi]}</i></span>
+    <small>${ROMAN[pi]} · ${p.video?"Film":`${p.n} images`}</small><b>${p.title}</b><span class="sm-label"><i>${ROMAN[pi]}</i>${p.title}</span>`;
+  if(!p.img&&!p.video)paint(b.querySelector(".sm-thumb"),p,0,pi);
   b.onclick=()=>{manualOpen=false;openProject(pi,0);renderMenu()};
   sm.appendChild(b)});
 const smItems=[...sm.querySelectorAll(".sm-item")];
@@ -1084,7 +1107,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
       const o=Math.min(1,Math.max(0,(r.bottom-top)/range));
       el.style.opacity=o<1?o.toFixed(3):"";el.style.transform=o<1?`translateY(${((1-o)*-10).toFixed(1)}px)`:""});
     // images fade to white as soon as they start to slide under the header, so the menu stays readable
-    document.querySelectorAll("#overview .feat-main, #overview .strip").forEach(el=>{const r=el.getBoundingClientRect();
+    document.querySelectorAll("#overview .feat-main, #overview .strip, #overview .vid video").forEach(el=>{const r=el.getBoundingClientRect();
       const covered=top+20-r.top,o=Math.min(1,Math.max(0,1-covered/Math.max(160,r.height*.58)));
       el.style.opacity=o<1?o.toFixed(3):""})};
   addEventListener("scroll",()=>{if(!ticking){ticking=true;requestAnimationFrame(fade)}},{passive:true});
