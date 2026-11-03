@@ -177,6 +177,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .feature{margin-left:calc(3.2em + 12px);display:grid;gap:8px;min-width:0;--mh:min(68vh,760px)}
 .feat-main{position:relative;cursor:zoom-in;padding:0;display:block;margin-inline:auto;aspect-ratio:var(--r,.75);width:min(100%,calc(var(--mh) * var(--r,.75)));transition:width .45s ease,aspect-ratio .45s ease}
 .feat-main{overflow:hidden}
+.feature.no-thumbs .feat-thumbs,.feature.no-thumbs .feat-bar{display:none}
 /* white border around the main image, like a print */
 .feature.matte .feat-main{background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.12),0 10px 24px -14px rgba(0,0,0,.25)}
 .feature.matte .feat-main{--m:clamp(12px,2.2vw,26px)}
@@ -701,7 +702,7 @@ const projects=[
     text:["When a boy is born in Inner Mongolia, his family pray for him to become a wrestler. This ancient tradition is the cornerstone of Mongolian culture, dating back centuries to Genghis Khan’s reign, when he used it to keep his soldiers battle-ready. Khan famously compared wrestling to war, explaining that in both you face enemies who are stronger and more powerful than you, and you must attack. It’s a sentiment these young wrestlers keep very much in mind.",
       "This unique form of wrestling governs status for young men within the community, as it is used as a marker of manliness. The bouts take place in the remote and desolate Grasslands, empty to the horizon except for a few scattered yurts and flocks of sheep. Mongolian wrestling feels like a dance. Opponents meet in the ring with hands outstretched, moving around each other until one of them takes the lead. They engage in long, dramatic grapples which at times resemble intimate embraces. In an instant it’s over."],
     coda:"One trip. One lift. One throw. And it’s done.",img:i=>`img/bokh/bokh-${String(i+1).padStart(2,"0")}.jpg`,ratio:.75},
-  {title:"Hollywood Street Characters",layout:"feature",
+  {title:"Hollywood Street Characters",layout:"feature",noThumbs:true,
     sub:"The dead-end of the American dream",
     text:["Hollywood Street Characters is a series of portraits of the people working as characters on Hollywood Boulevard in LA. The street characters make a living by letting themselves be photographed together with the thousands of tourists who visit the Boulevard each day and pay them a tip to take a shot.",
       "Some of the street characters do a really good job acting as look-alikes, and they actually look a lot like some of the big Hollywood stars, while others just look like silly grown-ups in poor and dirty costumes. Most of the street characters have one thing in common, though. They are – or once were – pursuing the American dream of becoming someone special and famous. And it is this struggle, mixed with the childish fantasy world, I find interesting.",
@@ -725,7 +726,7 @@ function paint(el,p,i,pi){
 const ov=document.getElementById("overview");
 function buildFeature(s,p,pi){
   s.querySelector(".strip").remove();
-  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.matte?" matte":"");
+  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"");
   const pad=n=>String(n).padStart(2,"0");
   const st=p.start||0;
   f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${i===st||i<2?"eager":"lazy"}" class="${i===st?"on":""}">`).join("")}</button>
@@ -752,7 +753,7 @@ function buildFeature(s,p,pi){
   const stepRow=()=>{const w=thumbs[0].offsetWidth+parseFloat(getComputedStyle(row).columnGap||8);
     if(row.scrollLeft+row.clientWidth>=row.scrollWidth-2)row.scrollTo({left:0,behavior:"smooth"});else row.scrollBy({left:w,behavior:"smooth"})};
   const stop=()=>{clearInterval(timer);timer=null};
-  const play=()=>{if(reduced)return;clearInterval(timer);timer=setInterval(stepRow,DUR)};
+  const play=()=>{if(reduced||p.noThumbs)return;clearInterval(timer);timer=setInterval(stepRow,DUR)};
   const update=()=>{const ok=visible&&!hovered&&document.getElementById("lightbox").hidden&&!document.hidden;if(ok&&!timer)play();else if(!ok&&timer)stop()};
   new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible)f.classList.add("seen");update()},{threshold:.4}).observe(f);
   requestAnimationFrame(()=>{const t=thumbs[st];if(t)row.scrollLeft=Math.max(0,t.offsetLeft-row.clientWidth+t.offsetWidth)});
