@@ -118,8 +118,8 @@ main{padding-block:6vh 10vh}
   .card .t{transition:color .3s}
   .card:hover .t{color:var(--accent)}
 }
-.frame img,.lb-img img{width:100%;height:100%;object-fit:cover;display:block}
-.lb-img img{object-fit:contain}
+.frame img,.lb-img img,.frame video,.lb-img video{width:100%;height:100%;object-fit:cover;display:block}
+.lb-img img,.lb-img video{object-fit:contain}
 .frame span{position:absolute;left:8px;bottom:6px;font-size:10px;letter-spacing:.06em;color:#fff;mix-blend-mode:difference;font-variant-numeric:tabular-nums}
 
 .index{display:grid;gap:40px}
@@ -241,7 +241,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-fig{margin:0;width:var(--w);max-width:calc(86vh * var(--r));cursor:zoom-in;min-width:0;
   opacity:0;transform:translateY(28px);transition:opacity 1.1s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)}
 .pv-fig.in{opacity:1;transform:none}
-.pv-fig img{width:100%;height:auto;aspect-ratio:var(--r);display:block;background:var(--frame)}
+.pv-fig img,.pv-fig video{width:100%;height:auto;aspect-ratio:var(--r);display:block;background:var(--frame);object-fit:cover}
 .pv-fig figcaption{margin-top:8px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .pv-row.pair .pv-fig:nth-child(2){margin-top:18vh}
 .pv-next{margin-top:16vh;border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
@@ -729,7 +729,7 @@ const projects=[
       "Over the course of eight days I photographed about 55 vendors. Most of the portraits took 10 or 15 minutes. That doesn’t sound like much, but it was so hot it felt as if we were burning. At the end of each day’s shoot, I had to go back to my hotel to change all my clothes. I was literally covered with sweat.",
       "My work is an attempt to get beyond stereotypes. Some people think that everyone in India is poor and miserable. This project—a series of beautiful images made in a rough, unlikely environment—is my way of showing otherwise."],
     credit:'Told to Jeremy Berlin, published in <a href="https://kenhermann.dk/wp-content/uploads/2017/05/Flower-Men_MJ1066_999.pdf" target="_blank" rel="noopener">National Geographic</a>',date:null,n:12,img:i=>`img/flowermen/flower-men-${String(i+1).padStart(2,"0")}.jpg`,ratio:.75},
-  {title:"Bökh",client:"Inner Mongolia",date:null,n:10,
+  {title:"Bökh",client:"Inner Mongolia",date:null,n:10,clips:{1:{src:"video/bokh-02.mp4",poster:"video/bokh-02.jpg"}},
     text:["When a boy is born in Inner Mongolia, his family pray for him to become a wrestler. This ancient tradition is the cornerstone of Mongolian culture, dating back centuries to Genghis Khan’s reign, when he used it to keep his soldiers battle-ready. Khan famously compared wrestling to war, explaining that in both you face enemies who are stronger and more powerful than you, and you must attack. It’s a sentiment these young wrestlers keep very much in mind.",
       "This unique form of wrestling governs status for young men within the community, as it is used as a marker of manliness. The bouts take place in the remote and desolate Grasslands, empty to the horizon except for a few scattered yurts and flocks of sheep. Mongolian wrestling feels like a dance. Opponents meet in the ring with hands outstretched, moving around each other until one of them takes the lead. They engage in long, dramatic grapples which at times resemble intimate embraces. In an instant it’s over."],
     coda:"One trip. One lift. One throw. And it’s done.",img:i=>`img/bokh/bokh-${String(i+1).padStart(2,"0")}.jpg`,ratio:.75},
@@ -832,7 +832,7 @@ projects.forEach((p,pi)=>{
     const f=document.createElement("div");f.className="frame";f.tabIndex=0;f.setAttribute("role","button");
     f.setAttribute("aria-label",`${p.title}, image ${i+1} of ${p.n}`);
     f.style.aspectRatio=p.ratios?p.ratios[i]:(p.ratio||ratios[i%ratios.length]);
-    f.innerHTML=(p.img?`<img src="${p.img(i)}" alt="" loading="${pi===0&&i<4?"eager":"lazy"}">`:"");
+    f.innerHTML=(p.img?media(p,i,`<img src="${p.img(i)}" alt="" loading="${pi===0&&i<4?"eager":"lazy"}">`):"");
     if(!p.img)paint(f,p,i,pi);
     const open=()=>openProject(pi,i);f.onclick=open;f.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}};
     strip.appendChild(f);
@@ -861,10 +861,11 @@ function info(open){panel.classList.toggle("open",open);panel.setAttribute("aria
 document.getElementById("open-info").onclick=()=>info(true);
 document.getElementById("close-info").onclick=()=>info(false);scrim.onclick=()=>info(false);
 
+function media(p,i,img){const c=p.clips&&p.clips[i];return c?`<video src="${c.src}" poster="${c.poster}" muted loop autoplay playsinline preload="auto" aria-label="${p.title}, video"></video>`:img}
 const lb=document.getElementById("lightbox"),lbImg=document.getElementById("lb-img");let cur=[0,0];
 function render(){const[pi,i]=cur,p=projects[pi];lbImg.style.aspectRatio=p.ratios?p.ratios[i]:(p.ratio||ratios[i%ratios.length]);
   lbImg.style.width="";lbImg.style.height="";
-  if(p.img){lbImg.style.background="none";lbImg.style.aspectRatio="auto";lbImg.style.width="100%";lbImg.style.height="100%";lbImg.innerHTML=`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}">`}else{lbImg.innerHTML="";paint(lbImg,p,i,pi)}
+  if(p.img){lbImg.style.background="none";lbImg.style.aspectRatio="auto";lbImg.style.width="100%";lbImg.style.height="100%";lbImg.innerHTML=media(p,i,`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}">`)}else{lbImg.innerHTML="";paint(lbImg,p,i,pi)}
   document.getElementById("lb-title").textContent=`${ROMAN[pi]}  ${p.title}`;
   document.getElementById("lb-count").textContent=`${String(i+1).padStart(2,"0")} / ${String(p.n).padStart(2,"0")}`}
 function openLB(pi,i){cur=[pi,i];render();lb.hidden=false;document.getElementById("lb-close").focus()}
@@ -933,7 +934,7 @@ function openProject(pi,start){
   // varied rhythm: large centred, a staggered pair, small left, medium right, pair, small right ...
   const pattern=[["c",[78],[100]],["pair",[42,30],[92,74]],["s",[38],[78]],["e",[58],[90]],["pair",[30,44],[74,92]],["e",[34],[72]],["c",[66],[100]]];
   let i=0,k=0,rows="";
-  const fig=(j,w,mw)=>`<figure class="pv-fig" data-i="${j}" style="--r:${ratio(j)};--w:${w}%;--mw:${mw}%">${p.img?`<img src="${p.img(j)}" alt="${p.title}, image ${j+1}" loading="${j<2?"eager":"lazy"}">`:`<div class="pv-ph" style="aspect-ratio:${ratio(j)}"></div>`}<figcaption>${pad(j+1)} / ${pad(p.n)}</figcaption></figure>`;
+  const fig=(j,w,mw)=>`<figure class="pv-fig" data-i="${j}" style="--r:${ratio(j)};--w:${w}%;--mw:${mw}%">${p.img?media(p,j,`<img src="${p.img(j)}" alt="${p.title}, image ${j+1}" loading="${j<2?"eager":"lazy"}">`):`<div class="pv-ph" style="aspect-ratio:${ratio(j)}"></div>`}<figcaption>${pad(j+1)} / ${pad(p.n)}</figcaption></figure>`;
   while(i<p.n){const [al,ws,mws]=pattern[k%pattern.length];k++;
     if(al==="pair"&&i+1<p.n){rows+=`<div class="pv-row pair c">${fig(i,ws[0],mws[0])}${fig(i+1,ws[1],mws[1])}</div>`;i+=2}
     else{const a=al==="pair"?"c":al;rows+=`<div class="pv-row ${a}">${fig(i,ws[0],mws[0])}</div>`;i++}}
