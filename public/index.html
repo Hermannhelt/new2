@@ -832,7 +832,7 @@ projects.forEach((p,pi)=>{
     const f=document.createElement("div");f.className="frame";f.tabIndex=0;f.setAttribute("role","button");
     f.setAttribute("aria-label",`${p.title}, image ${i+1} of ${p.n}`);
     f.style.aspectRatio=p.ratios?p.ratios[i]:(p.ratio||ratios[i%ratios.length]);
-    f.innerHTML=(p.img?`<img src="${p.img(i)}" alt="" loading="${pi===0&&i<4?"eager":"lazy"}">`:"")+`<span>${String(i+1).padStart(2,"0")}</span>`;
+    f.innerHTML=(p.img?`<img src="${p.img(i)}" alt="" loading="${pi===0&&i<4?"eager":"lazy"}">`:"");
     if(!p.img)paint(f,p,i,pi);
     const open=()=>openProject(pi,i);f.onclick=open;f.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}};
     strip.appendChild(f);
