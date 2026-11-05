@@ -128,6 +128,16 @@ main{padding-block:6vh 10vh}
 .year li{display:grid;grid-template-columns:3.2em 1fr auto;gap:12px;padding-block:9px;border-bottom:1px solid var(--line);align-items:baseline}
 .year li button{text-align:left}
 .year .client{font-size:var(--fs-s);color:var(--muted)}
+.year li>button:hover,.year li.open>button{color:var(--accent)}
+.ix-drop{grid-column:1/-1;display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.7,.2,1)}
+.year li.open .ix-drop{grid-template-rows:1fr}
+.ix-inner{overflow:hidden;min-height:0}
+.ix-thumbs{display:flex;flex-wrap:wrap;gap:14px;padding:16px 0 10px;opacity:0;transform:translateY(-8px);transition:opacity .45s,transform .55s cubic-bezier(.2,.7,.2,1)}
+.year li.open .ix-thumbs{opacity:1;transform:none;transition-delay:.08s}
+.ix-thumbs button{display:block;padding:0;line-height:0}
+.ix-thumbs img{height:clamp(110px,13vw,200px);width:auto;display:block;object-fit:cover;background:var(--frame);transition:opacity .3s}
+@media (hover:hover){.ix-thumbs:hover img{opacity:.55}.ix-thumbs button:hover img{opacity:1}}
+@media (max-width:640px){.ix-thumbs{gap:8px}.ix-thumbs img{height:96px}}
 
 footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-block:22px 22px;border-top:1px solid var(--line)}
 .contact{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 28px}
@@ -855,10 +865,16 @@ const ix=document.getElementById("index");
 [...new Set(projects.map(p=>p.date?p.date.slice(0,4):"Ongoing"))].forEach(y=>{
   const d=document.createElement("div");d.className="year";
   const items=projects.map((p,pi)=>({p,pi})).filter(o=>(o.p.date?o.p.date.slice(0,4):"Ongoing")===y);
-  d.innerHTML=`<h2>${y}</h2><ol>${items.map((o,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="${o.pi}">${o.p.title}</button><span class="client">${o.p.client}</span></li>`).join("")}</ol>`;
+  const thumbs=o=>{const p=o.p,n=p.video?1:p.n,src=i=>p.video?p.video.poster:p.img(i),r=i=>p.ratios?p.ratios[i]:(p.ratio||.75);
+    return Array.from({length:n},(_,i)=>`<button data-open="${o.pi}" data-i="${i}" aria-label="${p.title}, image ${i+1}"><img data-src="${src(i)}" alt="" style="aspect-ratio:${r(i)}"></button>`).join("")};
+  d.innerHTML=`<h2>${y}</h2><ol>${items.map((o,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="${o.pi}" aria-expanded="false">${o.p.title}</button><span class="client">${o.p.client}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${thumbs(o)}</div></div></div></li>`).join("")}</ol>`;
   ix.appendChild(d);
 });
-ix.addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b)openProject(+b.dataset.p,0)});
+// Index: clicking a title rolls its thumbnails down; clicking a thumbnail opens the project at that image
+ix.addEventListener("click",e=>{const t=e.target.closest("[data-open]");if(t){openProject(+t.dataset.open,+t.dataset.i);return}
+  const b=e.target.closest("[data-p]");if(!b)return;const li=b.closest("li"),open=!li.classList.contains("open");
+  ix.querySelectorAll("li.open").forEach(x=>{x.classList.remove("open");x.querySelector("[data-p]").setAttribute("aria-expanded","false")});
+  if(open){li.querySelectorAll("img[data-src]").forEach(im=>{im.src=im.dataset.src;im.removeAttribute("data-src")});li.classList.add("open");b.setAttribute("aria-expanded","true")}});
 
 const vO=document.getElementById("v-overview"),vI=document.getElementById("v-index");
 function setView(v){ov.hidden=v!=="o";ix.hidden=v!=="i";vO.setAttribute("aria-pressed",v==="o");vI.setAttribute("aria-pressed",v==="i");
