@@ -264,32 +264,6 @@
    ]
   },
   {
-   "id": "0-1",
-   "title": "Flower Men No. 2",
-   "series": "Flower Men",
-   "image": "img/flowermen/flower-men-02.jpg",
-   "sizes": [
-    {
-     "k": 0,
-     "label": "41 × 55 cm",
-     "price": 2600,
-     "edition": "50"
-    },
-    {
-     "k": 1,
-     "label": "70 × 100 cm",
-     "price": 13500,
-     "edition": "10 + 2 AP"
-    },
-    {
-     "k": 2,
-     "label": "90 × 120 cm",
-     "price": 21000,
-     "edition": "5 + 2 AP"
-    }
-   ]
-  },
-  {
    "id": "0-2",
    "title": "Shankar Shah",
    "series": "Flower Men",
@@ -320,32 +294,6 @@
    "title": "Odhir Gayen",
    "series": "Flower Men",
    "image": "img/flowermen/flower-men-04.jpg",
-   "sizes": [
-    {
-     "k": 0,
-     "label": "41 × 55 cm",
-     "price": 2600,
-     "edition": "50"
-    },
-    {
-     "k": 1,
-     "label": "70 × 100 cm",
-     "price": 13500,
-     "edition": "10 + 2 AP"
-    },
-    {
-     "k": 2,
-     "label": "90 × 120 cm",
-     "price": 21000,
-     "edition": "5 + 2 AP"
-    }
-   ]
-  },
-  {
-   "id": "0-4",
-   "title": "Flower Men No. 5",
-   "series": "Flower Men",
-   "image": "img/flowermen/flower-men-05.jpg",
    "sizes": [
     {
      "k": 0,
@@ -420,88 +368,10 @@
    ]
   },
   {
-   "id": "0-7",
-   "title": "Flower Men No. 8",
-   "series": "Flower Men",
-   "image": "img/flowermen/flower-men-08.jpg",
-   "sizes": [
-    {
-     "k": 0,
-     "label": "41 × 55 cm",
-     "price": 2600,
-     "edition": "50"
-    },
-    {
-     "k": 1,
-     "label": "70 × 100 cm",
-     "price": 13500,
-     "edition": "10 + 2 AP"
-    },
-    {
-     "k": 2,
-     "label": "90 × 120 cm",
-     "price": 21000,
-     "edition": "5 + 2 AP"
-    }
-   ]
-  },
-  {
-   "id": "0-8",
-   "title": "Flower Men No. 9",
-   "series": "Flower Men",
-   "image": "img/flowermen/flower-men-09.jpg",
-   "sizes": [
-    {
-     "k": 0,
-     "label": "41 × 55 cm",
-     "price": 2600,
-     "edition": "50"
-    },
-    {
-     "k": 1,
-     "label": "70 × 100 cm",
-     "price": 13500,
-     "edition": "10 + 2 AP"
-    },
-    {
-     "k": 2,
-     "label": "90 × 120 cm",
-     "price": 21000,
-     "edition": "5 + 2 AP"
-    }
-   ]
-  },
-  {
    "id": "0-9",
    "title": "Sanju Joshi",
    "series": "Flower Men",
    "image": "img/flowermen/flower-men-10.jpg",
-   "sizes": [
-    {
-     "k": 0,
-     "label": "41 × 55 cm",
-     "price": 2600,
-     "edition": "50"
-    },
-    {
-     "k": 1,
-     "label": "70 × 100 cm",
-     "price": 13500,
-     "edition": "10 + 2 AP"
-    },
-    {
-     "k": 2,
-     "label": "90 × 120 cm",
-     "price": 21000,
-     "edition": "5 + 2 AP"
-    }
-   ]
-  },
-  {
-   "id": "0-10",
-   "title": "Flower Men No. 11",
-   "series": "Flower Men",
-   "image": "img/flowermen/flower-men-11.jpg",
    "sizes": [
     {
      "k": 0,
