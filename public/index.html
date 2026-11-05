@@ -273,6 +273,13 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 #series-detail .paper.land,#series .paper.land{--pw:min(90%,calc(94cqh * var(--r) * .9))}
 #series-detail .card .row{font-size:var(--fs-m)}
 #series-detail .card .t{font-size:clamp(22px,2.2vw,30px)}
+/* Inside a print series: smaller prints in rows, like the Bökh strip */
+#series-detail .sd-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))!important;gap:40px 16px!important;align-items:start}
+#series-detail .card .thumb{height:auto;aspect-ratio:4/5}
+#series-detail .card .row{font-size:var(--fs-s);display:grid;grid-template-columns:minmax(0,1fr);gap:2px;text-align:left}
+#series-detail .card .row .price{justify-self:start}
+#series-detail .card .t{font-size:clamp(17px,1.4vw,20px)}
+@media (max-width:640px){#series-detail .sd-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:28px 10px!important}}
 
 /* A print shown as a physical object: white-bordered paper on a coloured wall */
 .on-wall{background:radial-gradient(120% 90% at 40% 30%,color-mix(in srgb,var(--wall) 88%,#fff) 0%,var(--wall) 55%,color-mix(in srgb,var(--wall) 82%,#000) 100%)!important}
