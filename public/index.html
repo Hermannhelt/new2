@@ -887,7 +887,8 @@ const ix=document.getElementById("index");
   ix.appendChild(d);
 });
 // Index: clicking a title rolls its thumbnails down; clicking a thumbnail opens the project at that image
-ix.addEventListener("click",e=>{const t=e.target.closest("[data-open]");if(t){openProject(+t.dataset.open,+t.dataset.i);return}
+ix.addEventListener("click",e=>{const pp=e.target.closest("[data-prod]");if(pp){openProduct(prints.find(x=>x.id===pp.dataset.prod));return}
+  const t=e.target.closest("[data-open]");if(t){openProject(+t.dataset.open,+t.dataset.i);return}
   const b=e.target.closest("[data-p]");if(!b)return;const li=b.closest("li"),open=!li.classList.contains("open");
   ix.querySelectorAll("li.open").forEach(x=>{x.classList.remove("open");x.querySelector("[data-p]").setAttribute("aria-expanded","false")});
   if(open){li.querySelectorAll("img[data-src]").forEach(im=>{im.src=im.dataset.src;im.removeAttribute("data-src")});li.classList.add("open");b.setAttribute("aria-expanded","true")}});
@@ -950,6 +951,11 @@ const thumbFor=(pr,alt="")=>{const pp=PAPER[pr.id];return pp?`<div class="thumb"
 // Prints grouped by series, laid out like the projects (numeral, title, meta, then the prints)
 const seriesWrap=document.getElementById("series");
 const seriesList=[...new Map(prints.map(pr=>[pr.series,pr])).keys()].map((name,k)=>({name,k,items:prints.filter(pr=>pr.series===name)}));
+// Index: a "Prints" list under the projects; each series rolls down its prints
+{const d=document.createElement("div");d.className="year";
+  d.innerHTML=`<h2>Prints</h2><ol>${seriesList.map(se=>`<li><span class="numeral">${ROMAN[se.k]}</span><button data-p="s${se.k}" aria-expanded="false">${se.name}</button><span class="client">${se.items.length} prints · from ${kr(sizesOf(se.items[0])[0].price)}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${se.items.map((pr,k)=>{const r=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
+    return`<button data-prod="${pr.id}" style="--k:${k}" aria-label="${pr.title}"><img data-src="${pr.src}" alt="" style="aspect-ratio:${r}"></button>`}).join("")}</div></div></div></li>`).join("")}</ol>`;
+  ix.appendChild(d)}
 // Prints page: one cover image per series; clicking it opens that series with all its prints
 seriesList.forEach(se=>{const b=document.createElement("button");b.className="cover";
   b.innerHTML=`${SERIES_COVER[se.name]?`<div class="thumb styled-cover" role="img" aria-label="${se.name}" style="background-image:url('${SERIES_COVER[se.name]}')"></div>`:thumbFor(se.items[0])}
