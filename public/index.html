@@ -64,6 +64,7 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 /* unfolded: project names only, inverting against whatever is behind them like the header */
 .submenu.compact{transition:clip-path .7s ease;mix-blend-mode:difference;flex-direction:column;align-items:flex-start;gap:3px;overflow:visible;padding-block:2px 12px;padding-left:var(--sm-x,16px);right:auto}
 .submenu.compact .sm-item{width:auto;animation:none;transition:opacity 1.4s ease,transform 1.4s ease}
+.submenu.compact.at-end .sm-item{transition:opacity 1s ease,transform 1s ease;transition-delay:calc(var(--i) * 120ms)}
 .submenu.compact .sm-item.current .sm-label{text-decoration:underline;text-underline-offset:3px}
 .submenu.compact .sm-thumb,.submenu.compact .sm-item small,.submenu.compact .sm-item b{display:none}
 .submenu.compact .sm-label{display:inline;color:#fff;font-size:var(--fs-s);white-space:nowrap}
@@ -983,7 +984,8 @@ const shopEl=document.getElementById("shop"),vS=document.getElementById("v-shop"
 // ---- Project page ----
 const projEl=document.getElementById("project");
 let pvObs=null;
-function openProject(pi,start){
+let curPI=-1;
+function openProject(pi,start){curPI=pi;
   const p=projects[pi],pad=n=>String(n).padStart(2,"0"),ratio=i=>p.ratios?p.ratios[i]:(p.ratio||ratios[i%ratios.length]);
   setView("o");ov.hidden=true;document.querySelector(".intro").hidden=true;vO.setAttribute("aria-pressed",false);
   // varied rhythm: large centred, a staggered pair, small left, medium right, pair, small right ...
@@ -1000,12 +1002,11 @@ function openProject(pi,start){
     ${p.text?`<div class="pv-text">${p.sub?`<p class="coda sub">${p.sub}</p>`:""}${p.text.map(x=>`<p>${x}</p>`).join("")}${p.coda?`<p class="coda">${p.coda}</p>`:""}${p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`:""}
     ${p.video?`<div class="pv-video"><video src="${p.video.src}" poster="${p.video.poster}" controls playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video></div>`:""}
     <div class="pv-flow">${rows}</div>
-    <div class="pv-next"><button id="pv-next"><small>Next project · ${ROMAN[nx]}</small>${projects[nx].title}</button><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button></div>`;
+    <div class="pv-next"><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button></div>`;
   if(!p.img)projEl.querySelectorAll(".pv-fig").forEach(f=>{const d=f.querySelector(".pv-ph");paint(d,p,+f.dataset.i,pi)});
   projEl.querySelectorAll(".pv-fig").forEach(f=>f.onclick=()=>openLB(pi,+f.dataset.i));
   const back=()=>{setView("o");requestAnimationFrame(()=>document.getElementById("p-"+pi).scrollIntoView())};
   document.getElementById("pv-back").onclick=back;document.getElementById("pv-top").onclick=back;
-  document.getElementById("pv-next").onclick=()=>openProject(nx,0);
   projEl.hidden=false;
   if(pvObs)pvObs.disconnect();
   pvObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");pvObs.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
@@ -1139,12 +1140,16 @@ function renderMenu(){
   const showList=!ov.hidden&&scrollY>START;
   const vals=smItems.map((el,i)=>{const pr=document.getElementById("p-"+i);if(!pr||ov.hidden)return 0;
     return Math.min(1,Math.max(0,(mid+band-pr.getBoundingClientRect().top)/band))});
-  const auto=showList&&vals.some(v=>v>0)&&!userClosed&&!manualOpen;
+  // at the bottom of a project page the same list rolls out, in place of a "next project" link
+  const atEnd=!projEl.hidden&&scrollY>START&&innerHeight+scrollY>=document.documentElement.scrollHeight-140;
+  if(atEnd)vals.fill(1);
+  sm.classList.toggle("at-end",atEnd);
+  const auto=(showList&&vals.some(v=>v>0)||atEnd)&&!userClosed&&!manualOpen;
   const full=manualOpen;
   sm.hidden=!(auto||full);
   sm.classList.toggle("compact",auto);
   sm.style.setProperty("--p",1);
-  let active=-1;vals.forEach((v,i)=>{if(v>=1)active=i});
+  let active=-1;vals.forEach((v,i)=>{if(v>=1)active=i});if(atEnd)active=curPI;
   smItems.forEach((el,i)=>{if(auto){const o=vals[i];el.style.opacity=(i===active?o:o*.55).toFixed(3);el.style.transform=`translateY(${((1-o)*-6).toFixed(1)}px)`;el.classList.toggle("current",i===active&&o>=1)}
     else{el.style.opacity="";el.style.transform="";el.classList.remove("current")}});
   if(full&&!wasFull)smItems.forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""});
