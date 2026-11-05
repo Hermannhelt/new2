@@ -85,7 +85,6 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 main{padding-block:6vh 10vh}
 .intro{max-width:34ch;font-family:var(--serif);font-size:clamp(19px,2.1vw,25px);line-height:1.2;text-wrap:balance;margin:0 0 9vh}
 .intro em{color:var(--accent)}
-.intro.mid{margin:5vh 0 7vh}
 /* Intro: words rise into place one after another, then the accent word gets a hand-drawn underline */
 .intro .w{display:inline-block;animation:wIn .9s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i) * 70ms + 150ms)}
 @keyframes wIn{from{opacity:0;transform:translateY(.45em);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
@@ -964,7 +963,6 @@ document.getElementById("overview").addEventListener("click",e=>{const b=e.targe
 const _setView=setView;
 setView=function(v){projEl.querySelectorAll("video").forEach(x=>x.pause());projEl.hidden=true;_setView(v);if(typeof seriesDetail!=="undefined"){seriesDetail.hidden=true;seriesWrap.hidden=false;shopHead.hidden=false}shopEl.hidden=v!=="s";vS.setAttribute("aria-pressed",v==="s");
   document.querySelector(".intro").hidden=v==="s"||v==="c";
-  placeIntro(v);
   document.getElementById("commissions").hidden=v!=="c";document.getElementById("v-comm").setAttribute("aria-pressed",v==="c");
   if(v==="c"){ov.hidden=true;document.getElementById("index").hidden=true;vO.setAttribute("aria-pressed",false);vI.setAttribute("aria-pressed",false)}};
 vO.onclick=()=>setView("o");vI.onclick=()=>setView("i");
@@ -1198,10 +1196,6 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
     document.getElementById("nl-form-wrap").hidden=true;document.getElementById("nl-done").hidden=false;setTimeout(close,3500)});
 })();
 
-// On the overview the intro text sits after the first project; elsewhere it stays on top
-function placeIntro(v){const el=document.querySelector(".intro"),first=ov.querySelector(".project");
-  if(v==="o"&&first){first.after(el);el.classList.add("mid")}else{ov.before(el);el.classList.remove("mid")}}
-placeIntro("o");
 // ---- Intro: split into words so they can animate in one by one ----
 (()=>{const el=document.querySelector(".intro");if(!el)return;let i=0;
   const wrap=node=>{[...node.childNodes].forEach(n=>{
