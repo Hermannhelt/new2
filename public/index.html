@@ -343,6 +343,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .slide.clean{background:var(--bg);padding:2% 3%}
 .slide.clean{display:block}
 .slide.styled{background:#e7e4df;padding:0}
+#series-detail .card .thumb.styled-thumb{background:var(--frame) center/contain no-repeat}
 #series .cover .thumb.styled-cover{background:var(--frame) center/contain no-repeat;transition:opacity .4s}
 @media (hover:hover){#series .cover:hover .thumb.styled-cover{opacity:.9}}
 .slide.clean img{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain;box-shadow:none!important;display:block}
@@ -970,7 +971,7 @@ function openSeries(k){const se=seriesList[k],pr0=se.items[0];
     <div class="grid sd-grid"></div>`;
   const g=seriesDetail.querySelector(".grid");
   se.items.forEach(pr=>{const b=document.createElement("button");b.className="card";
-    b.innerHTML=`${thumbFor(pr)}<div class="row"><span class="t">${pr.title.replace(pr.series+" ","")}</span><span class="price muted">from ${kr(sizesOf(pr)[0].price)}</span></div>`;
+    b.innerHTML=`${STYLED[pr.id]?`<div class="thumb styled-thumb" role="img" aria-label="${pr.title}, framed" style="background-image:url('${STYLED[pr.id]}')"></div>`:thumbFor(pr)}<div class="row"><span class="t">${pr.title.replace(pr.series+" ","")}</span><span class="price muted">from ${kr(sizesOf(pr)[0].price)}</span></div>`;
     b.onclick=()=>openProduct(pr);g.appendChild(b)});
   document.getElementById("sd-back").onclick=()=>{setView("s");scrollTo(0,0)};
   document.getElementById("sd-proj").onclick=()=>openProject(pr0.pi,0);
