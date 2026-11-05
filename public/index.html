@@ -267,11 +267,11 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-fig img,.pv-fig video{width:100%;height:auto;aspect-ratio:var(--r);display:block;background:var(--frame);object-fit:cover}
 .pv-fig figcaption{margin-top:8px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .pv-row.pair .pv-fig:nth-child(2){margin-top:18vh}
-.pv-next{margin-top:16vh;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center}
-.pv-list{list-style:none;margin:0 0 6vh;padding:0;display:grid;gap:6px;justify-items:center}
+.pv-next{margin-top:16vh;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;align-items:flex-start;gap:26px;text-align:left}
+.pv-list{list-style:none;margin:0 0 6vh;padding:0;display:grid;gap:6px;justify-items:start}
 .pv-list li{opacity:0;transform:translateY(-8px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i) * 110ms)}
 .pv-list.in li{opacity:1;transform:none}
-.pv-next .pv-list button{font-family:var(--sans);font-size:var(--fs-s);color:var(--muted);transition:color .3s;text-align:center}
+.pv-next .pv-list button{font-family:var(--sans);font-size:var(--fs-s);color:var(--muted);transition:color .3s;text-align:left}
 .pv-next .pv-list button i{font-family:var(--serif);margin-right:6px}
 .pv-next .pv-list button:hover{color:var(--fg)}
 .pv-next .pv-list button.current{color:var(--fg);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
