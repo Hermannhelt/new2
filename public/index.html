@@ -64,7 +64,6 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 /* unfolded: project names only, inverting against whatever is behind them like the header */
 .submenu.compact{transition:clip-path .7s ease;mix-blend-mode:difference;flex-direction:column;align-items:flex-start;gap:3px;overflow:visible;padding-block:2px 12px;padding-left:var(--sm-x,16px);right:auto}
 .submenu.compact .sm-item{width:auto;animation:none;transition:opacity 1.4s ease,transform 1.4s ease}
-.submenu.compact.at-end .sm-item{transition:opacity 1s ease,transform 1s ease;transition-delay:calc(var(--i) * 120ms)}
 .submenu.compact .sm-item.current .sm-label{text-decoration:underline;text-underline-offset:3px}
 .submenu.compact .sm-thumb,.submenu.compact .sm-item small,.submenu.compact .sm-item b{display:none}
 .submenu.compact .sm-label{display:inline;color:#fff;font-size:var(--fs-s);white-space:nowrap}
@@ -268,7 +267,14 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-fig img,.pv-fig video{width:100%;height:auto;aspect-ratio:var(--r);display:block;background:var(--frame);object-fit:cover}
 .pv-fig figcaption{margin-top:8px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .pv-row.pair .pv-fig:nth-child(2){margin-top:18vh}
-.pv-next{margin-top:16vh;border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:baseline}
+.pv-next{margin-top:16vh;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center}
+.pv-list{list-style:none;margin:0 0 6vh;padding:0;display:grid;gap:6px;justify-items:center}
+.pv-list li{opacity:0;transform:translateY(-8px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i) * 110ms)}
+.pv-list.in li{opacity:1;transform:none}
+.pv-next .pv-list button{font-family:var(--sans);font-size:var(--fs-s);color:var(--muted);transition:color .3s;text-align:center}
+.pv-next .pv-list button i{font-family:var(--serif);margin-right:6px}
+.pv-next .pv-list button:hover{color:var(--fg)}
+.pv-next .pv-list button.current{color:var(--fg);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
 .pv-next button{font-family:var(--serif);font-size:clamp(26px,3.4vw,44px);text-align:left}
 .pv-next small{display:block;font-family:var(--sans);font-size:var(--fs-s);color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.pv-fig{opacity:1;transform:none}}
@@ -1002,11 +1008,14 @@ function openProject(pi,start){curPI=pi;
     ${p.text?`<div class="pv-text">${p.sub?`<p class="coda sub">${p.sub}</p>`:""}${p.text.map(x=>`<p>${x}</p>`).join("")}${p.coda?`<p class="coda">${p.coda}</p>`:""}${p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`:""}
     ${p.video?`<div class="pv-video"><video src="${p.video.src}" poster="${p.video.poster}" controls playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video></div>`:""}
     <div class="pv-flow">${rows}</div>
-    <div class="pv-next"><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button></div>`;
+    <div class="pv-next"><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button><ol class="pv-list">${projects.map((q,k)=>`<li style="--i:${k}"><button data-go="${k}"${k===pi?' class="current" aria-current="true"':""}><i>${ROMAN[k]}</i>${q.title}</button></li>`).join("")}</ol></div>`;
   if(!p.img)projEl.querySelectorAll(".pv-fig").forEach(f=>{const d=f.querySelector(".pv-ph");paint(d,p,+f.dataset.i,pi)});
   projEl.querySelectorAll(".pv-fig").forEach(f=>f.onclick=()=>openLB(pi,+f.dataset.i));
   const back=()=>{setView("o");requestAnimationFrame(()=>document.getElementById("p-"+pi).scrollIntoView())};
   document.getElementById("pv-back").onclick=back;document.getElementById("pv-top").onclick=back;
+  // the project list under "Back to overview" rolls out when it scrolls into view
+  const pl=projEl.querySelector(".pv-list");pl.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>openProject(+b.dataset.go,0));
+  new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pl.classList.add("in");o.disconnect()}}),{rootMargin:"0px 0px -10% 0px"}).observe(pl);
   projEl.hidden=false;
   if(pvObs)pvObs.disconnect();
   pvObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");pvObs.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
@@ -1140,16 +1149,12 @@ function renderMenu(){
   const showList=!ov.hidden&&scrollY>START;
   const vals=smItems.map((el,i)=>{const pr=document.getElementById("p-"+i);if(!pr||ov.hidden)return 0;
     return Math.min(1,Math.max(0,(mid+band-pr.getBoundingClientRect().top)/band))});
-  // at the bottom of a project page the same list rolls out, in place of a "next project" link
-  const atEnd=!projEl.hidden&&scrollY>START&&innerHeight+scrollY>=document.documentElement.scrollHeight-140;
-  if(atEnd)vals.fill(1);
-  sm.classList.toggle("at-end",atEnd);
-  const auto=(showList&&vals.some(v=>v>0)||atEnd)&&!userClosed&&!manualOpen;
+  const auto=showList&&vals.some(v=>v>0)&&!userClosed&&!manualOpen;
   const full=manualOpen;
   sm.hidden=!(auto||full);
   sm.classList.toggle("compact",auto);
   sm.style.setProperty("--p",1);
-  let active=-1;vals.forEach((v,i)=>{if(v>=1)active=i});if(atEnd)active=curPI;
+  let active=-1;vals.forEach((v,i)=>{if(v>=1)active=i});
   smItems.forEach((el,i)=>{if(auto){const o=vals[i];el.style.opacity=(i===active?o:o*.55).toFixed(3);el.style.transform=`translateY(${((1-o)*-6).toFixed(1)}px)`;el.classList.toggle("current",i===active&&o>=1)}
     else{el.style.opacity="";el.style.transform="";el.classList.remove("current")}});
   if(full&&!wasFull)smItems.forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""});
