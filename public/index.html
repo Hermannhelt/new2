@@ -73,6 +73,10 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 .sm-thumb{aspect-ratio:3/4;background:var(--frame);overflow:hidden}
 .sm-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 .sm-item:hover .sm-thumb img,.sm-item:focus-visible .sm-thumb img{transform:scale(1.06)}
+.sm-print{display:grid;place-items:center}
+.sm-print .paper{--pw:74%}
+.sm-print .paper.land{--pw:90%}
+.sm-item:hover .sm-print .paper{transform:translateY(-3px)}
 .sm-item b{font-family:var(--serif);font-weight:400;font-size:15px;line-height:1.12;letter-spacing:0}
 .sm-item small{color:var(--muted);font-size:10.5px;font-variant-numeric:tabular-nums}
 .sm-item:hover b{color:var(--accent)}
@@ -1181,7 +1185,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
 // ---- Prints submenu: series with a thumbnail, same as the Projects menu ----
 (()=>{const pm=document.getElementById("printmenu"),btn=document.getElementById("v-shop");
   seriesList.forEach(se=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",se.k);b.title=se.name;
-    b.innerHTML=`<span class="sm-thumb"><img src="${se.items[0].src}" alt="" loading="lazy"></span><small>${ROMAN[se.k]} · ${se.items.length} prints</small><b>${se.name}</b>`;
+    b.innerHTML=`<span class="sm-thumb sm-print">${printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} prints</small><b>${se.name}</b>`;
     b.onclick=()=>{close();openSeries(se.k)};
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
