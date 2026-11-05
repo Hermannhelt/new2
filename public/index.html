@@ -1196,7 +1196,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
     btn.addEventListener("mouseenter",()=>{clearTimeout(t);open()});
     [btn,pm].forEach(el=>{el.addEventListener("mouseleave",()=>{t=setTimeout(close,250)});el.addEventListener("mouseenter",()=>clearTimeout(t))});
   }
-  btn.addEventListener("click",()=>{close();setView("s");scrollTo(0,0)});
+  btn.addEventListener("click",()=>{if(pm.hidden)open();else if(Date.now()-openedAt2>500)close()});
   document.addEventListener("click",e=>{if(!pm.hidden&&!pm.contains(e.target)&&e.target!==btn)close()});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!pm.hidden){close();btn.focus()}});
   addEventListener("scroll",()=>{if(!pm.hidden&&scrollY>40)close()},{passive:true});
