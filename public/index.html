@@ -122,19 +122,7 @@ main{padding-block:6vh 10vh}
 .lb-img img,.lb-img video{object-fit:contain}
 .frame span{position:absolute;left:8px;bottom:6px;font-size:10px;letter-spacing:.06em;color:#fff;mix-blend-mode:difference;font-variant-numeric:tabular-nums}
 
-.index{display:grid;gap:clamp(90px,22vh,260px);padding-block:8vh 14vh}
-.ix-proj{display:grid;justify-items:center;gap:18px;text-align:center}
-.ix-h{font-family:var(--serif);font-weight:400;font-size:clamp(17px,1.4vw,20px);margin:0;display:flex;gap:22px;align-items:baseline}
-.ix-h .numeral{font-size:12px;font-style:normal}
-.ix-h button:hover,.ix-n:hover{color:var(--accent)}
-.ix-thumbs{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;max-width:100%}
-.ix-thumbs button{display:block;padding:0;line-height:0}
-.ix-thumbs img{height:clamp(84px,9.5vw,142px);width:auto;display:block;object-fit:cover;background:var(--frame);transition:opacity .3s}
-@media (hover:hover){.ix-thumbs:hover img{opacity:.55}.ix-thumbs button:hover img{opacity:1}}
-.ix-cap{font-family:var(--serif);font-size:clamp(16px,1.25vw,19px);color:var(--muted);margin:0}
-.ix-k{font-variant:small-caps;text-transform:lowercase;letter-spacing:.06em;font-size:.85em}
-.ix-n{font-family:var(--sans);font-weight:600;color:var(--fg);font-size:.92em}
-@media (max-width:640px){.ix-thumbs img{height:76px}.ix-h{gap:14px}}
+.index{display:grid;gap:40px}
 .year h2{font-family:var(--serif);font-weight:400;font-size:var(--fs-l);margin:0 0 10px}
 .year ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 .year li{display:grid;grid-template-columns:3.2em 1fr auto;gap:12px;padding-block:9px;border-bottom:1px solid var(--line);align-items:baseline}
@@ -864,15 +852,13 @@ projects.forEach((p,pi)=>{
 });
 
 const ix=document.getElementById("index");
-// Index: one centred block per project with a row of small thumbnails
-projects.forEach((p,pi)=>{const d=document.createElement("div");d.className="ix-proj";
-  const n=p.video?1:p.n,src=i=>p.video?p.video.poster:p.img(i),r=i=>p.ratios?p.ratios[i]:(p.ratio||.75);
-  const date=p.date?`<span class="ix-k">Date</span> ${p.date.slice(0,7).replace("-","/")}`:`<span class="ix-k">${p.client||""}</span>`;
-  d.innerHTML=`<h2 class="ix-h"><span class="numeral">${ROMAN[pi]}</span><button data-p="${pi}" data-i="0">${p.title}</button></h2>
-    <div class="ix-thumbs">${Array.from({length:n},(_,i)=>`<button data-p="${pi}" data-i="${i}" aria-label="${p.title}, image ${i+1}"><img src="${src(i)}" alt="" loading="lazy" style="aspect-ratio:${r(i)}"></button>`).join("")}</div>
-    <p class="ix-cap">${p.title} ${date} — <button data-p="${pi}" data-i="0" class="ix-n">${p.video?"Film":`Images (${n})`}</button> <button data-p="${pi}" data-i="0" class="paren">+</button></p>`;
-  ix.appendChild(d)});
-ix.addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b)openProject(+b.dataset.p,+(b.dataset.i||0))});
+[...new Set(projects.map(p=>p.date?p.date.slice(0,4):"Ongoing"))].forEach(y=>{
+  const d=document.createElement("div");d.className="year";
+  const items=projects.map((p,pi)=>({p,pi})).filter(o=>(o.p.date?o.p.date.slice(0,4):"Ongoing")===y);
+  d.innerHTML=`<h2>${y}</h2><ol>${items.map((o,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="${o.pi}">${o.p.title}</button><span class="client">${o.p.client}</span></li>`).join("")}</ol>`;
+  ix.appendChild(d);
+});
+ix.addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b)openProject(+b.dataset.p,0)});
 
 const vO=document.getElementById("v-overview"),vI=document.getElementById("v-index");
 function setView(v){ov.hidden=v!=="o";ix.hidden=v!=="i";vO.setAttribute("aria-pressed",v==="o");vI.setAttribute("aria-pressed",v==="i");
