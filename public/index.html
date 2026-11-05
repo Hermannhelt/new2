@@ -1184,8 +1184,12 @@ addEventListener("scroll",()=>{
   if(manualOpen&&Math.abs(scrollY-openedY)>24){manualOpen=false;userClosed=scrollY>40}
   requestAnimationFrame(renderMenu)},{passive:true});addEventListener("resize",renderMenu);renderMenu();
 // the intro text fades out as you scroll, so the project names that roll out under the menu are easy to read
-{const intro=document.querySelector(".intro");const fadeIntro=()=>{intro.style.opacity=Math.max(0,1-scrollY/150).toFixed(3)};
-  addEventListener("scroll",()=>requestAnimationFrame(fadeIntro),{passive:true});fadeIntro()}
+{const intro=document.querySelector(".intro"),heads=[...document.querySelectorAll("#overview .p-head")];
+  // project names fade the same way as they scroll up towards the menu
+  const fadeIntro=()=>{intro.style.opacity=Math.max(0,1-scrollY/150).toFixed(3);
+    const top=hdr.getBoundingClientRect().bottom;
+    heads.forEach(h=>{const y=h.getBoundingClientRect().top-top;h.style.opacity=Math.min(1,Math.max(0,y/150)).toFixed(3)})};
+  addEventListener("scroll",()=>requestAnimationFrame(fadeIntro),{passive:true});addEventListener("resize",fadeIntro);fadeIntro()}
 
 // ---- Hold and drag to scroll rows with a mouse (touch scrolls natively) ----
 function dragScroll(el){
