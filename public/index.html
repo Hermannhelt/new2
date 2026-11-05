@@ -342,6 +342,9 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .slide-hint{font-size:11px}
 .slide.clean{background:var(--bg);padding:2% 3%}
 .slide.clean{display:block}
+.slide.styled{background:#e7e4df;padding:0}
+#series .cover .thumb.styled-cover{background:var(--frame) center/contain no-repeat;transition:opacity .4s}
+@media (hover:hover){#series .cover:hover .thumb.styled-cover{opacity:.9}}
 .slide.clean img{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain;box-shadow:none!important;display:block}
 @media (hover:none){.slide-hint{display:none}}
 
@@ -937,6 +940,9 @@ const prints=[[3,0,[38,6,2]],[3,1,[44,6,2]],[3,4,[31,6,2]],[3,5,[47,6,2]],[3,8,[
   .map(([pi,i,left],k)=>{const p=projects[pi],r=p.ratios?p.ratios[i]:p.ratio;
     return{id:`${pi}-${i}`,pi,title:PRINT_NAMES[`${pi}-${i}`]||`${p.title} No. ${i+1}`,series:p.title,src:p.img(i),land:r>1,left}});
 // Prints that are presented as physical prints on a wall (id: "project-image")
+// Styled photos of a framed print: shown on that print's page, and as cover for its series
+const STYLED={"0-0":"img/prints/flower-men-kulwinder-styled.jpg"};
+const SERIES_COVER={"Flower Men":"img/prints/flower-men-kulwinder-styled.jpg"};
 const PAPER={"0-0":{wall:"#aeb4a6"},"0-1":{wall:"#aeb4a6"},"0-2":{wall:"#aeb4a6"},"0-3":{wall:"#aeb4a6"},"0-4":{wall:"#aeb4a6"},"0-5":{wall:"#aeb4a6"},"0-6":{wall:"#aeb4a6"},"0-7":{wall:"#aeb4a6"},"0-8":{wall:"#aeb4a6"},"0-9":{wall:"#aeb4a6"},"0-10":{wall:"#aeb4a6"},"0-11":{wall:"#aeb4a6"},"1-0":{wall:"#aeb4a6"},"3-0":{wall:"#aeb4a6"},"3-1":{wall:"#aeb4a6"},"3-4":{wall:"#aeb4a6"},"3-5":{wall:"#aeb4a6"},"3-8":{wall:"#aeb4a6"}};
 const printImg=(pr,alt="")=>{const pp=PAPER[pr.id];if(!pp)return null;
   return`<span class="paper${pr.land?" land":""}" style="--r:${projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75)}"><span class="photo"><img src="${pr.src}" alt="${alt}" loading="lazy"></span></span>`};
@@ -946,7 +952,7 @@ const seriesWrap=document.getElementById("series");
 const seriesList=[...new Map(prints.map(pr=>[pr.series,pr])).keys()].map((name,k)=>({name,k,items:prints.filter(pr=>pr.series===name)}));
 // Prints page: one cover image per series; clicking it opens that series with all its prints
 seriesList.forEach(se=>{const b=document.createElement("button");b.className="cover";
-  b.innerHTML=`${thumbFor(se.items[0])}
+  b.innerHTML=`${SERIES_COVER[se.name]?`<div class="thumb styled-cover" role="img" aria-label="${se.name}" style="background-image:url('${SERIES_COVER[se.name]}')"></div>`:thumbFor(se.items[0])}
     <div class="cover-row"><span class="numeral">${ROMAN[se.k]}</span><span class="cover-t">${se.name}</span><span class="price muted">${se.items.length} prints · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>`;
   b.onclick=()=>openSeries(se.k);seriesWrap.appendChild(b)});
 const seriesDetail=document.getElementById("series-detail"),shopHead=document.getElementById("shop-head");
@@ -1015,13 +1021,13 @@ function openProduct(pr){curP=pr;
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
     pi.innerHTML=`<div class="slides" id="slides">
-        <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>
+        <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
         <div class="slide room" style="--fr:${rr}" aria-label="${pr.title}, framed in a living room">
           <div class="room-stage"><img class="room-bg" src="img/room/living-room.jpg" alt="" loading="lazy">
             <div class="rframe"><div class="mat"><img src="${pr.src}" alt=""></div></div></div>
         </div>
         <div class="slide clean" aria-label="${pr.title}, the image on its own"><img src="${pr.src}" alt="${pr.title}" loading="lazy"></div></div>
-      <div class="slide-nav" role="tablist"><button class="paren" data-s="0" aria-current="true">Print</button><button class="paren" data-s="1" aria-current="false">In a room</button><button class="paren" data-s="2" aria-current="false">Image</button><span class="muted slide-hint">Swipe to see it framed</span></div>`;
+      <div class="slide-nav" role="tablist">${["Print",...(STYLED[pr.id]?["Styled"]:[]),"In a room","Image"].map((t,n)=>`<button class="paren" data-s="${n}" aria-current="${n===0}">${t}</button>`).join("")}<span class="muted slide-hint">Swipe to see it framed</span></div>`;
     const sl=pi.querySelector("#slides"),navB=pi.querySelectorAll(".slide-nav [data-s]");
     const go=n=>sl.scrollTo({left:n*sl.clientWidth,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
     navB.forEach(b=>b.onclick=()=>go(+b.dataset.s));
@@ -1197,7 +1203,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
 // ---- Prints submenu: series with a thumbnail, same as the Projects menu ----
 (()=>{const pm=document.getElementById("printmenu"),btn=document.getElementById("v-shop");
   seriesList.forEach(se=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",se.k);b.title=se.name;
-    b.innerHTML=`<span class="sm-thumb sm-print">${printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} prints</small><b>${se.name}</b>`;
+    b.innerHTML=`<span class="sm-thumb${SERIES_COVER[se.name]?"":" sm-print"}">${SERIES_COVER[se.name]?`<img src="${SERIES_COVER[se.name]}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} prints</small><b>${se.name}</b>`;
     b.onclick=()=>{close();openSeries(se.k)};
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
