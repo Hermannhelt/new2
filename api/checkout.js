@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
       }],
       phone_number_collection: { enabled: true },
       consent_collection: { terms_of_service: "required" },
-      custom_text: { terms_of_service_acceptance: { message: "I agree to the [Terms of Sale](https://kenhermann.dk/#terms)." } },
+      custom_text: { terms_of_service_acceptance: { message: `I agree to the [Terms of Sale](${origin}/#terms).` } },
       success_url: `${origin}/?order=success`,
       cancel_url: `${origin}/?order=cancelled`,
     });
