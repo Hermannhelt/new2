@@ -926,7 +926,7 @@ const kr=n=>new Intl.NumberFormat("da-DK",{style:"currency",currency:"DKK",maxim
 const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:2250},{p:"50 × 70 cm",l:"70 × 50 cm",price:4500},{p:"70 × 100 cm",l:"100 × 70 cm",price:8000}];
 // Sizes per series (project index); prices are placeholders until real ones are set
 // img = image size in cm; b = white border on every side; p/l = the full print (paper) size
-const SERIES_SIZES={0:[{img:[41,55],b:7,p:"55 × 69 cm",l:"69 × 55 cm",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],3:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
+const SERIES_SIZES={0:[{img:[42,59.4],b:4,p:"50 × 67.4 cm",l:"67.4 × 50 cm",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],3:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
 const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[3]:SIZES);
 const edOf=sz=>sz.ed||15;
 const edLabel=sz=>`${edOf(sz)}${sz.ap?` + ${sz.ap} AP`:""}`;
@@ -1036,7 +1036,7 @@ function openProduct(pr){curP=pr;
   if(first>=0)fs.querySelector(`#size-${first}`).checked=true;
   // print details under the print, following the chosen size
   const r=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
-  const fmt=n=>(Math.round(n*10)/10).toString().replace(".",",");
+  const fmt=n=>(Math.round(n*10)/10).toString();
   const lines=()=>{const sel=fs.querySelector("input:checked");const k=sel?+sel.value:0,sz=sizesOf(pr)[k];
     const dims=(pr.land?sz.l:sz.p).match(/[\d.]+/g).map(Number);
     const room=document.querySelector("#product-img .room");if(room)room.style.setProperty("--cm",dims[0]+4);const w=dims[0];let iw=w*(pr.land?.82:.8),ih=iw/r;
