@@ -141,8 +141,11 @@ body.pm-open main,body.pm-open footer{opacity:.25}
 .ix-drop{grid-column:1/-1;display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.7,.2,1)}
 .year li.open .ix-drop{grid-template-rows:1fr}
 .ix-inner{overflow:hidden;min-height:0}
-.ix-thumbs{display:flex;flex-wrap:wrap;gap:14px;padding:16px 0 10px;opacity:0;transform:translateY(-8px);transition:opacity .45s,transform .55s cubic-bezier(.2,.7,.2,1)}
-.year li.open .ix-thumbs{opacity:1;transform:none;transition-delay:.08s}
+.ix-thumbs{display:flex;flex-wrap:nowrap;gap:14px;padding:16px 0 10px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+.ix-thumbs::-webkit-scrollbar{display:none}
+.ix-thumbs button{flex:0 0 auto;opacity:0;transform:translateY(10px)}
+.year li.open .ix-thumbs button{animation:ixIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--k) * 110ms + 120ms)}
+@keyframes ixIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ix-thumbs button{display:block;padding:0;line-height:0}
 .ix-thumbs img{height:clamp(110px,13vw,200px);width:auto;display:block;object-fit:cover;background:var(--frame);transition:opacity .3s}
 @media (hover:hover){.ix-thumbs:hover img{opacity:.55}.ix-thumbs button:hover img{opacity:1}}
@@ -875,7 +878,7 @@ const ix=document.getElementById("index");
   const d=document.createElement("div");d.className="year";
   const items=projects.map((p,pi)=>({p,pi})).filter(o=>(o.p.date?o.p.date.slice(0,4):"Projects")===y);
   const thumbs=o=>{const p=o.p,n=p.video?1:p.n,src=i=>p.video?p.video.poster:p.img(i),r=i=>p.ratios?p.ratios[i]:(p.ratio||.75);
-    return Array.from({length:n},(_,i)=>`<button data-open="${o.pi}" data-i="${i}" aria-label="${p.title}, image ${i+1}"><img data-src="${src(i)}" alt="" style="aspect-ratio:${r(i)}"></button>`).join("")};
+    return Array.from({length:n},(_,i)=>`<button data-open="${o.pi}" data-i="${i}" style="--k:${i}" aria-label="${p.title}, image ${i+1}"><img data-src="${src(i)}" alt="" style="aspect-ratio:${r(i)}"></button>`).join("")};
   d.innerHTML=`<h2>${y}</h2><ol>${items.map((o,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="${o.pi}" aria-expanded="false">${o.p.title}</button><span class="client">${o.p.client}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${thumbs(o)}</div></div></div></li>`).join("")}</ol>`;
   ix.appendChild(d);
 });
@@ -1164,7 +1167,7 @@ function dragScroll(el){
       if(!matchMedia("(prefers-reduced-motion: reduce)").matches){let vel=-v*16;const glide=()=>{if(Math.abs(vel)<.5)return;el.scrollLeft+=vel;vel*=.92;raf=requestAnimationFrame(glide)};glide()}}});
   el.addEventListener("click",e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
 }
-document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
+document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dragScroll);
 
 // ---- Projects fade out as they scroll up under the header ----
 (()=>{if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
