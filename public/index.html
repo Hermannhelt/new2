@@ -925,7 +925,8 @@ document.addEventListener("keydown",e=>{
 const kr=n=>new Intl.NumberFormat("da-DK",{style:"currency",currency:"DKK",maximumFractionDigits:0}).format(n);
 const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:2250},{p:"50 × 70 cm",l:"70 × 50 cm",price:4500},{p:"70 × 100 cm",l:"100 × 70 cm",price:8000}];
 // Sizes per series (project index); prices are placeholders until real ones are set
-const SERIES_SIZES={0:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"70 × 100 cm",l:"100 × 70 cm",price:13500,ed:10,ap:2},{p:"90 × 120 cm",l:"120 × 90 cm",price:21000,ed:5,ap:2}],3:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
+// img = image size in cm; b = white border on every side; p/l = the full print (paper) size
+const SERIES_SIZES={0:[{img:[41,55],b:10,p:"61 × 75 cm",l:"75 × 61 cm",price:2600,ed:50},{img:[70,100],b:10,p:"90 × 120 cm",l:"120 × 90 cm",price:13500,ed:10,ap:2},{img:[90,120],b:10,p:"110 × 140 cm",l:"140 × 110 cm",price:21000,ed:5,ap:2}],3:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
 const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[3]:SIZES);
 const edOf=sz=>sz.ed||15;
 const edLabel=sz=>`${edOf(sz)}${sz.ap?` + ${sz.ap} AP`:""}`;
@@ -1031,14 +1032,18 @@ function openProduct(pr){curP=pr;
   let first=-1;
   sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out)first=k;
     fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${out?"disabled":""}>
-      <span>${pr.land?sz.l:sz.p}<small>${out?"Sold out":`${pr.left[k]} of ${edOf(sz)} left`}</small></span><span class="price">${kr(sz.price)}</span></label>`)});
+      <span>${pr.land?sz.l:sz.p}<small>${sz.img?`Image ${(pr.land?[...sz.img].reverse():sz.img).join(" × ")} cm · `:""}${out?"Sold out":`${pr.left[k]} of ${edOf(sz)} left`}</small></span><span class="price">${kr(sz.price)}</span></label>`)});
   if(first>=0)fs.querySelector(`#size-${first}`).checked=true;
   // print details under the print, following the chosen size
   const r=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
   const fmt=n=>(Math.round(n*10)/10).toString().replace(".",",");
   const lines=()=>{const sel=fs.querySelector("input:checked");const k=sel?+sel.value:0,sz=sizesOf(pr)[k];
     const dims=(pr.land?sz.l:sz.p).match(/[\d.]+/g).map(Number);
-    const room=document.querySelector("#product-img .room");if(room)room.style.setProperty("--cm",dims[0]+4);const w=dims[0],iw=w*(pr.land?.82:.8),ih=iw/r;
+    const room=document.querySelector("#product-img .room");if(room)room.style.setProperty("--cm",dims[0]+4);const w=dims[0];let iw=w*(pr.land?.82:.8),ih=iw/r;
+    const pp=document.querySelector("#product-img .slide .paper"),mat=document.querySelector("#product-img .mat");
+    if(sz.img){[iw,ih]=pr.land?[sz.img[1],sz.img[0]]:sz.img;const f=sz.b/w;
+      if(pp)pp.style.padding=`calc(var(--pw,86%) * ${f})`;if(mat)mat.style.padding=`${f*100}%`}
+    else{if(pp)pp.style.padding="";if(mat)mat.style.padding=""}
     document.getElementById("product-lines").innerHTML=
       `<span><b>Print format</b>${pr.land?sz.l:sz.p}</span><span><b>Image format</b>${fmt(iw)} × ${fmt(ih)} cm</span>`+
       `<span><b>Edition</b>${edLabel(sz)} · ${pr.left[k]} left</span><span><b>Paper</b>Hahnemühle Photo Rag® 308 g/m²</span>`+
