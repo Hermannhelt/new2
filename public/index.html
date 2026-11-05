@@ -1193,7 +1193,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
   all.innerHTML=`<span class="sm-thumb" style="display:grid;place-items:center;font-family:var(--serif);font-size:22px">All</span><small>${prints.length} prints</small><b>All prints</b>`;
-  all.onclick=()=>{close();setView("s");scrollTo(0,0)};pm.appendChild(all);pm.style.setProperty("--cols",Math.ceil(pm.children.length/2));
+  all.onclick=()=>{close();setView("s");scrollTo(0,0)};pm.appendChild(all);pm.style.setProperty("--cols",pm.children.length);
   dragScroll(pm);
   let t=null;
   let openedAt2=0;
