@@ -945,6 +945,8 @@ const prints=[[0,0,[50,10,5]],[0,2,[50,10,5]],[0,3,[50,10,5]],[0,5,[50,10,5]],[0
 // Styled photos of a framed print: shown on that print's page, and as cover for its series
 const STYLED={"0-0":"img/prints/flower-men-kulwinder-styled.jpg"};
 const SERIES_COVER={"Flower Men":"img/prints/flower-men-kulwinder-styled.jpg"};
+// Thumbnails used only in the Prints dropdown (falls back to SERIES_COVER, then the paper print)
+const MENU_THUMB={"Bökh":"img/prints/bokh-02-room.jpg"};
 const PAPER={"0-0":{wall:"#aeb4a6"},"0-1":{wall:"#aeb4a6"},"0-2":{wall:"#aeb4a6"},"0-3":{wall:"#aeb4a6"},"0-4":{wall:"#aeb4a6"},"0-5":{wall:"#aeb4a6"},"0-6":{wall:"#aeb4a6"},"0-7":{wall:"#aeb4a6"},"0-8":{wall:"#aeb4a6"},"0-9":{wall:"#aeb4a6"},"0-10":{wall:"#aeb4a6"},"0-11":{wall:"#aeb4a6"},"1-0":{wall:"#aeb4a6"},"3-0":{wall:"#aeb4a6"},"3-1":{wall:"#aeb4a6"},"3-4":{wall:"#aeb4a6"},"3-5":{wall:"#aeb4a6"},"3-8":{wall:"#aeb4a6"}};
 const printImg=(pr,alt="")=>{const pp=PAPER[pr.id];if(!pp)return null;
   return`<span class="paper${pr.land?" land":""}" style="--r:${projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75)}"><span class="photo"><img src="${pr.src}" alt="${alt}" loading="lazy"></span></span>`};
@@ -1210,7 +1212,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
 // ---- Prints submenu: series with a thumbnail, same as the Projects menu ----
 (()=>{const pm=document.getElementById("printmenu"),btn=document.getElementById("v-shop");
   seriesList.forEach(se=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",se.k);b.title=se.name;
-    b.innerHTML=`<span class="sm-thumb${SERIES_COVER[se.name]?"":" sm-print"}">${SERIES_COVER[se.name]?`<img src="${SERIES_COVER[se.name]}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} prints</small><b>${se.name}</b>`;
+    const mt=MENU_THUMB[se.name]||SERIES_COVER[se.name];b.innerHTML=`<span class="sm-thumb${mt?"":" sm-print"}">${mt?`<img src="${mt}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} prints</small><b>${se.name}</b>`;
     b.onclick=()=>{close();openSeries(se.k)};
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
