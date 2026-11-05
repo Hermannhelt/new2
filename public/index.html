@@ -74,6 +74,9 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 .sm-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 .sm-item:hover .sm-thumb img,.sm-item:focus-visible .sm-thumb img{transform:scale(1.06)}
 .sm-print{display:grid;place-items:center}
+#printmenu{display:grid;grid-template-columns:repeat(var(--cols,2),clamp(140px,12.5vw,190px));gap:22px 16px;justify-content:start}
+#printmenu[hidden]{display:none}
+#printmenu .sm-item{width:auto}
 .sm-print .paper{--pw:74%}
 .sm-print .paper.land{--pw:90%}
 .sm-item:hover .sm-print .paper{transform:translateY(-3px)}
@@ -1190,7 +1193,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu").forEach(dragScroll);
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
   all.innerHTML=`<span class="sm-thumb" style="display:grid;place-items:center;font-family:var(--serif);font-size:22px">All</span><small>${prints.length} prints</small><b>All prints</b>`;
-  all.onclick=()=>{close();setView("s");scrollTo(0,0)};pm.appendChild(all);
+  all.onclick=()=>{close();setView("s");scrollTo(0,0)};pm.appendChild(all);pm.style.setProperty("--cols",Math.ceil(pm.children.length/2));
   dragScroll(pm);
   let t=null;
   let openedAt2=0;
