@@ -862,9 +862,9 @@ projects.forEach((p,pi)=>{
 });
 
 const ix=document.getElementById("index");
-[...new Set(projects.map(p=>p.date?p.date.slice(0,4):"Ongoing"))].forEach(y=>{
+[...new Set(projects.map(p=>p.date?p.date.slice(0,4):"Projects"))].forEach(y=>{
   const d=document.createElement("div");d.className="year";
-  const items=projects.map((p,pi)=>({p,pi})).filter(o=>(o.p.date?o.p.date.slice(0,4):"Ongoing")===y);
+  const items=projects.map((p,pi)=>({p,pi})).filter(o=>(o.p.date?o.p.date.slice(0,4):"Projects")===y);
   const thumbs=o=>{const p=o.p,n=p.video?1:p.n,src=i=>p.video?p.video.poster:p.img(i),r=i=>p.ratios?p.ratios[i]:(p.ratio||.75);
     return Array.from({length:n},(_,i)=>`<button data-open="${o.pi}" data-i="${i}" aria-label="${p.title}, image ${i+1}"><img data-src="${src(i)}" alt="" style="aspect-ratio:${r(i)}"></button>`).join("")};
   d.innerHTML=`<h2>${y}</h2><ol>${items.map((o,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="${o.pi}" aria-expanded="false">${o.p.title}</button><span class="client">${o.p.client}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${thumbs(o)}</div></div></div></li>`).join("")}</ol>`;
