@@ -781,6 +781,7 @@ const projects=[
     text:["When a boy is born in Inner Mongolia, his family pray for him to become a wrestler. This ancient tradition is the cornerstone of Mongolian culture, dating back centuries to Genghis Khan’s reign, when he used it to keep his soldiers battle-ready. Khan famously compared wrestling to war, explaining that in both you face enemies who are stronger and more powerful than you, and you must attack. It’s a sentiment these young wrestlers keep very much in mind.",
       "This unique form of wrestling governs status for young men within the community, as it is used as a marker of manliness. The bouts take place in the remote and desolate Grasslands, empty to the horizon except for a few scattered yurts and flocks of sheep. Mongolian wrestling feels like a dance. Opponents meet in the ring with hands outstretched, moving around each other until one of them takes the lead. They engage in long, dramatic grapples which at times resemble intimate embraces. In an instant it’s over."],
     coda:"One trip. One lift. One throw. And it’s done.",img:i=>`img/bokh/bokh-${String(i+1).padStart(2,"0")}.jpg`,ratio:.75},
+  {title:"Let’s Dance",layout:"feature",full:true,noThumbs:true,blend:true,client:"India",date:null,n:21,img:i=>`img/letsdance/lets-dance-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.8,ratios:[0.7145,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.7145,1.25,0.7145,0.714,0.8]},
   {title:"Hollywood Street Characters",layout:"feature",noThumbs:true,
     sub:"The dead-end of the American dream",
     text:["Hollywood Street Characters is a series of portraits of the people working as characters on Hollywood Boulevard in LA. The street characters make a living by letting themselves be photographed together with the thousands of tourists who visit the Boulevard each day and pay them a tip to take a shot.",
@@ -795,7 +796,6 @@ const projects=[
     video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9,start:8}},
   {title:"Portraits",layout:"feature",noThumbs:true,client:"Portraits",date:null,n:2,captions:{1:"Kristoffer Hegnsvad // Director of the National Film School of Denmark"},img:i=>`img/portraits/portraits-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.8},
   {title:"Commissions",layout:"feature",noThumbs:true,client:"Commissions",date:null,n:1,img:i=>`img/commissions/commissions-${String(i+1).padStart(2,"0")}.jpg`,ratio:1.5576},
-  {title:"Let’s Dance",layout:"feature",full:true,noThumbs:true,blend:true,client:"India",date:null,n:21,img:i=>`img/letsdance/lets-dance-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.8,ratios:[0.7145,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.7145,1.25,0.7145,0.714,0.8]},
 ];
 const ratios=[.8,.75,1,.8,.667,.8,1.25,.75,.8];
 
@@ -944,15 +944,15 @@ const kr=n=>new Intl.NumberFormat("da-DK",{style:"currency",currency:"DKK",maxim
 const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:2250},{p:"50 × 70 cm",l:"70 × 50 cm",price:4500},{p:"70 × 100 cm",l:"100 × 70 cm",price:8000}];
 // Sizes per series (project index); prices are placeholders until real ones are set
 // img = image size in cm; b = white border on every side; p/l = the full print (paper) size
-const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],3:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
+const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],4:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
 SERIES_SIZES[1]=SERIES_SIZES[0]; // Bökh: same sizes, prices and editions as Flower Men
 const LD=projects.findIndex(p=>p.title==="Let’s Dance");SERIES_SIZES[LD]=[{img:[86,120],b:7,p:"100 × 134 cm",l:"134 × 100 cm",price:21000,ed:5,ap:2}]; // Let’s Dance: one large size, image fitted to the photo’s format
-const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[3]:SIZES);
+const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[4]:SIZES);
 const edOf=sz=>sz.ed||15;
 const edLabel=sz=>`${edOf(sz)}${sz.ap?` + ${sz.ap} AP`:""}`;
 // Print titles by photo (project index - image index)
-const PRINT_NAMES={"0-0":"Kulwinder","0-2":"Shankar Shah","0-3":"Odhir Gayen","0-5":"Sanjit Malik","0-6":"Shambhunath Dutt","0-9":"Sanju Joshi","0-11":"Angad Ray","3-0":"Ms. Lan","3-1":"Ms. Duyen","3-4":"Mr. Du","3-5":"Ms. Hanh","3-8":"Ms. Do Thi Hoa"};
-const prints=[[0,0,[50,10,5]],[0,2,[50,10,5]],[0,3,[50,10,5]],[0,5,[50,10,5]],[0,6,[50,10,5]],[0,9,[50,10,5]],[0,11,[50,10,5]],[3,0,[38,6,2]],[3,1,[44,6,2]],[3,4,[31,6,2]],[3,5,[47,6,2]],[3,8,[26,6,2]],[1,0,[50,10,5]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,9,[50,10,5]],[LD,0,[5]]]
+const PRINT_NAMES={"0-0":"Kulwinder","0-2":"Shankar Shah","0-3":"Odhir Gayen","0-5":"Sanjit Malik","0-6":"Shambhunath Dutt","0-9":"Sanju Joshi","0-11":"Angad Ray","4-0":"Ms. Lan","4-1":"Ms. Duyen","4-4":"Mr. Du","4-5":"Ms. Hanh","4-8":"Ms. Do Thi Hoa"};
+const prints=[[0,0,[50,10,5]],[0,2,[50,10,5]],[0,3,[50,10,5]],[0,5,[50,10,5]],[0,6,[50,10,5]],[0,9,[50,10,5]],[0,11,[50,10,5]],[4,0,[38,6,2]],[4,1,[44,6,2]],[4,4,[31,6,2]],[4,5,[47,6,2]],[4,8,[26,6,2]],[1,0,[50,10,5]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,9,[50,10,5]],[LD,0,[5]]]
   .map(([pi,i,left],k)=>{const p=projects[pi],r=p.ratios?p.ratios[i]:p.ratio;
     return{id:`${pi}-${i}`,pi,title:PRINT_NAMES[`${pi}-${i}`]||`${p.title} No. ${i+1}`,series:p.title,src:p.img(i),land:r>1,left}});
 // Prints that are presented as physical prints on a wall (id: "project-image")
@@ -961,7 +961,7 @@ const STYLED={"0-0":"img/prints/flower-men-kulwinder-styled.jpg"};
 const SERIES_COVER={"Flower Men":"img/prints/flower-men-kulwinder-styled.jpg"};
 // Thumbnails used only in the Prints dropdown (falls back to SERIES_COVER, then the paper print)
 const MENU_THUMB={"Bökh":"img/prints/bokh-02-room.jpg"};
-const PAPER={["7-0"]:{wall:"#aeb4a6"},"0-0":{wall:"#aeb4a6"},"0-1":{wall:"#aeb4a6"},"0-2":{wall:"#aeb4a6"},"0-3":{wall:"#aeb4a6"},"0-4":{wall:"#aeb4a6"},"0-5":{wall:"#aeb4a6"},"0-6":{wall:"#aeb4a6"},"0-7":{wall:"#aeb4a6"},"0-8":{wall:"#aeb4a6"},"0-9":{wall:"#aeb4a6"},"0-10":{wall:"#aeb4a6"},"0-11":{wall:"#aeb4a6"},"1-0":{wall:"#aeb4a6"},"3-0":{wall:"#aeb4a6"},"3-1":{wall:"#aeb4a6"},"3-4":{wall:"#aeb4a6"},"3-5":{wall:"#aeb4a6"},"3-8":{wall:"#aeb4a6"}};
+const PAPER={["2-0"]:{wall:"#aeb4a6"},"0-0":{wall:"#aeb4a6"},"0-1":{wall:"#aeb4a6"},"0-2":{wall:"#aeb4a6"},"0-3":{wall:"#aeb4a6"},"0-4":{wall:"#aeb4a6"},"0-5":{wall:"#aeb4a6"},"0-6":{wall:"#aeb4a6"},"0-7":{wall:"#aeb4a6"},"0-8":{wall:"#aeb4a6"},"0-9":{wall:"#aeb4a6"},"0-10":{wall:"#aeb4a6"},"0-11":{wall:"#aeb4a6"},"1-0":{wall:"#aeb4a6"},"4-0":{wall:"#aeb4a6"},"4-1":{wall:"#aeb4a6"},"4-4":{wall:"#aeb4a6"},"4-5":{wall:"#aeb4a6"},"4-8":{wall:"#aeb4a6"}};
 const printImg=(pr,alt="")=>{const pp=PAPER[pr.id];if(!pp)return null;
   return`<span class="paper${pr.land?" land":""}" style="--r:${projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75)}"><span class="photo"><img src="${pr.src}" alt="${alt}" loading="lazy"></span></span>`};
 const thumbFor=(pr,alt="")=>{const pp=PAPER[pr.id];return pp?`<div class="thumb">${printImg(pr,alt)}</div>`:`<div class="thumb"><img src="${pr.src}" alt="${alt}" loading="lazy"></div>`};
