@@ -218,7 +218,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .feature.matte .feat-main img{inset:auto!important;left:var(--m)!important;top:var(--m)!important;width:calc(100% - 2 * var(--m))!important;height:calc(100% - 2 * var(--m))!important;object-fit:cover}
 .feat-main img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;opacity:0;transform:scale(1);transition:opacity .55s ease,transform 10s cubic-bezier(.25,.6,.3,1)}
 /* slow, slight zoom in once the image is on screen */
-.feature.seen .feat-main img.on{transform:scale(1.10)}
+.feature.seen .feat-main img.on{transform:scale(var(--zoom,1.10))}
 .feature .feat-main img.feat-cover{transform:none!important}
 .feature.no-zoom .feat-main img{transform:none!important}
 @media (prefers-reduced-motion:reduce){.feature.seen .feat-main img.on{transform:none}}
@@ -782,7 +782,7 @@ const projects=[
     text:["When a boy is born in Inner Mongolia, his family pray for him to become a wrestler. This ancient tradition is the cornerstone of Mongolian culture, dating back centuries to Genghis Khan’s reign, when he used it to keep his soldiers battle-ready. Khan famously compared wrestling to war, explaining that in both you face enemies who are stronger and more powerful than you, and you must attack. It’s a sentiment these young wrestlers keep very much in mind.",
       "This unique form of wrestling governs status for young men within the community, as it is used as a marker of manliness. The bouts take place in the remote and desolate Grasslands, empty to the horizon except for a few scattered yurts and flocks of sheep. Mongolian wrestling feels like a dance. Opponents meet in the ring with hands outstretched, moving around each other until one of them takes the lead. They engage in long, dramatic grapples which at times resemble intimate embraces. In an instant it’s over."],
     coda:"One trip. One lift. One throw. And it’s done.",img:i=>`img/bokh/bokh-${String(i+1).padStart(2,"0")}.jpg`,ratio:.75},
-  {title:"Let’s Dance",layout:"feature",full:true,noThumbs:true,blend:true,client:"India",date:null,n:21,img:i=>`img/letsdance/lets-dance-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.8,ratios:[0.7145,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.7145,1.25,0.7145,0.714,0.8]},
+  {title:"Let’s Dance",layout:"feature",full:true,zoom:1.04,noThumbs:true,blend:true,client:"India",date:null,n:21,img:i=>`img/letsdance/lets-dance-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.8,ratios:[0.7145,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.7145,1.25,0.7145,0.714,0.8]},
   {title:"Hollywood Street Characters",layout:"feature",noThumbs:true,
     sub:"The dead-end of the American dream",
     text:["Hollywood Street Characters is a series of portraits of the people working as characters on Hollywood Boulevard in LA. The street characters make a living by letting themselves be photographed together with the thousands of tourists who visit the Boulevard each day and pay them a tip to take a shot.",
@@ -811,7 +811,7 @@ function paint(el,p,i,pi){
 const ov=document.getElementById("overview");
 function buildFeature(s,p,pi){
   s.querySelector(".strip").remove();
-  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.full?" full":"")+(p.noZoom?" no-zoom":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"")+(p.blend?" blend":"");
+  const f=document.createElement("div");if(p.zoom)f.style.setProperty("--zoom",p.zoom);f.className="feature"+(p.bleed?" bleed":"")+(p.full?" full":"")+(p.noZoom?" no-zoom":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"")+(p.blend?" blend":"");
   const pad=n=>String(n).padStart(2,"0");
   const st=p.start||0;
   f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${i===st||i<2?"eager":"lazy"}" class="${i===st?"on":""}">`).join("")}</button>
@@ -945,7 +945,7 @@ const kr=n=>new Intl.NumberFormat("da-DK",{style:"currency",currency:"DKK",maxim
 const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:2250},{p:"50 × 70 cm",l:"70 × 50 cm",price:4500},{p:"70 × 100 cm",l:"100 × 70 cm",price:8000}];
 // Sizes per series (project index); prices are placeholders until real ones are set
 // img = image size in cm; b = white border on every side; p/l = the full print (paper) size
-const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],4:[{img:[41,55],b:7,p:"55 × 69 cm",l:"69 × 55 cm",price:2600,ed:50},{img:[82,114],b:7,p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{img:[106,141],b:7,p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
+const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],4:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[82,114],b:7,p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{img:[106,141],b:7,p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
 SERIES_SIZES[1]=SERIES_SIZES[0]; // Bökh: same sizes, prices and editions as Flower Men
 const LD=projects.findIndex(p=>p.title==="Let’s Dance");SERIES_SIZES[LD]=[{img:[86,120],b:7,p:"100 × 134 cm",l:"134 × 100 cm",price:21000,ed:5,ap:2}]; // Let’s Dance: one large size, image fitted to the photo’s format
 const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[4]:SIZES);
