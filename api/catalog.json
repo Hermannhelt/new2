@@ -135,7 +135,7 @@
   },
   {
    "id": "1-1",
-   "title": "Bökh No. 1",
+   "title": "Baoyinzhana",
    "series": "Bökh",
    "image": "img/bokh/bokh-01.jpg",
    "sizes": [
@@ -161,7 +161,7 @@
   },
   {
    "id": "1-2",
-   "title": "Bökh No. 2",
+   "title": "Fight",
    "series": "Bökh",
    "image": "img/bokh/bokh-02.jpg",
    "sizes": [
@@ -186,8 +186,164 @@
    ]
   },
   {
-   "id": "1-19",
+   "id": "1-3",
    "title": "Bökh No. 4",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-19.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-6",
+   "title": "Bökh No. 7",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-15.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-7",
+   "title": "Bökh No. 8",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-11.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-8",
+   "title": "Bökh No. 9",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-10.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-12",
+   "title": "Bökh No. 13",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-14.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-18",
+   "title": "Bökh No. 19",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-18.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-19",
+   "title": "Bökh No. 20",
    "series": "Bökh",
    "image": "img/bokh/bokh-04.jpg",
    "sizes": [
@@ -212,10 +368,36 @@
    ]
   },
   {
-   "id": "1-8",
-   "title": "Bökh No. 10",
+   "id": "1-20",
+   "title": "Bökh No. 21",
    "series": "Bökh",
-   "image": "img/bokh/bokh-10.jpg",
+   "image": "img/bokh/bokh-13.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
+  },
+  {
+   "id": "1-21",
+   "title": "Bökh No. 22",
+   "series": "Bökh",
+   "image": "img/bokh/bokh-16.jpg",
    "sizes": [
     {
      "k": 0,
