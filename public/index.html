@@ -220,6 +220,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 /* slow, slight zoom in once the image is on screen */
 .feature.seen .feat-main img.on{transform:scale(1.10)}
 .feature .feat-main img.feat-cover{transform:none!important}
+.feature.no-zoom .feat-main img{transform:none!important}
 @media (prefers-reduced-motion:reduce){.feature.seen .feat-main img.on{transform:none}}
 .feat-main img.on{opacity:1}
 .feat-bar{display:flex;justify-content:center;gap:12px;font-size:var(--fs-s);color:var(--muted);font-variant-numeric:tabular-nums}
@@ -795,7 +796,7 @@ const projects=[
   {title:"Well of Death",layout:"video",client:"India",date:null,n:0,
     video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9,start:8}},
   {title:"Portraits",layout:"feature",noThumbs:true,client:"Portraits",date:null,n:2,captions:{1:"Kristoffer Hegnsvad // Director of the National Film School of Denmark"},img:i=>`img/portraits/portraits-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.8},
-  {title:"Commissions",layout:"feature",noThumbs:true,client:"Commissions",date:null,n:1,img:i=>`img/commissions/commissions-${String(i+1).padStart(2,"0")}.jpg`,ratio:1.5576},
+  {title:"Commissions",layout:"feature",noZoom:true,noThumbs:true,client:"Commissions",date:null,n:1,img:i=>`img/commissions/commissions-${String(i+1).padStart(2,"0")}.jpg`,ratio:1.5576},
 ];
 const ratios=[.8,.75,1,.8,.667,.8,1.25,.75,.8];
 
@@ -810,7 +811,7 @@ function paint(el,p,i,pi){
 const ov=document.getElementById("overview");
 function buildFeature(s,p,pi){
   s.querySelector(".strip").remove();
-  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.full?" full":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"")+(p.blend?" blend":"");
+  const f=document.createElement("div");f.className="feature"+(p.bleed?" bleed":"")+(p.full?" full":"")+(p.noZoom?" no-zoom":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"")+(p.blend?" blend":"");
   const pad=n=>String(n).padStart(2,"0");
   const st=p.start||0;
   f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${i===st||i<2?"eager":"lazy"}" class="${i===st?"on":""}">`).join("")}</button>
