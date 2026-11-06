@@ -794,7 +794,7 @@ const projects=[
     text:["Flower Shop is an exhibition of an art photography series by Danish photographer Ken Hermann, depicting the bicycle flower sellers of Hanoi.",
       "In Hanoi, the bicycle flower sellers are not just vendors; they are keepers of tradition. Ken Hermann’s work seeks to encapsulate this relationship between nature and urbanity. Through a combination of candid street photography and carefully composed images, he conveys their daily lives into a work of art."],
     coda:"To recognize the extraordinary within the ordinary.",date:null,n:10,img:i=>`img/flowers/flower-shop-${String(i+1).padStart(2,"0")}.jpg`,ratios:[0.774,0.774,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75]},
-  {title:"Well of Death",layout:"video",client:"India",date:null,n:0,
+  {title:"Well of Death",layout:"video",client:"India",date:null,n:23,ratios:[1.3343,1.4263,1.3333,1.3333,1.3333,1.5424,1.4988,1.4988,1.4988,1.5504,1.5088,1.4988,1.4988,1.4742,1.4839,1.4988,1.5164,1.4988,1.4766,1.5986,1.6965,1.4988,1.6438],img:i=>`img/wellofdeath/well-of-death-${String(i+1).padStart(2,"0")}.jpg`,
     video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9,start:8}},
   {title:"Commissions",layout:"feature",noZoom:true,noThumbs:true,client:"Commissions",date:null,n:9,ratios:[1.5576,0.7495,0.8015,1.3414,0.7093,0.7402,1.5337,0.706,0.7075],order:[1,8,2,5,9,7,3,4,6],img:function(i){return`img/commissions/commissions-${String(this.order[i]).padStart(2,"0")}.jpg`},ratio:1.5576},
 ];
@@ -895,7 +895,7 @@ const ix=document.getElementById("index");
 [...new Set(projects.map(p=>p.date?p.date.slice(0,4):"Projects"))].forEach(y=>{
   const d=document.createElement("div");d.className="year";
   const items=projects.map((p,pi)=>({p,pi})).filter(o=>(o.p.date?o.p.date.slice(0,4):"Projects")===y);
-  const thumbs=o=>{const p=o.p,n=p.video?1:p.n,src=i=>p.video?p.video.poster:p.img(i),r=i=>p.ratios?p.ratios[i]:(p.ratio||.75);
+  const thumbs=o=>{const p=o.p,n=p.img?p.n:1,src=i=>p.img?p.img(i):p.video.poster,r=i=>p.ratios?p.ratios[i]:(p.ratio||.75);
     return Array.from({length:n},(_,i)=>`<button data-open="${o.pi}" data-i="${i}" style="--k:${i}" aria-label="${p.title}, image ${i+1}"><img data-src="${src(i)}" alt="" style="aspect-ratio:${r(i)}"></button>`).join("")};
   d.innerHTML=`<h2>${y}</h2><ol>${items.map((o,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="${o.pi}" aria-expanded="false">${o.p.title}</button><span class="client">${o.p.client}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${thumbs(o)}</div></div></div></li>`).join("")}</ol>`;
   ix.appendChild(d);
@@ -1145,8 +1145,8 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!prod.hidden)pro
 // Opens by hover/click at the top of the page; unfolds by itself, in step with scrolling, further down.
 const sm=document.getElementById("submenu"),smBtn=document.getElementById("open-menu"),hdr=document.querySelector("header");
 projects.forEach((p,pi)=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",pi);b.title=p.title;
-  b.innerHTML=`<span class="sm-thumb">${p.img?`<img src="${p.img(0)}" alt="" loading="lazy">`:p.video?`<img src="${p.video.poster}" alt="" loading="lazy">`:""}<i class="sm-num">${ROMAN[pi]}</i></span>
-    <small>${ROMAN[pi]} · ${p.video?"Film":`${p.n} images`}</small><b>${p.title}</b><span class="sm-label"><i>${ROMAN[pi]}</i>${p.title}</span>`;
+  b.innerHTML=`<span class="sm-thumb">${p.video?`<img src="${p.video.poster}" alt="" loading="lazy">`:p.img?`<img src="${p.img(0)}" alt="" loading="lazy">`:""}<i class="sm-num">${ROMAN[pi]}</i></span>
+    <small>${ROMAN[pi]} · ${p.video?(p.n?`Film · ${p.n} images`:"Film"):`${p.n} images`}</small><b>${p.title}</b><span class="sm-label"><i>${ROMAN[pi]}</i>${p.title}</span>`;
   if(!p.img&&!p.video)paint(b.querySelector(".sm-thumb"),p,0,pi);
   b.onclick=()=>{manualOpen=false;openProject(pi,0);renderMenu()};
   sm.appendChild(b)});
