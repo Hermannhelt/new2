@@ -141,21 +141,21 @@
    "sizes": [
     {
      "k": 0,
-     "label": "30 × 40 cm",
-     "price": 2250,
-     "edition": "15"
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
     },
     {
      "k": 1,
-     "label": "50 × 70 cm",
-     "price": 4500,
-     "edition": "15"
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
     },
     {
      "k": 2,
-     "label": "70 × 100 cm",
-     "price": 8000,
-     "edition": "15"
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
     }
    ]
   },
@@ -167,21 +167,21 @@
    "sizes": [
     {
      "k": 0,
-     "label": "30 × 40 cm",
-     "price": 2250,
-     "edition": "15"
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
     },
     {
      "k": 1,
-     "label": "50 × 70 cm",
-     "price": 4500,
-     "edition": "15"
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
     },
     {
      "k": 2,
-     "label": "70 × 100 cm",
-     "price": 8000,
-     "edition": "15"
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
     }
    ]
   },
@@ -193,21 +193,21 @@
    "sizes": [
     {
      "k": 0,
-     "label": "30 × 40 cm",
-     "price": 2250,
-     "edition": "15"
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
     },
     {
      "k": 1,
-     "label": "50 × 70 cm",
-     "price": 4500,
-     "edition": "15"
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
     },
     {
      "k": 2,
-     "label": "70 × 100 cm",
-     "price": 8000,
-     "edition": "15"
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
     }
    ]
   },
@@ -219,21 +219,21 @@
    "sizes": [
     {
      "k": 0,
-     "label": "30 × 40 cm",
-     "price": 2250,
-     "edition": "15"
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
     },
     {
      "k": 1,
-     "label": "50 × 70 cm",
-     "price": 4500,
-     "edition": "15"
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
     },
     {
      "k": 2,
-     "label": "70 × 100 cm",
-     "price": 8000,
-     "edition": "15"
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
     }
    ]
   },
