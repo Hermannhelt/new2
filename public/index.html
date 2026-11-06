@@ -56,7 +56,7 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 .submenu{position:fixed;left:0;right:0;top:var(--hdr-h,56px);z-index:6;display:flex;gap:14px;overflow-x:auto;background:var(--bg);border-bottom:1px solid var(--line);
   padding-block:16px 18px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));scrollbar-width:none}
 .sm-thumb{position:relative}
-.sm-num{display:none;position:absolute;left:5px;bottom:3px;font-family:var(--serif);font-style:italic;font-size:13px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55)}
+.sm-num{display:none;position:absolute;left:5px;bottom:3px;font-family:var(--serif);font-style:normal;font-size:13px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55)}
 /* unfolded by scrolling: a transparent row of thumbnails under the see-through header */
 .submenu.compact{background:transparent;border-bottom-color:transparent;padding-block:4px 10px;gap:8px;
   clip-path:inset(0 0 calc((1 - var(--p,1)) * 100%) 0)}
@@ -67,7 +67,7 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 .submenu.compact .sm-item.current .sm-label{text-decoration:underline;text-underline-offset:3px}
 .submenu.compact .sm-thumb,.submenu.compact .sm-item small,.submenu.compact .sm-item b{display:none}
 .submenu.compact .sm-label{display:inline;color:#fff;font-size:var(--fs-s);white-space:nowrap}
-.submenu.compact .sm-label i{font-family:var(--serif);font-size:13px;opacity:.6;margin-right:4px}
+.submenu.compact .sm-label i{font-family:var(--serif);font-style:normal;font-size:13px;opacity:.6;margin-right:4px}
 .submenu.compact .sm-item:hover .sm-label,.submenu.compact .sm-item:focus-visible .sm-label{text-decoration:underline;text-underline-offset:3px}
 .sm-item{flex:0 0 auto;width:clamp(96px,8.5vw,128px);display:grid;gap:7px;align-content:start;text-align:left;animation:smIn .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i)*45ms)}
 .sm-thumb{aspect-ratio:3/4;background:var(--frame);overflow:hidden}
@@ -107,7 +107,7 @@ body.pm-open main,body.pm-open footer{opacity:.25}
 #overview .project+.project{margin-top:0}
 #overview .project{padding-block:14px}
 .p-head{display:grid;grid-template-columns:3.2em 1fr auto;gap:12px;align-items:baseline}
-.numeral{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:18px}
+.numeral{font-family:var(--serif);font-style:normal;color:var(--muted);font-size:18px}
 .p-open{font:inherit;color:inherit;text-align:left}
 .p-open:hover{color:var(--accent)}
 .p-title{font-family:var(--serif);font-size:clamp(22px,2.7vw,33px);line-height:1;font-weight:400;margin:0;text-wrap:balance;min-width:0}
@@ -277,7 +277,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-list li{opacity:0;transform:translateY(-8px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i) * 110ms)}
 .pv-list.in li{opacity:1;transform:none}
 .pv-next .pv-list button{font-family:var(--sans);font-size:var(--fs-s);color:var(--muted);transition:color .3s;text-align:left}
-.pv-next .pv-list button i{font-family:var(--serif);margin-right:6px}
+.pv-next .pv-list button i{font-family:var(--serif);font-style:normal;margin-right:6px}
 .pv-next .pv-list button:hover{color:var(--fg)}
 .pv-next .pv-list button.current{color:var(--fg);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
 .pv-next button{font-family:var(--serif);font-size:clamp(26px,3.4vw,44px);text-align:left}
