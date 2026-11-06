@@ -143,8 +143,8 @@ body.pm-open main,body.pm-open footer{opacity:.25}
 .ix-inner{overflow:hidden;min-height:0}
 .ix-thumbs{display:flex;flex-wrap:nowrap;gap:14px;padding:16px 0 10px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
 .ix-thumbs::-webkit-scrollbar{display:none}
-.ix-thumbs button{flex:0 0 auto;opacity:0;transform:translateY(10px)}
-.year li.open .ix-thumbs button{animation:ixIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--k) * 110ms + 120ms)}
+.ix-thumbs button,.ix-thumbs a{flex:0 0 auto;opacity:0;transform:translateY(10px)}
+.year li.open .ix-thumbs a,.year li.open .ix-thumbs button{animation:ixIn .7s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--k) * 110ms + 120ms)}
 @keyframes ixIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .ix-thumbs button{display:block;padding:0;line-height:0}
 .ix-thumbs img{height:clamp(110px,13vw,200px);width:auto;display:block;object-fit:cover;background:var(--frame);transition:opacity .3s}
@@ -971,19 +971,24 @@ const seriesWrap=document.getElementById("series");
 const seriesList=[...new Map(prints.map(pr=>[pr.series,pr])).keys()].map((name,k)=>({name,k,items:prints.filter(pr=>pr.series===name)}));
 // Index: a "Prints" list under the projects; each series rolls down its prints
 {const d=document.createElement("div");d.className="year";
-  d.innerHTML=`<h2>Prints</h2><ol>${seriesList.map(se=>`<li><span class="numeral">${ROMAN[se.k]}</span><button data-p="s${se.k}" aria-expanded="false">${se.name}</button><span class="client">${se.items.length} prints · from ${kr(sizesOf(se.items[0])[0].price)}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${se.items.map((pr,k)=>{const r=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
+  d.innerHTML=`<h2>Prints</h2><ol>${seriesList.map(se=>`<li><span class="numeral">${ROMAN[se.k]}</span><button data-p="s${se.k}" aria-expanded="false">${se.name}</button><span class="client">${se.items.length} print${se.items.length===1?"":"s"} · from ${kr(sizesOf(se.items[0])[0].price)}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${se.items.map((pr,k)=>{const r=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     return`<button data-prod="${pr.id}" style="--k:${k}" aria-label="${pr.title}"><img data-src="${pr.src}" alt="" style="aspect-ratio:${r}"></button>`}).join("")}</div></div></div></li>`).join("")}</ol>`;
+  ix.appendChild(d)}
+// Index: "Publications" — magazines, books and features. Add entries as {title, client, images:["img/publications/…jpg", …]}
+const PUBLICATIONS=[];
+{const d=document.createElement("div");d.className="year";
+  d.innerHTML=`<h2>Publications</h2><ol>${PUBLICATIONS.length?PUBLICATIONS.map((pb,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="pub${k}" aria-expanded="false">${pb.title}</button><span class="client">${pb.client||""}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${pb.images.map((src,j)=>`<a href="${src}" target="_blank" rel="noopener" style="--k:${j}"><img data-src="${src}" alt="${pb.title}"></a>`).join("")}</div></div></div></li>`).join(""):`<li><span class="numeral"></span><span class="muted">Coming soon</span><span></span></li>`}</ol>`;
   ix.appendChild(d)}
 // Prints page: one cover image per series; clicking it opens that series with all its prints
 seriesList.forEach(se=>{const b=document.createElement("button");b.className="cover";
   b.innerHTML=`${SERIES_COVER[se.name]?`<div class="thumb styled-cover" role="img" aria-label="${se.name}" style="background-image:url('${SERIES_COVER[se.name]}')"></div>`:thumbFor(se.items[0])}
-    <div class="cover-row"><span class="numeral">${ROMAN[se.k]}</span><span class="cover-t">${se.name}</span><span class="price muted">${se.items.length} prints · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>`;
+    <div class="cover-row"><span class="numeral">${ROMAN[se.k]}</span><span class="cover-t">${se.name}</span><span class="price muted">${se.items.length} print${se.items.length===1?"":"s"} · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>`;
   b.onclick=()=>openSeries(se.k);seriesWrap.appendChild(b)});
 const seriesDetail=document.getElementById("series-detail"),shopHead=document.getElementById("shop-head");
 function openSeries(k){const se=seriesList[k],pr0=se.items[0];
   setView("s");seriesWrap.hidden=true;shopHead.hidden=true;
   seriesDetail.innerHTML=`<div class="pv-head"><button class="pv-back paren" id="sd-back">All prints</button>
-      <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1><span class="meta">${se.items.length} prints · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>
+      <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1><span class="meta">${se.items.length} print${se.items.length===1?"":"s"} · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>
     <p class="sd-intro">Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. <button class="sd-proj" id="sd-proj">See the full project ( → )</button></p>
     <div class="grid sd-grid"></div>`;
   const g=seriesDetail.querySelector(".grid");
@@ -1240,7 +1245,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
 // ---- Prints submenu: series with a thumbnail, same as the Projects menu ----
 (()=>{const pm=document.getElementById("printmenu"),btn=document.getElementById("v-shop");
   seriesList.forEach(se=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",se.k);b.title=se.name;
-    const mt=MENU_THUMB[se.name]||SERIES_COVER[se.name];b.innerHTML=`<span class="sm-thumb${mt?"":" sm-print"}">${mt?`<img src="${mt}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} prints</small><b>${se.name}</b>`;
+    const mt=MENU_THUMB[se.name]||SERIES_COVER[se.name];b.innerHTML=`<span class="sm-thumb${mt?"":" sm-print"}">${mt?`<img src="${mt}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} print${se.items.length===1?"":"s"}</small><b>${se.name}</b>`;
     b.onclick=()=>{close();openSeries(se.k)};
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
