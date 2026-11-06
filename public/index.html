@@ -944,7 +944,7 @@ const kr=n=>new Intl.NumberFormat("da-DK",{style:"currency",currency:"DKK",maxim
 const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:2250},{p:"50 × 70 cm",l:"70 × 50 cm",price:4500},{p:"70 × 100 cm",l:"100 × 70 cm",price:8000}];
 // Sizes per series (project index); prices are placeholders until real ones are set
 // img = image size in cm; b = white border on every side; p/l = the full print (paper) size
-const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],4:[{p:"41 × 55 cm",l:"55 × 41 cm",price:2600,ed:50},{p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
+const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],4:[{img:[41,55],b:7,p:"55 × 69 cm",l:"69 × 55 cm",price:2600,ed:50},{img:[96,128],b:7,p:"110 × 142 cm",l:"142 × 110 cm",price:22500,ed:7,ap:2},{img:[120,155],b:7,p:"134 × 169 cm",l:"169 × 134 cm",price:30000,ed:3,ap:1}]};
 SERIES_SIZES[1]=SERIES_SIZES[0]; // Bökh: same sizes, prices and editions as Flower Men
 const LD=projects.findIndex(p=>p.title==="Let’s Dance");SERIES_SIZES[LD]=[{img:[86,120],b:7,p:"100 × 134 cm",l:"134 × 100 cm",price:21000,ed:5,ap:2}]; // Let’s Dance: one large size, image fitted to the photo’s format
 const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[4]:SIZES);
