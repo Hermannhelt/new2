@@ -418,6 +418,32 @@
      "edition": "5 + 2 AP"
     }
    ]
+  },
+  {
+   "id": "7-0",
+   "title": "Let’s Dance No. 1",
+   "series": "Let’s Dance",
+   "image": "img/letsdance/lets-dance-01.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 2600,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 13500,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 21000,
+     "edition": "5 + 2 AP"
+    }
+   ]
   }
  ]
 }
