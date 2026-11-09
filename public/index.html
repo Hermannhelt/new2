@@ -1036,7 +1036,7 @@ function openSeries(k){const se=seriesList[k],pr0=se.items[0];
   setView("s");seriesWrap.hidden=true;shopHead.hidden=true;
   seriesDetail.innerHTML=`<div class="pv-head"><button class="pv-back paren" id="sd-back">All prints</button>
       <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1></div>
-    <p class="sd-intro">Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full project ( → )</button>`}</p>
+    <p class="sd-intro">Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full photo project ( → )</button>`}</p>
     <div class="grid sd-grid"></div>`;
   const g=seriesDetail.querySelector(".grid");
   se.items.forEach(pr=>{const b=document.createElement("button");b.className="card";
