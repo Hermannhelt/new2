@@ -201,9 +201,8 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .feat-main{position:relative;cursor:zoom-in;padding:0;display:block;margin-inline:auto;aspect-ratio:var(--r,.75);width:min(100%,calc(var(--mh) * var(--r,.75)));transition:width .45s ease,aspect-ratio .45s ease}
 .feat-main{overflow:hidden}
 /* full: the cover image runs edge to edge across the screen */
-.feature.full .feat-main{width:100vw!important;max-width:none;aspect-ratio:auto;height:calc(100vh - var(--hdr-h,56px) - 40px);min-height:420px;margin:0!important;position:relative;left:var(--bleed-x,0px)}
-.feature.full .feat-main img{object-fit:cover;object-position:50% 22%}
-@media (max-width:640px){.feature.full .feat-main{height:auto;aspect-ratio:var(--r,.75)}}
+/* full: on phones the cover runs edge to edge; on larger screens it shows the whole upright picture like the other projects */
+@media (max-width:640px){.feature.full .feat-main{width:100vw!important;max-width:none;height:auto;aspect-ratio:var(--r,.75);margin:0!important;position:relative;left:var(--bleed-x,0px)}}
 /* film project */
 .vid{margin-left:calc(3.2em + 12px);display:grid;gap:8px}
 .vid video{width:100%;max-height:78vh;object-fit:cover;display:block;background:#111;cursor:pointer}
