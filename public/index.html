@@ -334,11 +334,11 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .cover-t{font-family:var(--serif);font-size:clamp(22px,2.2vw,30px);line-height:1.05;transition:color .3s}
 .cover-row .price{grid-column:2;font-size:var(--fs-s)}
 @media (hover:hover){.cover:hover .thumb img{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,.2)}.cover:hover .cover-t{color:var(--accent)}}
-#series-detail{padding-block:3vh 6vh}
+#series-detail{padding-block:3vh 6vh;margin-top:-35px}
 #series-detail .pv-head h1{font-size:clamp(22px,2.7vw,33px);line-height:1}
 #series-detail .pv-head .numeral{font-size:18px}
-#series-detail .pv-head{margin-bottom:7vh}
-.sd-intro{max-width:60ch;color:var(--muted);font-size:var(--fs-s);margin:-5vh 0 6vh calc(3.2em + 12px)}
+#series-detail .pv-head{margin-bottom:10px}
+.sd-intro{max-width:60ch;color:var(--muted);font-size:var(--fs-s);margin:0 0 3vh 57px}
 .sd-proj{color:var(--fg);margin-left:6px;text-decoration:underline;text-underline-offset:3px}
 .sd-proj:hover{color:var(--accent)}
 .sd-grid{margin-left:calc(3.2em + 12px)}
@@ -570,7 +570,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   .sd-grid,.sd-intro{margin-left:0}
   .sd-grid{gap:48px}
   #series-detail .card .thumb,#series .cover .thumb{height:auto;aspect-ratio:4/5}
-  .sd-intro{margin-top:-3vh}
+  .sd-intro{margin-top:0}
   .project{scroll-margin-top:calc(110px + env(safe-area-inset-top,0px))}
   .feature{--mh:min(58vh,560px)}
   /* main images: 10px from the screen edge on phones (page gutter is 16px) */
@@ -1029,13 +1029,13 @@ const PUBLICATIONS=[];
 // Prints page: one cover image per series; clicking it opens that series with all its prints
 seriesList.forEach(se=>{const b=document.createElement("button");b.className="cover";
   b.innerHTML=`${SERIES_COVER[se.name]?`<div class="thumb styled-cover" role="img" aria-label="${se.name}" style="background-image:url('${SERIES_COVER[se.name]}')"></div>`:thumbFor(se.items[0])}
-    <div class="cover-row"><span class="numeral">${ROMAN[se.k]}</span><span class="cover-t">${se.name}</span><span class="price muted">${se.items.length} print${se.items.length===1?"":"s"} · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>`;
+    <div class="cover-row"><span class="numeral">${ROMAN[se.k]}</span><span class="cover-t">${se.name}</span></div>`;
   b.onclick=()=>openSeries(se.k);seriesWrap.appendChild(b)});
 const seriesDetail=document.getElementById("series-detail"),shopHead=document.getElementById("shop-head");
 function openSeries(k){const se=seriesList[k],pr0=se.items[0];
   setView("s");seriesWrap.hidden=true;shopHead.hidden=true;
   seriesDetail.innerHTML=`<div class="pv-head"><button class="pv-back paren" id="sd-back">All prints</button>
-      <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1><span class="meta">${se.items.length} print${se.items.length===1?"":"s"} · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>
+      <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1></div>
     <p class="sd-intro">Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full project ( → )</button>`}</p>
     <div class="grid sd-grid"></div>`;
   const g=seriesDetail.querySelector(".grid");
