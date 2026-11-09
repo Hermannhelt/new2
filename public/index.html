@@ -360,6 +360,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .slide.clean{background:var(--bg);padding:2% 3%}
 .slide.clean{display:block}
 .slide.styled{background:#e7e4df;padding:0}
+.slide.styled.zoom{background:#efeeea}.slide.styled.zoom img{transform:scale(1.1)!important;transform-origin:50% 50%}
 #series-detail .card .thumb.styled-thumb{background:var(--frame) center/contain no-repeat}
 #series .cover .thumb.styled-cover{background:var(--frame) center/contain no-repeat;transition:opacity .4s}
 @media (hover:hover){#series .cover:hover .thumb.styled-cover{opacity:.9}}
@@ -1063,7 +1064,7 @@ function openProduct(pr){curP=pr;
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
     pi.innerHTML=`<div class="slides" id="slides">
-        <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
+        <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled${pr.series==="Explosions"?" zoom":""}" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
         <div class="slide room" style="--fr:${rr}" aria-label="${pr.title}, framed in a living room">
           <div class="room-stage"><img class="room-bg" src="img/room/living-room.jpg" alt="" loading="lazy">
             <div class="rframe"><div class="mat"><img src="${pr.src}" alt=""></div></div></div>
