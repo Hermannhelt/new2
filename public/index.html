@@ -941,7 +941,7 @@ document.addEventListener("keydown",e=>{
   else if(e.key==="Escape")info(false)});
 
 // ---- Shop (example prices and editions; replace with real figures) ----
-const kr=n=>new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(n); // prices in euro
+const kr=n=>new Intl.NumberFormat("en-GB",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(n); // prices in euro
 const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:300},{p:"50 × 70 cm",l:"70 × 50 cm",price:600},{p:"70 × 100 cm",l:"100 × 70 cm",price:1100}];
 // Sizes per series (project index); prices are placeholders until real ones are set
 // img = image size in cm; b = white border on every side; p/l = the full print (paper) size
