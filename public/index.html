@@ -174,10 +174,11 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   transform:translateX(102%);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
 .panel.open{transform:none}
 .panel-top{display:flex;justify-content:space-between;font-size:var(--fs-s);margin-bottom:40px}
-.panel p.lede{font-family:var(--serif);font-size:24px;line-height:1.22;margin:0 0 28px}
-.bio{margin:0 0 8px;display:grid;gap:14px}
-.bio p{margin:0;line-height:1.6}
+.panel p.lede{font-family:var(--serif);font-size:clamp(17px,1.6vw,21px);line-height:1.25;margin:0 0 28px;color:var(--fg)}
+.bio{margin:0 0 8px;display:grid;gap:.6em;font-size:13.5px}
+.bio p{margin:0;line-height:1.45;color:#55544f}
 .bio p.lede{margin:0 0 6px;text-indent:-.4em}
+.panel-contact{font-size:13.5px;line-height:1.45;color:#55544f;margin:0}
 .panel h3{font-size:var(--fs-s);font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:28px 0 8px}
 .panel ol{list-style:none;margin:0;padding:0}
 .panel li{display:grid;grid-template-columns:2.4em 1fr;padding-block:3px}
@@ -664,7 +665,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
     <p>Passionate about individuals and their unique histories, he explores the fragile balance between people and their environment, between tradition and modernity. Ken’s photography seamlessly weaves cultural and political content, blending documentary and cinematic portraiture. His application of lighting, combining artificial with natural, takes the images into a surreal space, creating dreamlike visions of everyday people.”</p>
   </blockquote>
   <h3>Contact</h3>
-  <p>E. ken@kenhermann.dk<br>IG. <a href="https://www.instagram.com/kenhermann/" target="_blank" rel="noopener">@kenhermann</a><br>T. <a href="tel:+4527379717">+45 27 37 97 17</a></p>
+  <p class="panel-contact">E. ken@kenhermann.dk<br>IG. <a href="https://www.instagram.com/kenhermann/" target="_blank" rel="noopener">@kenhermann</a><br>T. <a href="tel:+4527379717">+45 27 37 97 17</a></p>
 </aside>
 
 <aside class="panel terms-panel" id="terms-panel" aria-label="Terms of sale" aria-hidden="true">
