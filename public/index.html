@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ken Hermann – Photographer &amp; Director</title>
+<link rel="preload" as="image" href="img/flowermen/flower-men-cover.gif" fetchpriority="high">
 <meta name="description" content="Ken Hermann is a Danish photographer and director based in Copenhagen. Portrait and documentary series including Flower Shop, Bökh, Hollywood Street Characters and Flower Men. Limited edition prints.">
 <meta property="og:title" content="Ken Hermann – Photographer & Director">
 <meta property="og:description" content="Portrait and documentary series and limited edition prints by Danish photographer Ken Hermann.">
@@ -814,7 +815,7 @@ function buildFeature(s,p,pi){
   const f=document.createElement("div");if(p.zoom)f.style.setProperty("--zoom",p.zoom);f.className="feature"+(p.bleed?" bleed":"")+(p.full?" full":"")+(p.noZoom?" no-zoom":"")+(p.matte?" matte":"")+(p.noThumbs?" no-thumbs":"")+(p.blend?" blend":"");
   const pad=n=>String(n).padStart(2,"0");
   const st=p.start||0;
-  f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${i===st||i<2?"eager":"lazy"}" class="${i===st?"on":""}">`).join("")}</button>
+  f.innerHTML=`<button class="feat-main" aria-label="Open image in viewer">${Array.from({length:p.n},(_,i)=>`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}" loading="${pi===0&&!p.cover&&i===st?"eager":"lazy"}"${pi===0&&!p.cover&&i===st?' fetchpriority="high"':""} class="${i===st?"on":""}">`).join("")}</button>
     <div class="feat-bar"><span class="feat-count">${pad(st+1)} / ${pad(p.n)}</span></div>
     <div class="feat-thumbs" role="group" aria-label="${p.title} images">${Array.from({length:p.n},(_,i)=>`<button data-i="${i}" aria-label="Show image ${i+1}" aria-current="${i===st}"><img src="${p.img(i)}" alt="" loading="lazy"></button>`).join("")}</div>`;
   s.appendChild(f);
@@ -824,7 +825,7 @@ function buildFeature(s,p,pi){
   cur=st;
   // optional animated cover shown first; picking a thumbnail swaps in that photo
   let cover=null;
-  if(p.cover){cover=document.createElement("img");cover.className="feat-cover on";cover.src=p.cover.src;cover.alt=`${p.title}, animated`;
+  if(p.cover){cover=document.createElement("img");cover.className="feat-cover on";if(pi===0){cover.fetchPriority="high";cover.loading="eager";cover.decoding="sync"}cover.src=p.cover.src;cover.alt=`${p.title}, animated`;
     mainBox.prepend(cover);mains.forEach(m=>m.classList.remove("on"));thumbs.forEach(t=>t.setAttribute("aria-current","false"));
     mainBox.style.setProperty("--r",p.cover.r);f.querySelector(".feat-count").textContent=`${p.n} images`}  const show=i=>{cur=i;if(cover)cover.classList.remove("on");mainBox.style.setProperty("--r",ratioOf(i));mains.forEach((m,j)=>m.classList.toggle("on",j===i));thumbs.forEach((t,j)=>t.setAttribute("aria-current",j===i));
     f.querySelector(".feat-count").textContent=`${pad(i+1)} / ${pad(p.n)}`;
