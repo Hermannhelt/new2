@@ -259,7 +259,8 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-weave.r{margin-left:auto;margin-right:8%}
 .pv-weave p{margin:0}
 /* tight: no numbers under pictures, less air between pictures and text */
-#project.tight .pv-fig figcaption{display:none}
+#project.tight .pv-fig figcaption{font-size:0;margin-top:6px}#project.tight .pv-fig figcaption .pv-cap{font-size:clamp(14px,1.1vw,16px);margin-top:0}
+#project.tight .pv-fig figcaption:not(:has(.pv-cap)){display:none}
 @media (max-width:640px){.pv-fig.full{width:100vw!important;max-width:none!important;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);align-self:center!important}}
 #project.tight{margin-top:-35px}
 #project.tight .pv-head{margin-bottom:10px}
@@ -1055,18 +1056,18 @@ function openProject(pi,start){curPI=pi;
   setView("o");ov.hidden=true;document.querySelector(".intro").hidden=true;vO.setAttribute("aria-pressed",false);
   // varied rhythm: large centred, a staggered pair, small left, medium right, pair, small right ...
   const pattern=[["c",[78],[100]],["pair",[42,30],[92,74]],["s",[38],[78]],["e",[58],[90]],["pair",[30,44],[74,92]],["e",[34],[72]],["c",[66],[100]]];
-  let i=0,k=0,rows="";const rowList=[];
-  const fig=(j,w,mw)=>`<figure class="pv-fig${p.bleedEvery&&j>0&&j%p.bleedEvery===0?" full":""}" data-i="${j}" style="--r:${ratio(j)};--w:${w}%;--mw:${mw}%">${p.img?media(p,j,`<img src="${p.img(j)}" alt="${(p.captions&&p.captions[j])||`${p.title}, image ${j+1}`}" loading="${j<2?"eager":"lazy"}">`):`<div class="pv-ph" style="aspect-ratio:${ratio(j)}"></div>`}<figcaption>${pad(j+1)} / ${pad(p.n)}${p.captions&&p.captions[j]?`<span class="pv-cap">${p.captions[j]}</span>`:""}</figcaption></figure>`;
+  let i=0,k=0,rows="";const rowList=[];const wSpan=p.weaveSpan||4,wChunks=p.weaveChunks||3,bEvery=p.bleedEvery===undefined?3:p.bleedEvery;
+  const fig=(j,w,mw)=>`<figure class="pv-fig${bEvery&&j>0&&j%bEvery===0?" full":""}" data-i="${j}" style="--r:${ratio(j)};--w:${w}%;--mw:${mw}%">${p.img?media(p,j,`<img src="${p.img(j)}" alt="${(p.captions&&p.captions[j])||`${p.title}, image ${j+1}`}" loading="${j<2?"eager":"lazy"}">`):`<div class="pv-ph" style="aspect-ratio:${ratio(j)}"></div>`}<figcaption>${pad(j+1)} / ${pad(p.n)}${p.captions&&p.captions[j]?`<span class="pv-cap">${p.captions[j]}</span>`:""}</figcaption></figure>`;
   while(i<p.n){const [al,ws,mws]=pattern[k%pattern.length];k++;
     if(al==="pair"&&i+1<p.n){rowList.push(`<div class="pv-row pair c">${fig(i,ws[0],mws[0])}${fig(i+1,ws[1],mws[1])}</div>`);i+=2}
     else{const a=al==="pair"?"c":al;rowList.push(`<div class="pv-row ${a}">${fig(i,ws[0],mws[0])}</div>`);i++}}
   // weave: the text is broken into short pieces placed between the pictures, starting with a picture
-  const woven=p.weave&&p.text;
+  const woven=p.weave!==false&&p.text;
   if(woven){const sents=p.text.flatMap(par=>par.match(/[^.!?]+[.!?]+(\s|$)/g)||[par]).map(x=>x.trim());
-    const chunks=[];if(p.weaveChunks){const n=p.weaveChunks,per=Math.ceil(sents.length/n);for(let j=0;j<sents.length;j+=per)chunks.push(sents.slice(j,j+per).join(" "))}else for(let j=0;j<sents.length;j+=2)chunks.push(sents.slice(j,j+2).join(" "));
-    const slots=Math.min(rowList.length-1,p.weaveSpan||rowList.length-1),step=slots/chunks.length;
+    const chunks=[];if(wChunks){const n=wChunks,per=Math.ceil(sents.length/n);for(let j=0;j<sents.length;j+=per)chunks.push(sents.slice(j,j+per).join(" "))}else for(let j=0;j<sents.length;j+=2)chunks.push(sents.slice(j,j+2).join(" "));
+    const slots=Math.max(1,Math.min(rowList.length-1,wSpan)),step=slots/chunks.length;
     for(let c=chunks.length-1;c>=0;c--){const at=1+Math.floor(c*step);
-      rowList.splice(at,0,`<div class="pv-weave${c%2?" r":""}">${c===0&&p.sub?`<p class="coda sub">${p.sub}</p>`:""}<p>${chunks[c]}</p></div>`)}}
+      rowList.splice(at,0,`<div class="pv-weave${c%2?" r":""}">${c===0&&p.sub?`<p class="coda sub">${p.sub}</p>`:""}<p>${chunks[c]}</p>${c===chunks.length-1&&p.coda?`<p class="coda">${p.coda}</p>`:""}${c===chunks.length-1&&p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`)}}
   if(p.hero){rowList.shift();}
   rows=rowList.join("");
   const nx=(pi+1)%projects.length;
@@ -1086,7 +1087,7 @@ function openProject(pi,start){curPI=pi;
   // the project list under "Back to overview" rolls out when it scrolls into view
   const pl=projEl.querySelector(".pv-list");pl.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>openProject(+b.dataset.go,0));
   new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pl.classList.add("in");o.disconnect()}}),{rootMargin:"0px 0px -10% 0px"}).observe(pl);
-  projEl.hidden=false;projEl.classList.toggle("tight",!!p.weave);
+  projEl.hidden=false;projEl.classList.add("tight");
   if(pvObs)pvObs.disconnect();
   pvObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");pvObs.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
   projEl.querySelectorAll(".pv-fig,.pv-weave").forEach(f=>pvObs.observe(f));
