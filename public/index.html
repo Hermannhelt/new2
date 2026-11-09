@@ -1211,7 +1211,7 @@ projects.forEach((p,pi)=>{if(p.hidden)return;const b=document.createElement("but
   sm.appendChild(b)});
 const smItems=[...sm.querySelectorAll(".sm-item")];
 let manualOpen=false,userClosed=false,openedAt=0,wasFull=false;
-const START=40;
+const START=260; // the project list under the menu appears only after scrolling this far
 function renderMenu(){
   document.documentElement.style.setProperty("--hdr-h",hdr.getBoundingClientRect().bottom+"px");
   document.documentElement.style.setProperty("--sm-x",Math.round(smBtn.getBoundingClientRect().left)+"px");
