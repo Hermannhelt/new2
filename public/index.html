@@ -258,6 +258,12 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-weave{max-width:44ch;margin:2vh 0 14vh calc(3.2em + 12px);font-size:15px;line-height:1.6;display:grid;gap:.6em}
 .pv-weave.r{margin-left:auto;margin-right:8%}
 .pv-weave p{margin:0}
+/* tight: no numbers under pictures, less air between pictures and text */
+#project.tight .pv-fig figcaption{display:none}
+#project.tight .pv-flow{gap:clamp(36px,7vh,90px)}
+#project.tight .pv-row.pair .pv-fig:nth-child(2){margin-top:9vh}
+#project.tight .pv-weave{margin-top:0;margin-bottom:0}
+@media (max-width:640px){#project.tight .pv-row{gap:clamp(28px,5vh,48px)}#project.tight .pv-row.pair .pv-fig:nth-child(2){margin-top:0}}
 /* hero: first picture full screen with the title laid over it */
 .pv-hero{position:relative;width:100%;max-width:none!important;margin:0 0 12vh;height:calc(100svh - var(--hdr-h,56px) - 90px);min-height:420px;cursor:zoom-in;opacity:1!important;transform:none!important}
 .pv-hero img{width:100%;height:100%!important;aspect-ratio:auto!important;object-fit:cover;object-position:50% 30%;display:block}
@@ -1073,7 +1079,7 @@ function openProject(pi,start){curPI=pi;
   // the project list under "Back to overview" rolls out when it scrolls into view
   const pl=projEl.querySelector(".pv-list");pl.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>openProject(+b.dataset.go,0));
   new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){pl.classList.add("in");o.disconnect()}}),{rootMargin:"0px 0px -10% 0px"}).observe(pl);
-  projEl.hidden=false;
+  projEl.hidden=false;projEl.classList.toggle("tight",!!p.weave);
   if(pvObs)pvObs.disconnect();
   pvObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");pvObs.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
   projEl.querySelectorAll(".pv-fig,.pv-weave").forEach(f=>pvObs.observe(f));
