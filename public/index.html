@@ -802,6 +802,8 @@ const projects=[
   {title:"Well of Death",layout:"video",client:"India",date:null,n:23,ratios:[1.3333,1.4988,1.4988,1.3333,1.3333,1.4742,1.4988,1.4988,1.4988,1.6438,1.4839,1.5088,1.5986,1.4988,1.4988,1.4263,1.3343,1.5424,1.5164,1.4988,1.4766,1.6965,1.5504],order:[5,12,22,3,4,14,8,16,7,23,15,11,20,9,13,2,1,6,17,18,19,21,10],img:function(i){return`img/wellofdeath/well-of-death-${String(this.order[i]).padStart(2,"0")}.jpg`},
     video:{src:"video/well-of-death.mp4",poster:"video/well-of-death-poster.jpg",r:16/9,start:8}},
   {title:"Commissions",layout:"feature",noZoom:true,noThumbs:true,client:"Commissions",date:null,n:9,ratios:[1.5576,0.7495,0.8015,1.3414,0.7093,0.7402,1.5337,0.706,0.7075],order:[1,8,2,5,9,7,3,4,6],img:function(i){return`img/commissions/commissions-${String(this.order[i]).padStart(2,"0")}.jpg`},ratio:1.5576},
+  // print-only series (not shown as a project)
+  {title:"Explosions",hidden:true,layout:"feature",client:"Prints",date:null,n:1,img:i=>`img/explosions/explosions-${String(i+1).padStart(2,"0")}.jpg`,ratio:0.7489}
 ];
 const ratios=[.8,.75,1,.8,.667,.8,1.25,.75,.8];
 
@@ -857,7 +859,7 @@ function buildFeature(s,p,pi){
   f.querySelector(".feat-thumbs").addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();
     const n=(cur+(e.key==="ArrowRight"?1:-1)+p.n)%p.n;show(n);thumbs[n].focus()}});
 }
-projects.forEach((p,pi)=>{
+projects.forEach((p,pi)=>{if(p.hidden)return;
   const s=document.createElement("article");s.className="project";s.id="p-"+pi;
   s.innerHTML=`<div class="p-head"><span class="numeral">${ROMAN[pi]}</span><h2 class="p-title"><button class="p-open" data-open="${pi}">${p.title}</button></h2>
   </div><div class="strip"></div>`;
@@ -897,9 +899,9 @@ projects.forEach((p,pi)=>{
 });
 
 const ix=document.getElementById("index");
-[...new Set(projects.map(p=>p.date?p.date.slice(0,4):"Projects"))].forEach(y=>{
+[...new Set(projects.filter(p=>!p.hidden).map(p=>p.date?p.date.slice(0,4):"Projects"))].forEach(y=>{
   const d=document.createElement("div");d.className="year";
-  const items=projects.map((p,pi)=>({p,pi})).filter(o=>(o.p.date?o.p.date.slice(0,4):"Projects")===y);
+  const items=projects.map((p,pi)=>({p,pi})).filter(o=>!o.p.hidden&&(o.p.date?o.p.date.slice(0,4):"Projects")===y);
   const thumbs=o=>{const p=o.p,n=p.img?p.n:1,src=i=>p.img?p.img(i):p.video.poster,r=i=>p.ratios?p.ratios[i]:(p.ratio||.75);
     return Array.from({length:n},(_,i)=>`<button data-open="${o.pi}" data-i="${i}" style="--k:${i}" aria-label="${p.title}, image ${i+1}"><img data-src="${src(i)}" alt="" style="aspect-ratio:${r(i)}"></button>`).join("")};
   d.innerHTML=`<h2>${y}</h2><ol>${items.map((o,k)=>`<li><span class="numeral">${ROMAN[k]}</span><button data-p="${o.pi}" aria-expanded="false">${o.p.title}</button><span class="client">${o.p.client}</span><div class="ix-drop"><div class="ix-inner"><div class="ix-thumbs">${thumbs(o)}</div></div></div></li>`).join("")}</ol>`;
@@ -954,19 +956,20 @@ const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:300},{p:"50 × 70 cm",l:"70 
 // img = image size in cm; b = white border on every side; p/l = the full print (paper) size
 const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:350,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:1800,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:2800,ed:5,ap:2}],5:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:350,ed:50},{img:[82,114],b:7,p:"96 × 128 cm",l:"128 × 96 cm",price:3000,ed:7,ap:2},{img:[106,141],b:7,p:"120 × 155 cm",l:"155 × 120 cm",price:4000,ed:3,ap:1}]};
 SERIES_SIZES[1]=SERIES_SIZES[0]; // Bökh: same sizes, prices and editions as Flower Men
+const EXP=projects.findIndex(p=>p.title==="Explosions");SERIES_SIZES[EXP]=SERIES_SIZES[0]; // Explosions: same as Flower Men
 const LD=projects.findIndex(p=>p.title==="Let’s Dance");SERIES_SIZES[LD]=[{img:[86,120],b:7,p:"100 × 134 cm",l:"134 × 100 cm",price:2800,ed:5,ap:2}]; // Let’s Dance: one large size, image fitted to the photo’s format
 const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[5]:SIZES);
 const edOf=sz=>sz.ed||15;
 const edLabel=sz=>`${edOf(sz)}${sz.ap?` + ${sz.ap} AP`:""}`;
 // Print titles by photo (project index - image index)
 const PRINT_NAMES={"1-1":"Fight","1-3":"Bökh No. 4","1-6":"Bökh No. 7","1-7":"Bökh No. 8","1-8":"Bökh No. 9","1-9":"Bökh No. 10","1-18":"Bökh No. 19","1-20":"Bökh No. 21","1-21":"Bökh No. 22","2-0":"Horseman","0-0":"Kulwinder","0-2":"Shankar Shah","0-3":"Odhir Gayen","0-5":"Sanjit Malik","0-6":"Shambhunath Dutt","0-9":"Sanju Joshi","0-11":"Angad Ray","5-0":"Ms. Lan","5-1":"Ms. Duyen","5-4":"Mr. Du","5-5":"Ms. Hanh","5-8":"Ms. Do Thi Hoa"};
-const prints=[[0,0,[50,10,5]],[0,2,[50,10,5]],[0,3,[50,10,5]],[0,5,[50,10,5]],[0,6,[50,10,5]],[0,9,[50,10,5]],[0,11,[50,10,5]],[5,0,[38,6,2]],[5,1,[44,6,2]],[5,4,[31,6,2]],[5,5,[47,6,2]],[5,8,[26,6,2]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,6,[50,10,5]],[1,7,[50,10,5]],[1,8,[50,10,5]],[1,9,[50,10,5]],[1,18,[50,10,5]],[1,20,[50,10,5]],[1,21,[50,10,5]],[LD,0,[5]]]
+const prints=[[0,0,[50,10,5]],[0,2,[50,10,5]],[0,3,[50,10,5]],[0,5,[50,10,5]],[0,6,[50,10,5]],[0,9,[50,10,5]],[0,11,[50,10,5]],[5,0,[38,6,2]],[5,1,[44,6,2]],[5,4,[31,6,2]],[5,5,[47,6,2]],[5,8,[26,6,2]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,6,[50,10,5]],[1,7,[50,10,5]],[1,8,[50,10,5]],[1,9,[50,10,5]],[1,18,[50,10,5]],[1,20,[50,10,5]],[1,21,[50,10,5]],[LD,0,[5]],[EXP,0,[50,10,5]]]
   .map(([pi,i,left],k)=>{const p=projects[pi],r=p.ratios?p.ratios[i]:p.ratio;
     return{id:`${pi}-${i}`,pi,title:PRINT_NAMES[`${pi}-${i}`]||`${p.title} No. ${i+1}`,series:p.title,src:p.img(i),land:r>1,left}});
 // Prints that are presented as physical prints on a wall (id: "project-image")
 // Styled photos of a framed print: shown on that print's page, and as cover for its series
-const STYLED={"0-0":"img/prints/flower-men-kulwinder-styled.jpg"};
-const SERIES_COVER={"Flower Men":"img/prints/flower-men-kulwinder-styled.jpg"};
+const STYLED={"0-0":"img/prints/flower-men-kulwinder-styled.jpg",[`${projects.findIndex(p=>p.title==="Explosions")}-0`]:"img/prints/explosions-01-oak.jpg"};
+const SERIES_COVER={"Flower Men":"img/prints/flower-men-kulwinder-styled.jpg","Explosions":"img/prints/explosions-01-oak.jpg"};
 // Thumbnails used only in the Prints dropdown (falls back to SERIES_COVER, then the paper print)
 const MENU_THUMB={"Bökh":"img/prints/bokh-02-room.jpg"};
 const PAPER={"1-9":{wall:"#aeb4a6"},"1-2":{wall:"#aeb4a6"},"1-3":{wall:"#aeb4a6"},"1-6":{wall:"#aeb4a6"},"1-7":{wall:"#aeb4a6"},"1-8":{wall:"#aeb4a6"},"1-12":{wall:"#aeb4a6"},"1-18":{wall:"#aeb4a6"},"1-19":{wall:"#aeb4a6"},"1-20":{wall:"#aeb4a6"},"1-21":{wall:"#aeb4a6"},["2-0"]:{wall:"#aeb4a6"},"0-0":{wall:"#aeb4a6"},"0-1":{wall:"#aeb4a6"},"0-2":{wall:"#aeb4a6"},"0-3":{wall:"#aeb4a6"},"0-4":{wall:"#aeb4a6"},"0-5":{wall:"#aeb4a6"},"0-6":{wall:"#aeb4a6"},"0-7":{wall:"#aeb4a6"},"0-8":{wall:"#aeb4a6"},"0-9":{wall:"#aeb4a6"},"0-10":{wall:"#aeb4a6"},"0-11":{wall:"#aeb4a6"},"1-1":{wall:"#aeb4a6"},"5-0":{wall:"#aeb4a6"},"5-1":{wall:"#aeb4a6"},"5-4":{wall:"#aeb4a6"},"5-5":{wall:"#aeb4a6"},"5-8":{wall:"#aeb4a6"}};
@@ -996,14 +999,14 @@ function openSeries(k){const se=seriesList[k],pr0=se.items[0];
   setView("s");seriesWrap.hidden=true;shopHead.hidden=true;
   seriesDetail.innerHTML=`<div class="pv-head"><button class="pv-back paren" id="sd-back">All prints</button>
       <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1><span class="meta">${se.items.length} print${se.items.length===1?"":"s"} · from ${kr(sizesOf(se.items[0])[0].price)}</span></div>
-    <p class="sd-intro">Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. <button class="sd-proj" id="sd-proj">See the full project ( → )</button></p>
+    <p class="sd-intro">Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full project ( → )</button>`}</p>
     <div class="grid sd-grid"></div>`;
   const g=seriesDetail.querySelector(".grid");
   se.items.forEach(pr=>{const b=document.createElement("button");b.className="card";
     b.innerHTML=`${STYLED[pr.id]?`<div class="thumb styled-thumb" role="img" aria-label="${pr.title}, framed" style="background-image:url('${STYLED[pr.id]}')"></div>`:thumbFor(pr)}<div class="row"><span class="t">${pr.title.replace(pr.series+" ","")}</span><span class="price muted">from ${kr(sizesOf(pr)[0].price)}</span></div>`;
     b.onclick=()=>openProduct(pr);g.appendChild(b)});
   document.getElementById("sd-back").onclick=()=>{setView("s");scrollTo(0,0)};
-  document.getElementById("sd-proj").onclick=()=>openProject(pr0.pi,0);
+  {const sp=document.getElementById("sd-proj");if(sp)sp.onclick=()=>openProject(pr0.pi,0)}
   seriesDetail.hidden=false;scrollTo(0,0)}
 
 const shopEl=document.getElementById("shop"),vS=document.getElementById("v-shop");
@@ -1028,7 +1031,7 @@ function openProject(pi,start){curPI=pi;
     ${p.text?`<div class="pv-text">${p.sub?`<p class="coda sub">${p.sub}</p>`:""}${p.text.map(x=>`<p>${x}</p>`).join("")}${p.coda?`<p class="coda">${p.coda}</p>`:""}${p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`:""}
     ${p.video?`<div class="pv-video"><video src="${p.video.src}" poster="${p.video.poster}" controls playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video></div>`:""}
     <div class="pv-flow">${rows}</div>
-    <div class="pv-next"><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button><ol class="pv-list">${projects.map((q,k)=>`<li style="--i:${k}"><button data-go="${k}"${k===pi?' class="current" aria-current="true"':""}><i>${ROMAN[k]}</i>${q.title}</button></li>`).join("")}</ol></div>`;
+    <div class="pv-next"><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button><ol class="pv-list">${projects.filter(q=>!q.hidden).map((q,k)=>`<li style="--i:${k}"><button data-go="${k}"${k===pi?' class="current" aria-current="true"':""}><i>${ROMAN[k]}</i>${q.title}</button></li>`).join("")}</ol></div>`;
   if(!p.img)projEl.querySelectorAll(".pv-fig").forEach(f=>{const d=f.querySelector(".pv-ph");paint(d,p,+f.dataset.i,pi)});
   projEl.querySelectorAll(".pv-fig").forEach(f=>f.onclick=()=>openLB(pi,+f.dataset.i));
   const back=()=>{setView("o");requestAnimationFrame(()=>document.getElementById("p-"+pi).scrollIntoView())};
@@ -1151,7 +1154,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!prod.hidden)pro
 // ---- Project submenu with thumbnails ----
 // Opens by hover/click at the top of the page; unfolds by itself, in step with scrolling, further down.
 const sm=document.getElementById("submenu"),smBtn=document.getElementById("open-menu"),hdr=document.querySelector("header");
-projects.forEach((p,pi)=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",pi);b.title=p.title;
+projects.forEach((p,pi)=>{if(p.hidden)return;const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",pi);b.title=p.title;
   b.innerHTML=`<span class="sm-thumb">${p.video?`<img src="${p.video.poster}" alt="" loading="lazy">`:p.img?`<img src="${p.img(0)}" alt="" loading="lazy">`:""}<i class="sm-num">${ROMAN[pi]}</i></span>
     <small>${ROMAN[pi]} · ${p.video?(p.n?`Film · ${p.n} images`:"Film"):`${p.n} images`}</small><b>${p.title}</b><span class="sm-label"><i>${ROMAN[pi]}</i>${p.title}</span>`;
   if(!p.img&&!p.video)paint(b.querySelector(".sm-thumb"),p,0,pi);

@@ -562,6 +562,32 @@
      "edition": "5 + 2 AP"
     }
    ]
+  },
+  {
+   "id": "8-0",
+   "title": "Explosions No. 1",
+   "series": "Explosions",
+   "image": "img/explosions/explosions-01.jpg",
+   "sizes": [
+    {
+     "k": 0,
+     "label": "42 × 59.4 cm, A2 (image 34 × 51.4 cm, 4 cm white border)",
+     "price": 350,
+     "edition": "50"
+    },
+    {
+     "k": 1,
+     "label": "84 × 114 cm (image 70 × 100 cm, 7 cm white border)",
+     "price": 1800,
+     "edition": "10 + 2 AP"
+    },
+    {
+     "k": 2,
+     "label": "104 × 134 cm (image 90 × 120 cm, 7 cm white border)",
+     "price": 2800,
+     "edition": "5 + 2 AP"
+    }
+   ]
   }
  ]
 }
