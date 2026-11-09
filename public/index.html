@@ -646,7 +646,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
       <li>Colours on screen can differ slightly from the printed work, because screens display colour differently.</li>
     </ul>
     <h3>3. Prices and payment</h3>
-    <p>All prices are in Danish kroner (DKK) and include 25% Danish VAT.</p>
+    <p>All prices are in euro (EUR) and include 25% Danish VAT.</p>
     <ul>
       <li>Shipping costs are shown at checkout before you pay.</li>
       <li>For deliveries outside the EU, import duties and local taxes may apply. These are paid by the buyer.</li>
@@ -941,13 +941,13 @@ document.addEventListener("keydown",e=>{
   else if(e.key==="Escape")info(false)});
 
 // ---- Shop (example prices and editions; replace with real figures) ----
-const kr=n=>new Intl.NumberFormat("da-DK",{style:"currency",currency:"DKK",maximumFractionDigits:0}).format(n);
-const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:2250},{p:"50 × 70 cm",l:"70 × 50 cm",price:4500},{p:"70 × 100 cm",l:"100 × 70 cm",price:8000}];
+const kr=n=>new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(n); // prices in euro
+const SIZES=[{p:"30 × 40 cm",l:"40 × 30 cm",price:300},{p:"50 × 70 cm",l:"70 × 50 cm",price:600},{p:"70 × 100 cm",l:"100 × 70 cm",price:1100}];
 // Sizes per series (project index); prices are placeholders until real ones are set
 // img = image size in cm; b = white border on every side; p/l = the full print (paper) size
-const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:13500,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:21000,ed:5,ap:2}],5:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:2600,ed:50},{img:[82,114],b:7,p:"96 × 128 cm",l:"128 × 96 cm",price:22500,ed:7,ap:2},{img:[106,141],b:7,p:"120 × 155 cm",l:"155 × 120 cm",price:30000,ed:3,ap:1}]};
+const SERIES_SIZES={0:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:350,ed:50},{img:[70,100],b:7,p:"84 × 114 cm",l:"114 × 84 cm",price:1800,ed:10,ap:2},{img:[90,120],b:7,p:"104 × 134 cm",l:"134 × 104 cm",price:2800,ed:5,ap:2}],5:[{img:[34,51.4],b:4,p:"42 × 59.4 cm (A2)",l:"59.4 × 42 cm (A2)",price:350,ed:50},{img:[82,114],b:7,p:"96 × 128 cm",l:"128 × 96 cm",price:3000,ed:7,ap:2},{img:[106,141],b:7,p:"120 × 155 cm",l:"155 × 120 cm",price:4000,ed:3,ap:1}]};
 SERIES_SIZES[1]=SERIES_SIZES[0]; // Bökh: same sizes, prices and editions as Flower Men
-const LD=projects.findIndex(p=>p.title==="Let’s Dance");SERIES_SIZES[LD]=[{img:[86,120],b:7,p:"100 × 134 cm",l:"134 × 100 cm",price:21000,ed:5,ap:2}]; // Let’s Dance: one large size, image fitted to the photo’s format
+const LD=projects.findIndex(p=>p.title==="Let’s Dance");SERIES_SIZES[LD]=[{img:[86,120],b:7,p:"100 × 134 cm",l:"134 × 100 cm",price:2800,ed:5,ap:2}]; // Let’s Dance: one large size, image fitted to the photo’s format
 const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[5]:SIZES);
 const edOf=sz=>sz.ed||15;
 const edLabel=sz=>`${edOf(sz)}${sz.ap?` + ${sz.ap} AP`:""}`;
@@ -1120,11 +1120,11 @@ function renderCart(){
     return`<li><img src="${pr.src}" alt=""><div><div class="ct">${pr.title}</div><small>${pr.land?sz.l:sz.p}</small>
       <div class="qty"><button data-d="-1" data-i="${idx}" aria-label="Fewer">−</button><span>${c.q}</span><button data-d="1" data-i="${idx}" aria-label="More">+</button></div></div>
       <span class="price">${kr(sz.price*c.q)}</span></li>`}).join("");
-  const ship=sub>=5000?0:250;
+  const ship=sub>=700?0:35;
   body.innerHTML=`<ul class="cart-items">${rows}</ul><div class="totals"><div><span>Subtotal</span><span class="price">${kr(sub)}</span></div>
     <div><span>Shipping</span><span class="price">${ship?kr(ship):"Free"}</span></div><div class="sum"><span>Total incl. VAT</span><span class="price">${kr(sub+ship)}</span></div></div>
     <button class="btn" id="checkout">Checkout</button><p class="note" id="checkout-note" hidden></p>
-    <p class="note">Free shipping on orders over ${kr(5000)}.</p>`;
+    <p class="note">Free shipping on orders over ${kr(700)}.</p>`;
   body.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{const c=cart[+b.dataset.i];c.q+=+b.dataset.d;if(c.q<1)cart.splice(+b.dataset.i,1);saveCart()});
   document.getElementById("checkout").onclick=async()=>{
     const btn=document.getElementById("checkout"),note=document.getElementById("checkout-note");
