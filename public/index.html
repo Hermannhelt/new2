@@ -93,7 +93,6 @@ header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
 main{padding-block:6vh 10vh}
 .intro{max-width:52ch;font-family:var(--serif);font-size:clamp(19px,2.1vw,25px);line-height:1.2;text-wrap:balance;margin:calc(7vh - 58px) 0 4vh}
 .intro em{color:var(--accent)}
-.intro.mid{margin:4px 0 6vh}
 @media (max-width:640px){.intro{font-size:18px;max-width:none;text-wrap:wrap;letter-spacing:-.015em}}
 main,footer{transition:opacity .5s ease}
 body.pm-open main,body.pm-open footer{opacity:.25}
@@ -1102,7 +1101,6 @@ document.getElementById("overview").addEventListener("click",e=>{const b=e.targe
 const _setView=setView;
 setView=function(v){projEl.querySelectorAll("video").forEach(x=>x.pause());projEl.hidden=true;_setView(v);if(typeof seriesDetail!=="undefined"){seriesDetail.hidden=true;seriesWrap.hidden=false;shopHead.hidden=false}shopEl.hidden=v!=="s";vS.setAttribute("aria-pressed",v==="s");
   document.querySelector(".intro").hidden=v==="s"||v==="c";
-  placeIntro(v);
   document.getElementById("commissions").hidden=v!=="c";document.getElementById("v-comm").setAttribute("aria-pressed",v==="c");
   if(v==="c"){ov.hidden=true;document.getElementById("index").hidden=true;vO.setAttribute("aria-pressed",false);vI.setAttribute("aria-pressed",false)}};
 vO.onclick=()=>setView("o");vI.onclick=()=>setView("i");
@@ -1264,7 +1262,7 @@ addEventListener("scroll",()=>{
 // the intro text fades out as you scroll, so the project names that roll out under the menu are easy to read
 {const intro=document.querySelector(".intro"),heads=[...document.querySelectorAll("#overview .p-head")];
   // project names fade the same way as they scroll up towards the menu
-  const fadeIntro=()=>{intro.style.opacity=intro.classList.contains("mid")?Math.min(1,Math.max(0,(intro.getBoundingClientRect().top-hdr.getBoundingClientRect().bottom)/150)).toFixed(3):Math.max(0,1-scrollY/150).toFixed(3);
+  const fadeIntro=()=>{intro.style.opacity=Math.max(0,1-scrollY/150).toFixed(3);
     const top=hdr.getBoundingClientRect().bottom;
     heads.forEach(h=>{const y=h.getBoundingClientRect().top-top;h.style.opacity=Math.min(1,Math.max(0,y/150)).toFixed(3)})};
   addEventListener("scroll",()=>requestAnimationFrame(fadeIntro),{passive:true});addEventListener("resize",fadeIntro);fadeIntro()}
@@ -1350,10 +1348,6 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
     document.getElementById("nl-form-wrap").hidden=true;document.getElementById("nl-done").hidden=false;setTimeout(close,3500)});
 })();
 
-// On the overview the intro text sits under the first project's picture; elsewhere it stays on top
-function placeIntro(v){const el=document.querySelector(".intro"),first=ov.querySelector(".project");
-  if(v==="o"&&first){first.after(el);el.classList.add("mid")}else{ov.before(el);el.classList.remove("mid")}}
-placeIntro((()=>{try{return localStorage.getItem("view")||"o"}catch(e){return "o"}})());
 // ---- Intro: split into words so they can animate in one by one ----
 (()=>{const el=document.querySelector(".intro");if(!el)return;let i=0;
   const wrap=node=>{[...node.childNodes].forEach(n=>{
