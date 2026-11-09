@@ -260,15 +260,10 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pv-weave p{margin:0}
 /* tight: no numbers under pictures, less air between pictures and text */
 #project.tight .pv-fig figcaption{display:none}
-#project.tight .pv-flow{gap:12px}
-#project.tight .pv-row{gap:12px}
-#project.tight .pv-row.pair .pv-fig:nth-child(2){margin-top:0}
-/* text like the reference: larger, airy, a calm pause above and below */
-#project.tight .pv-weave,#project.tight .pv-weave.r{max-width:58ch;margin:clamp(40px,7vh,72px) 0 clamp(40px,7vh,72px) calc(3.2em + 12px);font-size:clamp(17px,1.25vw,19px);line-height:1.7;gap:1.1em}
-#project.tight .pv-weave .coda.sub{font-size:1.15em;margin-bottom:.1em!important}
-@media (max-width:640px){#project.tight .pv-flow,#project.tight .pv-row{gap:8px}
-  #project.tight .pv-row .pv-fig{width:100%!important;max-width:none}
-  #project.tight .pv-weave,#project.tight .pv-weave.r{margin:44px 2px 44px;font-size:17px}}
+#project.tight .pv-flow{gap:clamp(36px,7vh,90px)}
+#project.tight .pv-row.pair .pv-fig:nth-child(2){margin-top:9vh}
+#project.tight .pv-weave{margin-top:0;margin-bottom:0}
+@media (max-width:640px){#project.tight .pv-row{gap:clamp(28px,5vh,48px)}#project.tight .pv-row.pair .pv-fig:nth-child(2){margin-top:0}}
 /* hero: first picture full screen with the title laid over it */
 .pv-hero{position:relative;width:100%;max-width:none!important;margin:0 0 12vh;height:calc(100svh - var(--hdr-h,56px) - 90px);min-height:420px;cursor:zoom-in;opacity:1!important;transform:none!important}
 .pv-hero img{width:100%;height:100%!important;aspect-ratio:auto!important;object-fit:cover;object-position:50% 30%;display:block}
