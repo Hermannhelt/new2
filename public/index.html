@@ -444,12 +444,14 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .spec{font-size:var(--fs-s);color:var(--muted);margin:0 0 24px}
 .product-info{max-width:620px;width:100%;margin-inline:auto;text-align:center}
 .product-info{--info:15px}
-.product-info h2{font-size:var(--info);line-height:1.4;margin:0}
-.product-info .spec{font-family:var(--serif);font-size:var(--info);line-height:1.4;color:var(--fg);margin:0}
-.spec-lines{display:flex;flex-wrap:wrap;justify-content:center;gap:0 14px;margin:0 0 26px;font-family:var(--serif);font-size:var(--info);line-height:1.4}
-.spec-lines span{white-space:nowrap}
-.spec-lines b{font:inherit;font-variant:all-small-caps;letter-spacing:.07em;color:var(--muted);margin-right:5px}
-.spec-lines .price-line{flex-basis:100%}
+.product-info h2{font-family:var(--serif);font-size:clamp(26px,2.6vw,34px);line-height:1.1;margin:0 0 6px}
+.product-info .spec{font-family:var(--sans);font-size:13px;line-height:1.5;color:var(--muted);margin:0 0 26px}
+/* details as a calm two-column list: label left, value right */
+.spec-lines{max-width:420px;margin:0 auto 30px;text-align:left;border-top:1px solid var(--line);font-size:14px;line-height:1.4}
+.spec-lines span{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.spec-lines b{font-weight:400;font-size:12px;color:var(--muted);letter-spacing:.02em}
+.spec-lines .price-line{font-family:var(--serif);font-size:20px;align-items:baseline}
+.spec-lines .price-line b{font-family:var(--sans)}
 .product-info .sizes{max-width:420px;margin-inline:auto;text-align:left}
 .product-info .sizes legend{text-align:center;width:100%}
 .product-info .btn{max-width:420px;margin-inline:auto}
@@ -1077,7 +1079,7 @@ function openProduct(pr){curP=pr;
     sl.addEventListener("scroll",()=>{const n=Math.round(sl.scrollLeft/sl.clientWidth);navB.forEach(b=>b.setAttribute("aria-current",+b.dataset.s===n))},{passive:true});
     dragScroll(sl);}
   document.getElementById("product-title").textContent=pr.title;
-  document.getElementById("product-spec").textContent=`From the series ${pr.series} · Archival pigment print · Signed and numbered`;
+  document.getElementById("product-spec").textContent=`${pr.series} · Archival pigment print, signed and numbered`;
   const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";
   let first=-1;
   sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out)first=k;
@@ -1096,7 +1098,7 @@ function openProduct(pr){curP=pr;
     else{if(pp)pp.style.padding="";if(mat)mat.style.padding=""}
     document.getElementById("product-lines").innerHTML=
       `<span><b>Print format</b>${pr.land?sz.l:sz.p}</span><span><b>Image format</b>${fmt(iw)} × ${fmt(ih)} cm</span>`+
-      `<span><b>Edition</b>${edLabel(sz)} · ${pr.left[k]} left</span><span><b>Paper</b>Hahnemühle Photo Rag® 308 g/m²</span>`+
+      `<span><b>Edition</b>${edLabel(sz)} · ${pr.left[k]} available</span><span><b>Paper</b>Hahnemühle Photo Rag® 308 g/m²</span>`+
       `<span class="price-line"><b>Price</b>${kr(sz.price)}</span>`};
   fs.onchange=lines;lines();
   document.getElementById("added").hidden=true;prod.hidden=false;document.getElementById("product-close").focus()}
