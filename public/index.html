@@ -1005,7 +1005,7 @@ const prints=[[0,0,[50,10,5]],[0,2,[50,10,5]],[0,3,[50,10,5]],[0,5,[50,10,5]],[0
     return{id:`${pi}-${i}`,pi,title:PRINT_NAMES[`${pi}-${i}`]||`${p.title} No. ${i+1}`,series:p.title,src:p.img(i),land:r>1,left}});
 // Prints that are presented as physical prints on a wall (id: "project-image")
 // Styled photos of a framed print: shown on that print's page, and as cover for its series
-const STYLED={"0-0":"img/prints/flower-men-kulwinder-styled.jpg",[`${projects.findIndex(p=>p.title==="Explosions")}-0`]:"img/prints/explosions-01-oak.jpg?v=4"};
+const STYLED={"0-0":"img/prints/flower-men-kulwinder-styled.jpg","0-5":"img/prints/flower-men-sanjit-oak.jpg",[`${projects.findIndex(p=>p.title==="Explosions")}-0`]:"img/prints/explosions-01-oak.jpg?v=4"};
 const SERIES_COVER={"Flower Men":"img/prints/flower-men-kulwinder-styled.jpg","Explosions":"img/prints/explosions-01-oak.jpg?v=4"};
 // Thumbnails used only in the Prints dropdown (falls back to SERIES_COVER, then the paper print)
 const MENU_THUMB={"Bökh":"img/prints/bokh-02-room.jpg"};
@@ -1111,7 +1111,7 @@ function openProduct(pr){curP=pr;
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
     pi.innerHTML=`<div class="slides" id="slides">
-        <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled${pr.series==="Explosions"?" zoom":""}" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
+        <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled${/-oak\.jpg/.test(STYLED[pr.id])?" zoom":""}" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
         <div class="slide room" style="--fr:${rr}" aria-label="${pr.title}, framed in a living room">
           <div class="room-stage"><img class="room-bg" src="img/room/living-room.jpg" alt="" loading="lazy">
             <div class="rframe"><div class="mat"><img src="${pr.src}" alt=""></div></div></div>
