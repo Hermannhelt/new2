@@ -630,7 +630,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
     <section class="terms" aria-labelledby="terms-title">
       <div><h2 id="terms-title">Terms</h2><button class="paren terms-open" data-terms>Terms of sale</button></div>
       <div class="terms-grid">
-        <div><h3>Shipping</h3><p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order. Free shipping on orders over €700.</p></div>
+        <div><h3>Shipping</h3><p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order. Free shipping on orders over €650.</p></div>
         <div><h3>Delivery</h3>
           <dl>
             <div><dt>Denmark</dt><dd>via PostNord. Arriving 2–3 days after dispatch.</dd></div>
@@ -692,7 +692,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
     <h3>3. Prices and payment</h3>
     <p>All prices are in euro (EUR) and include 25% Danish VAT.</p>
     <ul>
-      <li>Shipping is €35 per order and free on orders over €700. The total is shown at checkout before you pay.</li>
+      <li>Shipping is €35 per order and free on orders over €650. The total is shown at checkout before you pay.</li>
       <li>For deliveries outside the EU, import duties and local taxes may apply. These are paid by the buyer.</li>
       <li>Payment is made by card through Stripe. We never see or store your card details.</li>
       <li>Your card is charged when you complete your order.</li>
@@ -758,7 +758,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
       <div class="info-blocks">
         <details open>
           <summary>Shipping</summary>
-          <p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order. Free shipping on orders over €700.</p>
+          <p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order. Free shipping on orders over €650.</p>
         </details>
         <details>
           <summary>Delivery</summary>
@@ -1180,11 +1180,11 @@ function renderCart(){
     return`<li><img src="${pr.src}" alt=""><div><div class="ct">${pr.title}</div><small>${pr.land?sz.l:sz.p}</small>
       <div class="qty"><button data-d="-1" data-i="${idx}" aria-label="Fewer">−</button><span>${c.q}</span><button data-d="1" data-i="${idx}" aria-label="More">+</button></div></div>
       <span class="price">${kr(sz.price*c.q)}</span></li>`}).join("");
-  const ship=sub>=700?0:35;
+  const ship=sub>=650?0:35;
   body.innerHTML=`<ul class="cart-items">${rows}</ul><div class="totals"><div><span>Subtotal</span><span class="price">${kr(sub)}</span></div>
     <div><span>Shipping</span><span class="price">${ship?kr(ship):"Free"}</span></div><div class="sum"><span>Total incl. VAT</span><span class="price">${kr(sub+ship)}</span></div></div>
     <button class="btn" id="checkout">Checkout</button><p class="note" id="checkout-note" hidden></p>
-    <p class="note">Free shipping on orders over ${kr(700)}.</p>`;
+    <p class="note">Free shipping on orders over ${kr(650)}.</p>`;
   body.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{const c=cart[+b.dataset.i];c.q+=+b.dataset.d;if(c.q<1)cart.splice(+b.dataset.i,1);saveCart()});
   document.getElementById("checkout").onclick=async()=>{
     const btn=document.getElementById("checkout"),note=document.getElementById("checkout-note");
