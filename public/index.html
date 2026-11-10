@@ -403,6 +403,12 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 @media (hover:hover){#series .cover:hover .thumb.styled-cover{opacity:.9}}
 .slide.clean img{width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:contain;box-shadow:none!important;display:block}
 @media (hover:none){.slide-hint{display:none}}
+.zoom-hint{font-size:11px;display:none}@media (hover:none){.zoom-hint{display:inline}}
+.slides{touch-action:pan-x pan-y}
+#zoomer{position:fixed;inset:0;z-index:60;background:#f4f3f0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-x pan-y;cursor:zoom-out}
+#zoomer[hidden]{display:none}
+#zoomer img{display:block;max-width:none;width:var(--zw);height:auto}
+#zoomer .zclose{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;z-index:1;font-size:13px;background:rgba(244,243,240,.85);padding:6px 10px;border-radius:2px}
 
 /* Room view: the print framed on the wall of a real room photo.
    Photo ratio 1.1256; bench centre at 58.6% / wall centre 37.8%; ~0.413% of photo width per cm (bench ≈ 150 cm). */
@@ -1119,12 +1125,12 @@ function openProduct(pr){curP=pr;
             <div class="rframe"><div class="mat"><img src="${pr.src}" alt=""></div></div></div>
         </div>
         <div class="slide clean" aria-label="${pr.title}, the image on its own"><img src="${pr.src}" alt="${pr.title}" loading="lazy"></div></div>
-      <div class="slide-nav" role="tablist">${["Print",...(STYLED[pr.id]?["Styled"]:[]),"In a room","Image"].map((t,n)=>`<button class="paren" data-s="${n}" aria-current="${n===0}">${t}</button>`).join("")}<span class="muted slide-hint">Swipe to see it framed</span></div>`;
+      <div class="slide-nav" role="tablist">${["Print",...(STYLED[pr.id]?["Styled"]:[]),"In a room","Image"].map((t,n)=>`<button class="paren" data-s="${n}" aria-current="${n===0}">${t}</button>`).join("")}<span class="muted slide-hint">Swipe to see it framed · double-click to zoom</span><span class="muted zoom-hint">Double-tap to zoom</span></div>`;
     const sl=pi.querySelector("#slides"),navB=pi.querySelectorAll(".slide-nav [data-s]");
     const go=n=>sl.scrollTo({left:n*sl.clientWidth,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
     navB.forEach(b=>b.onclick=()=>go(+b.dataset.s));
     sl.addEventListener("scroll",()=>{const n=Math.round(sl.scrollLeft/sl.clientWidth);navB.forEach(b=>b.setAttribute("aria-current",+b.dataset.s===n))},{passive:true});
-    dragScroll(sl);}
+    dragScroll(sl);zoomable(sl,pr);}
   document.getElementById("product-title").textContent=pr.title;
   document.getElementById("product-spec").textContent=`${pr.series} · Archival pigment print, signed and numbered`;
   const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";
@@ -1268,6 +1274,26 @@ addEventListener("scroll",()=>{
   addEventListener("scroll",()=>requestAnimationFrame(fadeIntro),{passive:true});addEventListener("resize",fadeIntro);fadeIntro()}
 
 // ---- Hold and drag to scroll rows with a mouse (touch scrolls natively) ----
+// double-tap (or double-click) an image on a print page to see it at 100%
+const HIRES={}; // optional larger files per print id
+function openZoom(src,rx,ry){let z=document.getElementById("zoomer");
+  if(!z){z=document.createElement("div");z.id="zoomer";z.hidden=true;z.innerHTML='<button class="paren zclose">Close</button><img alt="">';document.body.appendChild(z);
+    const close=()=>{z.hidden=true;document.documentElement.style.overflow=""};
+    z.querySelector(".zclose").onclick=close;z.addEventListener("dblclick",close);
+    let lt=0;z.addEventListener("touchend",e=>{if(e.touches.length)return;const t=Date.now();if(t-lt<300){e.preventDefault();close();lt=0}else lt=t},{passive:false});
+    addEventListener("keydown",e=>{if(e.key==="Escape"&&!z.hidden)close()});}
+  const im=z.querySelector("img");
+  const show=()=>{const w=Math.max(im.naturalWidth,innerWidth*1.5);
+    z.style.setProperty("--zw",w+"px");z.hidden=false;document.documentElement.style.overflow="hidden";
+    const h=w*im.naturalHeight/im.naturalWidth;z.scrollLeft=Math.max(0,rx*w-innerWidth/2);z.scrollTop=Math.max(0,ry*h-innerHeight/2)};
+  if(im.getAttribute("src")===src&&im.complete)show();else{im.onload=show;im.src=src}}
+function zoomable(sl,pr){
+  const fire=(x,y,tg)=>{const img=tg.closest(".slide")?.querySelector(".photo img")||tg.closest("img")||tg.closest(".slide")?.querySelector("img");
+    let rx=.5,ry=.5;if(img){const r=img.getBoundingClientRect();rx=Math.min(1,Math.max(0,(x-r.left)/r.width));ry=Math.min(1,Math.max(0,(y-r.top)/r.height))}
+    const isStyled=tg.closest(".styled");openZoom(isStyled?isStyled.querySelector("img").src:(HIRES[pr.id]||pr.src),rx,ry)};
+  sl.addEventListener("dblclick",e=>{e.preventDefault();fire(e.clientX,e.clientY,e.target)});
+  let lt=0,lx=0,ly=0;sl.addEventListener("touchend",e=>{if(e.touches.length||e.changedTouches.length!==1)return;const c=e.changedTouches[0],t=Date.now();
+    if(t-lt<300&&Math.hypot(c.clientX-lx,c.clientY-ly)<30){e.preventDefault();lt=0;fire(c.clientX,c.clientY,e.target)}else{lt=t;lx=c.clientX;ly=c.clientY}},{passive:false});}
 function dragScroll(el){
   el.classList.add("drag-scroll");el.querySelectorAll("img").forEach(i=>i.draggable=false);
   let down=false,startX=0,startL=0,moved=false,lastX=0,lastT=0,v=0,raf=0;
