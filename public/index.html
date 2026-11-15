@@ -647,7 +647,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pd-row-img img{display:block;width:100%;height:auto}
 .pd-row-txt{font-family:"Figtree",var(--sans);font-weight:300;font-size:13.5px;line-height:1.4;color:var(--fg)}
 .pd-row-txt p{margin:0}
-.pd-row-a{font-weight:500}
+.pd-row-s{color:var(--muted)}.pd-row-a{font-weight:500}
 .pd-row-p{margin-top:9px!important}
 .pd-row-btn{margin-top:22px;padding:0 0 4px;border:0;border-bottom:1px solid var(--fg);background:none;cursor:pointer;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg)}
 .pd-more-item{padding:0;border:0;background:none;cursor:pointer;text-align:left;font-size:12.5px;color:var(--muted)}
@@ -1251,7 +1251,7 @@ function openProduct(pr){curP=pr;
      others.forEach(o=>{const z=sizesOf(o),cm=z.map(x=>(o.land?x.l:x.p).replace(/ cm.*/,"")).join(" / ")+" cm";
        const el=document.createElement("div");el.className="pd-row";
        el.innerHTML=`<button class="pd-row-img" aria-label="${o.title}"><img src="${o.src}" alt="" loading="lazy"></button>
-         <div class="pd-row-txt"><p class="pd-row-a">Ken Hermann</p><p>${o.series}</p><p><i></i>${PRINT_YEAR[o.id]?`, ${PRINT_YEAR[o.id]}`:""}</p>
+         <div class="pd-row-txt"><p class="pd-row-a">Ken Hermann</p><p class="pd-row-s">${o.series}</p><p><i></i>${PRINT_YEAR[o.id]?`, ${PRINT_YEAR[o.id]}`:""}</p>
          <p>Signed, inscribed with title, numbered and dated on artist's label fixed to reverse</p><p>Archival pigment print</p>
          <p>${z.length>1?`${z.length} different sizes`:"1 size"}</p><p class="pd-row-p">From ${kr(z[0].price)}</p>
          <button class="pd-row-btn">View</button></div>`;
