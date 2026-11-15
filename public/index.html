@@ -1253,7 +1253,7 @@ function openProduct(pr){curP=pr;
        el.innerHTML=`<button class="pd-row-img" aria-label="${o.title}"><img src="${o.src}" alt="" loading="lazy"></button>
          <div class="pd-row-txt"><p class="pd-row-a">Ken Hermann</p><p><i></i>${PRINT_YEAR[o.id]?`, ${PRINT_YEAR[o.id]}`:""}</p>
          <p>Signed, inscribed with title, numbered and dated on artist's label fixed to reverse</p><p>Archival pigment print</p>
-         <p>Editions of ${z.map(edLabel).join(" / ")}</p><p class="pd-row-p">From ${kr(z[0].price)}</p>
+         <p>${z.length} size${z.length>1?"s":""}</p><p class="pd-row-p">From ${kr(z[0].price)}</p>
          <button class="pd-row-btn">View</button></div>`;
        el.querySelector("i").textContent=o.title;
        const go=()=>{openProduct(o);prod.scrollTo(0,0)};el.querySelector(".pd-row-img").onclick=go;el.querySelector(".pd-row-btn").onclick=go;g.appendChild(el)})}}
