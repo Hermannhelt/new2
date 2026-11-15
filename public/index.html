@@ -618,11 +618,9 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   /* buttons float over the image, see-through */
   .product-top{position:absolute;z-index:3;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;margin:0;align-items:center;pointer-events:none}
   .product-top>*{pointer-events:auto}
-  .product-top .muted{color:#1d1c1a;background:rgba(255,255,255,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:6px 11px;border-radius:20px;font-size:12px}
-  #product-close{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:0;line-height:0;padding:0;color:#1d1c1a;display:grid;place-items:center;outline-offset:2px}
-  #product-close:focus{outline:none}#product-close{position:relative}
-  #product-close::before,#product-close::after{content:"";position:absolute;left:12px;top:21.4px;width:20px;height:1.3px;margin:0;background:currentColor;transform:rotate(45deg)}
-  #product-close::after{transform:rotate(-45deg)}
+  .product-top .muted,#product-close{color:#1d1c1a;font-size:13px;background:rgba(255,255,255,.4);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:6px 11px;border-radius:20px}
+  .product-top .muted::before{content:"( "}.product-top .muted::after{content:" )"}
+  #product-close:focus{outline:none}
 }
 </style>
 </head>
