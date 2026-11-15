@@ -638,6 +638,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pd-buy[open]>summary{margin-bottom:22px}
 .product-info .pd-buy .sizes{margin-top:0}
 .pd-buy .sizes legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.pd-buy .when-open,.pd-buy[open] .when-closed{display:none}.pd-buy[open] .when-open{display:inline}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px}
@@ -827,7 +828,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
       <div class="spec-lines" id="product-lines"></div>
       <hr class="pd-rule">
       <div class="pd-thumbs" id="product-thumbs" aria-label="More views"></div>
-      <details class="pd-buy" id="pd-buy"><summary>Buy</summary>
+      <details class="pd-buy" id="pd-buy"><summary><span class="when-closed">Buy</span><span class="when-open">Close</span></summary>
       <fieldset class="sizes" id="product-sizes"><legend>Size</legend></fieldset>
       <button class="btn" id="add-btn">Add to cart</button>
       <p class="added" id="added" hidden>Added to cart</p>
