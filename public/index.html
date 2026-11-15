@@ -591,6 +591,27 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   .year li .client{grid-column:2}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* Print page, gallery style: large image, text under it, views and buying further down */
+.product .slide.hero{padding:0;background:var(--bg)}
+.product .slide-nav{display:none}
+.product-info{text-align:left;max-width:560px}
+.pd-artist{font-family:var(--sans);font-size:17px;letter-spacing:.09em;text-transform:uppercase;margin:0 0 3px;color:var(--fg)}
+.pd-series{font-size:14px;color:var(--muted);margin:0 0 4px}
+.product-info h2{font-family:var(--sans);font-style:italic;font-weight:400;font-size:18px;line-height:1.3;margin:0 0 22px;text-align:left}
+.spec-lines{max-width:none;margin:0;font-size:14px;line-height:1.65;color:var(--muted);text-align:left}
+.spec-lines p{margin:0}
+.spec-lines .pd-price{margin-top:16px}
+.pd-rule{width:30%;margin:28px 0 22px;border:0;border-top:1px solid var(--line)}
+.product-info .sizes,.product-info .btn,.info-blocks{max-width:none}
+.product-info .sizes{margin-top:34px}
+.product-info .sizes legend{text-align:left}
+.product-info .note{text-align:left}
+.pd-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pd-thumb{padding:0;border:0;background:none;cursor:pointer;display:block}
+.pd-thumb .slide.mini{height:auto;aspect-ratio:3/4;flex:none;width:100%;padding:8%;pointer-events:none}
+.pd-thumb .slide.mini.styled{padding:0}
+.pd-thumb .slide.mini .paper{--pw:min(84%,calc(94cqh * var(--r)))}
+@media (max-width:640px){.product-img{margin:0 -16px}.product .slides{aspect-ratio:var(--ar);max-height:82vh}.product .slides>.slide{height:auto}}
 </style>
 </head>
 <body>
@@ -754,9 +775,12 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   <div class="product-body">
     <div class="product-img" id="product-img"></div>
     <div class="product-info">
+      <p class="pd-artist">Ken Hermann</p>
+      <p class="pd-series" id="product-spec"></p>
       <h2 id="product-title"></h2>
-      <p class="spec" id="product-spec"></p>
       <div class="spec-lines" id="product-lines"></div>
+      <hr class="pd-rule">
+      <div class="pd-thumbs" id="product-thumbs" aria-label="More views"></div>
       <fieldset class="sizes" id="product-sizes"><legend>Size</legend></fieldset>
       <button class="btn" id="add-btn">Add to cart</button>
       <p class="added" id="added" hidden>Added to cart</p>
@@ -1118,21 +1142,21 @@ function openProduct(pr){curP=pr;
   {const pi=document.getElementById("product-img"),pp=PAPER[pr.id];
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
-    pi.innerHTML=`<div class="slides" id="slides">
+    pi.innerHTML=`<div class="slides" id="slides" style="--ar:${rr}">
+        <div class="slide clean hero" aria-label="${pr.title}"><img src="${pr.src}" alt="${pr.title}"></div>
         <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled${/-oak\.jpg/.test(STYLED[pr.id])?" zoom":""}" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
         <div class="slide room" style="--fr:${rr}" aria-label="${pr.title}, framed in a living room">
           <div class="room-stage"><img class="room-bg" src="img/room/living-room.jpg" alt="" loading="lazy">
             <div class="rframe"><div class="mat"><img src="${pr.src}" alt=""></div></div></div>
-        </div>
-        <div class="slide clean" aria-label="${pr.title}, the image on its own"><img src="${pr.src}" alt="${pr.title}" loading="lazy"></div></div>
-      <div class="slide-nav" role="tablist">${["Print",...(STYLED[pr.id]?["Styled"]:[]),"In a room","Image"].map((t,n)=>`<button class="paren" data-s="${n}" aria-current="${n===0}">${t}</button>`).join("")}<span class="muted slide-hint">Swipe to see it framed · double-click to zoom</span><span class="muted zoom-hint">Double-tap to zoom</span></div>`;
+        </div></div>
+      <div class="slide-nav" role="tablist">${["Image","Print",...(STYLED[pr.id]?["Styled"]:[]),"In a room"].map((t,n)=>`<button class="paren" data-s="${n}" aria-current="${n===0}">${t}</button>`).join("")}<span class="muted slide-hint">Swipe to see it framed · double-click to zoom</span><span class="muted zoom-hint">Double-tap to zoom</span></div>`;
     const sl=pi.querySelector("#slides"),navB=pi.querySelectorAll(".slide-nav [data-s]");
     const go=n=>sl.scrollTo({left:n*sl.clientWidth,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
-    navB.forEach(b=>b.onclick=()=>go(+b.dataset.s));
+    navB.forEach(b=>b.onclick=()=>go(+b.dataset.s));pi._go=go;
     sl.addEventListener("scroll",()=>{const n=Math.round(sl.scrollLeft/sl.clientWidth);navB.forEach(b=>b.setAttribute("aria-current",+b.dataset.s===n))},{passive:true});
     dragScroll(sl);zoomable(sl,pr);}
   document.getElementById("product-title").textContent=pr.title;
-  document.getElementById("product-spec").textContent=`${pr.series} · Archival pigment print, signed and numbered`;
+  document.getElementById("product-spec").textContent=pr.series;
   const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";
   let first=-1;
   sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out)first=k;
@@ -1149,10 +1173,16 @@ function openProduct(pr){curP=pr;
     if(sz.img){[iw,ih]=pr.land?[sz.img[1],sz.img[0]]:sz.img;const f=sz.b/w;
       if(pp)pp.style.padding=`calc(var(--pw,86%) * ${f})`;if(mat)mat.style.padding=`${f*100}%`}
     else{if(pp)pp.style.padding="";if(mat)mat.style.padding=""}
+    const inch=x=>x.map(n=>(Math.round(n/2.54*10)/10).toString()).join(" × ");
     document.getElementById("product-lines").innerHTML=
-      `<span><b>Print format</b>${pr.land?sz.l:sz.p}</span><span><b>Image format</b>${fmt(iw)} × ${fmt(ih)} cm</span>`+
-      `<span><b>Edition</b>${edLabel(sz)} · ${pr.left[k]} available</span><span><b>Paper</b>Hahnemühle Photo Rag® 308 g/m²</span>`+
-      `<span class="price-line"><b>Price</b>${kr(sz.price)}</span>`};
+      `<p>Signed and numbered</p><p>Archival pigment print on Hahnemühle Photo Rag® 308 g/m²</p>`+
+      `<p>${inch(dims)} inches / ${dims.join(" × ")} cm</p><p>Image ${fmt(iw)} × ${fmt(ih)} cm</p>`+
+      `<p>Edition of ${edLabel(sz)}${sz.ap?"s":""} · ${pr.left[k]} available</p><p class="pd-price">${kr(sz.price)}</p>`;
+    // thumbnails of the other views; tap one to show it large at the top
+    const th=document.getElementById("product-thumbs");th.innerHTML="";
+    document.querySelectorAll("#slides .slide").forEach((el,n)=>{if(!n)return;const b=document.createElement("button");b.className="pd-thumb";b.setAttribute("aria-label",el.getAttribute("aria-label")||"View");
+      const c=el.cloneNode(true);c.classList.add("mini");c.querySelectorAll("img").forEach(im=>im.loading="eager");b.appendChild(c);
+      b.onclick=()=>{prod.scrollTo({top:0,behavior:"smooth"});document.getElementById("product-img")._go(n)};th.appendChild(b)})};
   fs.onchange=lines;lines();
   document.getElementById("added").hidden=true;prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
