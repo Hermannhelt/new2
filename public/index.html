@@ -40,6 +40,8 @@ a:hover,button:hover{color:var(--accent)}
 .paren::before{content:"( "}.paren::after{content:" )"}
 
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+/* overview: no bar behind the phone's status bar, the images run all the way up */
+body:has(#overview:not([hidden])):not(:has(#project:not([hidden]))):not(:has(#product:not([hidden])))::before{display:none}
 /* Fully see-through header while scrolled: text inverts against whatever is behind it */
 body.scrolled::before{background:transparent}
 header.scrolled{background:transparent;color:#fff;mix-blend-mode:difference}
