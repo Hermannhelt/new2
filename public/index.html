@@ -630,6 +630,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 @media (max-width:640px){.pd-fade{display:block;position:fixed;left:0;right:0;bottom:0;height:80px;z-index:5;pointer-events:none;
   background:linear-gradient(to top,var(--bg) 0%,var(--bg) 30%,color-mix(in srgb,var(--bg) 70%,transparent) 62%,transparent 100%);transition:opacity .45s ease}
   .product.scrolled .pd-fade{opacity:0}}
+.product-info h2{font-style:normal}.product-info h2 i{font-style:italic}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px}
@@ -1070,6 +1071,7 @@ const sizesOf=pr=>SERIES_SIZES[pr.pi]||(pr.pi===0?SERIES_SIZES[5]:SIZES);
 const edOf=sz=>sz.ed||15;
 const edLabel=sz=>`${edOf(sz)}${sz.ap?` + ${sz.ap} AP`:""}`;
 // Print titles by photo (project index - image index)
+const PRINT_YEAR={"0-0":2016}; // year shown after the title on the print page
 const PRINT_NAMES={"1-1":"Fight","1-3":"Bökh No. 4","1-6":"Bökh No. 7","1-7":"Bökh No. 8","1-8":"Bökh No. 9","1-9":"Bökh No. 10","1-18":"Bökh No. 19","1-20":"Bökh No. 21","1-21":"Bökh No. 22","2-0":"Horseman","0-0":"Kulwinder","0-2":"Shankar Shah","0-3":"Odhir Gayen","0-5":"Sanjit Malik","0-6":"Shambhunath Dutt","0-9":"Sanju Joshi","0-11":"Angad Ray","5-0":"Ms. Lan","5-1":"Ms. Duyen","5-4":"Mr. Du","5-5":"Ms. Hanh","5-8":"Ms. Luyen"};
 const prints=[[0,0,[28,10,3]],[0,2,[48,10,5]],[0,3,[33,10,3]],[0,5,[45,9,5]],[0,6,[49,10,5]],[0,9,[43,9,4]],[0,11,[28,8,4]],[5,0,[50,7,3]],[5,1,[50,7,3]],[5,4,[50,7,3]],[5,5,[50,7,3]],[5,8,[49,7,3]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,6,[50,10,5]],[1,7,[50,10,5]],[1,8,[50,10,5]],[1,9,[50,10,5]],[1,18,[50,10,5]],[1,20,[50,10,5]],[1,21,[50,10,5]],[LD,0,[5]],[EXP,0,[50,10,5]]]
   .map(([pi,i,left],k)=>{const p=projects[pi],r=p.ratios?p.ratios[i]:p.ratio;
@@ -1194,7 +1196,7 @@ function openProduct(pr){curP=pr;
     navB.forEach(b=>b.onclick=()=>go(+b.dataset.s));pi._go=go;
     sl.addEventListener("scroll",()=>{const n=Math.round(sl.scrollLeft/sl.clientWidth);navB.forEach(b=>b.setAttribute("aria-current",+b.dataset.s===n))},{passive:true});
     dragScroll(sl);zoomable(sl,pr);}
-  document.getElementById("product-title").textContent=pr.title;
+  {const t=document.getElementById("product-title");t.innerHTML="<i></i>";t.firstChild.textContent=pr.title;if(PRINT_YEAR[pr.id])t.append(`, ${PRINT_YEAR[pr.id]}`)}
   document.getElementById("product-spec").textContent=pr.series;
   const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";
   let first=-1;
