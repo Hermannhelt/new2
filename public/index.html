@@ -408,7 +408,10 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 #zoomer{position:fixed;inset:0;z-index:60;background:#f4f3f0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-x pan-y;cursor:zoom-out}
 #zoomer[hidden]{display:none}
 #zoomer img{display:block;max-width:none;width:var(--zw);height:auto}
-#zoomer .zclose{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:14px;z-index:1;font-size:13px;background:rgba(244,243,240,.85);padding:6px 10px;border-radius:2px}
+#zoomer .zclose{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:8px;z-index:1;width:36px;height:36px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.72);color:#1a1a1a;cursor:pointer}
+#zoomer .zclose::before,#zoomer .zclose::after{content:"";position:absolute;left:50%;top:50%;width:24px;height:.8px;background:currentColor;transform:translate(-50%,-50%) rotate(45deg)}
+#zoomer .zclose::after{transform:translate(-50%,-50%) rotate(-45deg)}
+#zoomer .zclose:focus{outline:none}
 
 /* Room view: the print framed on the wall of a real room photo.
    Photo ratio 1.1256; bench centre at 58.6% / wall centre 37.8%; ~0.413% of photo width per cm (bench ≈ 150 cm). */
@@ -1381,7 +1384,7 @@ addEventListener("scroll",()=>{
 // double-tap (or double-click) an image on a print page to see it at 100%
 const HIRES={}; // optional larger files per print id
 function openZoom(src,rx,ry){let z=document.getElementById("zoomer");
-  if(!z){z=document.createElement("div");z.id="zoomer";z.hidden=true;z.innerHTML='<button class="paren zclose">Close</button><img alt="">';document.body.appendChild(z);
+  if(!z){z=document.createElement("div");z.id="zoomer";z.hidden=true;z.innerHTML='<button class="zclose" aria-label="Close"></button><img alt="">';document.body.appendChild(z);
     const close=()=>{z.hidden=true;document.documentElement.style.overflow=""};
     z.querySelector(".zclose").onclick=close;z.addEventListener("dblclick",close);
     let lt=0;z.addEventListener("touchend",e=>{if(e.touches.length)return;const t=Date.now();if(t-lt<300){e.preventDefault();close();lt=0}else lt=t},{passive:false});
