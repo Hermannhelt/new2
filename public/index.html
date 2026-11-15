@@ -623,8 +623,11 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   /* buttons float over the image, see-through */
   .product-top{position:absolute;z-index:3;top:calc(12px + env(safe-area-inset-top,0px));left:12px;right:12px;margin:0;align-items:center;pointer-events:none}
   .product-top>*{pointer-events:auto}
-  .product-top .muted,#product-close{color:#1d1c1a;font-size:13px;background:rgba(255,255,255,.4);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:6px 11px;border-radius:20px}
-  .product-top .muted::before{content:"( "}.product-top .muted::after{content:" )"}
+  .product-top{top:calc(8px + env(safe-area-inset-top,0px));right:8px;justify-content:flex-end}
+  .product-top .muted{display:none}
+  #product-close{position:relative;width:36px;height:36px;padding:0;border-radius:50%;background:rgba(255,255,255,.72);font-size:0;line-height:0;color:#1a1a1a}
+  #product-close::before,#product-close::after{content:"";position:absolute;left:50%;top:50%;width:24px;height:1.2px;margin:0;background:currentColor;transform:translate(-50%,-50%) rotate(45deg)}
+  #product-close::after{transform:translate(-50%,-50%) rotate(-45deg)}
   #product-close:focus{outline:none}
 }
 </style>
