@@ -625,6 +625,11 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
   .product-info{position:relative;z-index:1;background:var(--bg);margin:0 -16px;width:auto;padding:40px 18px 0;max-width:none;min-height:100vh}}
 /* gallery-style typeface for the print text (close to the reference) */
 .pd-artist,.pd-series,.product-info h2,.spec-lines{font-family:"Figtree",var(--sans);font-weight:300}
+/* see-through bar at the bottom of the phone screen: the last lines fade under it until you scroll */
+.pd-fade{display:none}
+@media (max-width:640px){.pd-fade{display:block;position:fixed;left:0;right:0;bottom:0;height:80px;z-index:5;pointer-events:none;
+  background:linear-gradient(to top,var(--bg) 0%,var(--bg) 30%,color-mix(in srgb,var(--bg) 70%,transparent) 62%,transparent 100%);transition:opacity .45s ease}
+  .product.scrolled .pd-fade{opacity:0}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px}
@@ -803,6 +808,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 </aside>
 
 <div class="product" id="product" hidden role="dialog" aria-label="Print">
+  <div class="pd-fade" aria-hidden="true"></div>
   <div class="product-top"><span class="muted">Prints</span><button id="product-close" class="paren">Close</button></div>
   <div class="product-body">
     <div class="product-img" id="product-img"></div>
@@ -1224,8 +1230,9 @@ function openProduct(pr){curP=pr;
      const g=mo.querySelector(".pd-more-grid");
      others.forEach(o=>{const b=document.createElement("button");b.className="pd-more-item";
        b.innerHTML=`<img src="${o.src}" alt="" loading="lazy"><span>${o.title}</span>`;b.onclick=()=>{openProduct(o);prod.scrollTo(0,0)};g.appendChild(b)})}}
-  document.getElementById("added").hidden=true;prod.hidden=false;document.getElementById("product-close").focus()}
+  document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
+prod.addEventListener("scroll",()=>prod.classList.toggle("scrolled",prod.scrollTop>30),{passive:true});
 
 let cart=[];try{cart=JSON.parse(localStorage.getItem("cart-v2")||"[]")}catch(e){}
 cart=cart.filter(c=>prints.some(p=>p.id===c.id));
