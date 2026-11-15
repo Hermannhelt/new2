@@ -618,7 +618,11 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .spec-lines{font-size:14px;line-height:19px}
 .spec-lines .pd-price{margin-top:11px}
 .pd-rule{width:100px;margin:32px 0 23px}
-@media (max-width:640px){.product-info{padding:16px 2px 0}}
+@media (max-width:640px){.product-info{padding:16px 2px 0}
+  /* the image stays put while the text slides up over it */
+  .product-img{position:sticky;top:0;z-index:0;align-self:start}
+  .product-body{gap:0}
+  .product-info{position:relative;z-index:1;background:var(--bg);margin:0 -16px;width:auto;padding:40px 18px 0;max-width:none;min-height:100vh}}
 /* gallery-style typeface for the print text (close to the reference) */
 .pd-artist,.pd-series,.product-info h2,.spec-lines{font-family:"Figtree",var(--sans)}
 .pd-more{margin-top:46px;text-align:left}
