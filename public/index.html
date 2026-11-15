@@ -641,7 +641,15 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pd-buy .when-open,.pd-buy[open] .when-closed{display:none}.pd-buy[open] .when-open{display:inline}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
-.pd-more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px}
+.pd-more-grid{display:grid;gap:44px}
+.pd-row{display:grid;grid-template-columns:36% 1fr;gap:12px;align-items:start}
+.pd-row-img{padding:0;border:0;background:none;cursor:pointer;display:block}
+.pd-row-img img{display:block;width:100%;height:auto}
+.pd-row-txt{font-family:"Figtree",var(--sans);font-weight:300;font-size:13.5px;line-height:1.4;color:var(--fg)}
+.pd-row-txt p{margin:0}
+.pd-row-a{font-weight:500}
+.pd-row-p{margin-top:9px!important}
+.pd-row-btn{margin-top:22px;padding:0 0 4px;border:0;border-bottom:1px solid var(--fg);background:none;cursor:pointer;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg)}
 .pd-more-item{padding:0;border:0;background:none;cursor:pointer;text-align:left;font-size:12.5px;color:var(--muted)}
 .pd-more-item img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;margin-bottom:6px}
 @media (max-width:640px){
@@ -1240,8 +1248,15 @@ function openProduct(pr){curP=pr;
    const others=se?se.items.filter(x=>x!==pr):[];
    if(others.length){mo.innerHTML=`<p class="pd-more-h">More from ${se.name}</p><div class="pd-more-grid"></div>`;
      const g=mo.querySelector(".pd-more-grid");
-     others.forEach(o=>{const b=document.createElement("button");b.className="pd-more-item";
-       b.innerHTML=`<img src="${o.src}" alt="" loading="lazy"><span>${o.title}</span>`;b.onclick=()=>{openProduct(o);prod.scrollTo(0,0)};g.appendChild(b)})}}
+     others.forEach(o=>{const z=sizesOf(o),cm=z.map(x=>(o.land?x.l:x.p).replace(/ cm.*/,"")).join(" / ")+" cm";
+       const el=document.createElement("div");el.className="pd-row";
+       el.innerHTML=`<button class="pd-row-img" aria-label="${o.title}"><img src="${o.src}" alt="" loading="lazy"></button>
+         <div class="pd-row-txt"><p class="pd-row-a">Ken Hermann</p><p>${o.series}</p><p><i></i>${PRINT_YEAR[o.id]?`, ${PRINT_YEAR[o.id]}`:""}</p>
+         <p>Signed, inscribed with title, numbered and dated on artist's label fixed to reverse</p><p>Archival pigment print</p>
+         <p>${cm}</p><p>Editions of ${z.map(edLabel).join(" / ")}</p><p class="pd-row-p">From ${kr(z[0].price)}</p>
+         <button class="pd-row-btn">View</button></div>`;
+       el.querySelector("i").textContent=o.title;
+       const go=()=>{openProduct(o);prod.scrollTo(0,0)};el.querySelector(".pd-row-img").onclick=go;el.querySelector(".pd-row-btn").onclick=go;g.appendChild(el)})}}
   document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
 prod.addEventListener("scroll",()=>prod.classList.toggle("scrolled",prod.scrollTop>30),{passive:true});
