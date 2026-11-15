@@ -611,6 +611,11 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .pd-thumb .slide.mini{height:auto;aspect-ratio:3/4;flex:none;width:100%;padding:8%;pointer-events:none}
 .pd-thumb .slide.mini.styled{padding:0}
 .pd-thumb .slide.mini .paper{--pw:min(84%,calc(94cqh * var(--r)))}
+.pd-more{margin-top:46px;text-align:left}
+.pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
+.pd-more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 8px}
+.pd-more-item{padding:0;border:0;background:none;cursor:pointer;text-align:left;font-size:12.5px;color:var(--muted)}
+.pd-more-item img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;margin-bottom:6px}
 @media (max-width:640px){
   .product{padding-top:0}
   .product-img{margin:0 -16px}
@@ -814,6 +819,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
         </details>
       </div>
       <p class="note"><button class="paren" data-terms>Terms of sale</button></p>
+      <div class="pd-more" id="product-more"></div>
     </div>
   </div>
 </div>
@@ -1194,6 +1200,13 @@ function openProduct(pr){curP=pr;
       const c=el.cloneNode(true);c.classList.add("mini");c.querySelectorAll("img").forEach(im=>im.loading="eager");b.appendChild(c);
       b.onclick=()=>{prod.scrollTo({top:0,behavior:"smooth"});document.getElementById("product-img")._go(n)};th.appendChild(b)})};
   fs.onchange=lines;lines();
+  // more prints from the same series
+  {const se=seriesList.find(x=>x.items.includes(pr)),mo=document.getElementById("product-more");mo.innerHTML="";
+   const others=se?se.items.filter(x=>x!==pr):[];
+   if(others.length){mo.innerHTML=`<p class="pd-more-h">More from ${se.name}</p><div class="pd-more-grid"></div>`;
+     const g=mo.querySelector(".pd-more-grid");
+     others.forEach(o=>{const b=document.createElement("button");b.className="pd-more-item";
+       b.innerHTML=`<img src="${o.src}" alt="" loading="lazy"><span>${o.title}</span>`;b.onclick=()=>{openProduct(o);prod.scrollTo(0,0)};g.appendChild(b)})}}
   document.getElementById("added").hidden=true;prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
 
@@ -1372,7 +1385,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
 (()=>{const pm=document.getElementById("printmenu"),btn=document.getElementById("v-shop");
   seriesList.forEach(se=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",se.k);b.title=se.name;
     const mt=MENU_THUMB[se.name]||SERIES_COVER[se.name];b.innerHTML=`<span class="sm-thumb${mt?"":" sm-print"}">${mt?`<img src="${mt}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} print${se.items.length===1?"":"s"}</small><b>${se.name}</b>`;
-    b.onclick=()=>{close();openSeries(se.k)};
+    b.onclick=()=>{close();openSeries(se.k);openProduct(se.items[0]);prod.scrollTo(0,0)};
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
   all.innerHTML=`<span class="sm-thumb" style="display:grid;place-items:center;font-family:var(--serif);font-size:22px">All</span><small>${prints.length} prints</small><b>All prints</b>`;
