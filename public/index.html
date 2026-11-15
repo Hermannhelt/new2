@@ -649,6 +649,7 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .series-text p{margin:0 0 12px}
 #series-detail .series-text{margin-left:0}
 .sd-next{margin-top:60px}
+.pd-foot{margin-top:70px;padding-inline:0}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1511,11 +1512,14 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
   wrap(el);el.style.setProperty("--ul",(i*70+150+700)+"ms");
   el.setAttribute("aria-label",el.textContent.replace(/\s+/g," ").trim())})();
 
-document.querySelector("[data-copy]").onclick=async e=>{
-  const t=e.currentTarget.dataset.copy,c=document.getElementById("copied");
+document.addEventListener("click",async e=>{const b=e.target.closest("[data-copy]");if(!b)return;
+  const t=b.dataset.copy,c=b.parentElement.querySelector("small");
   try{await navigator.clipboard.writeText(t);c.hidden=false;setTimeout(()=>c.hidden=true,1600)}
-  catch(err){const r=document.createRange();r.selectNodeContents(e.currentTarget.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r)}
-};
+  catch(err){const r=document.createRange();r.selectNodeContents(b.previousElementSibling);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+});
+// contact details at the very bottom of the print page too
+{const f=document.querySelector("footer").cloneNode(true);f.classList.add("pd-foot");f.querySelectorAll("[id]").forEach(x=>x.removeAttribute("id"));
+ document.querySelector("#product .product-info").appendChild(f)}
 </script>
 </body>
 </html>
