@@ -655,6 +655,9 @@ body.pd-open .panel{z-index:41}body.pd-open .scrim{z-index:40}
 body.pd-open .product{padding-top:calc(var(--hdr-h,56px) + 16px)}
 body.pd-open .product-top{top:calc(var(--hdr-h,56px) + 8px)}
 @media (max-width:640px){body.pd-open .product{padding-top:var(--hdr-h,56px)}}
+/* one tap on the print: everything else fades away so only the picture is left; tap again to bring it back */
+header,.product-top,.product-info,.pd-fade,.product .slide-nav{transition:opacity .45s ease,transform .35s ease}
+body.pd-clean header,body.pd-clean .product-top,body.pd-clean .product-info,body.pd-clean .pd-fade{opacity:0!important;pointer-events:none}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1288,9 +1291,14 @@ function openProduct(pr){curP=pr;
   document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
 prod.addEventListener("scroll",()=>prod.classList.toggle("scrolled",prod.scrollTop>30),{passive:true});
+// single tap / click on the big print toggles the clean view (a double tap still zooms)
+prod.addEventListener("click",e=>{const b=document.body;
+  if(b.classList.contains("pd-clean")){e.preventDefault();e.stopPropagation();clearTimeout(window._pdTap);b.classList.remove("pd-clean");return}
+  if(!e.target.closest("#slides .slide"))return;
+  clearTimeout(window._pdTap);window._pdTap=setTimeout(()=>b.classList.add("pd-clean"),320)},true);
 // keep the menu bar visible over the print page and let it slide away / back with the print page's own scrolling
 {const h=document.querySelector("header");let last=0;
- new MutationObserver(()=>{document.body.classList.toggle("pd-open",!prod.hidden);if(!prod.hidden){h.classList.remove("hide");document.body.classList.remove("hdr-hide");last=0}}).observe(prod,{attributes:true,attributeFilter:["hidden"]});
+ new MutationObserver(()=>{document.body.classList.toggle("pd-open",!prod.hidden);document.body.classList.remove("pd-clean");if(!prod.hidden){h.classList.remove("hide");document.body.classList.remove("hdr-hide");last=0}}).observe(prod,{attributes:true,attributeFilter:["hidden"]});
  prod.addEventListener("scroll",()=>{const y=prod.scrollTop;if(y<60)h.classList.remove("hide");else if(y>last+4)h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");last=y},{passive:true});
  // using the menu while a print is open: close the print first, then do what was clicked
  h.addEventListener("click",e=>{if(!prod.hidden&&e.target.closest("button,a")&&!e.target.closest("#open-cart,#open-info"))prod.hidden=true},true);}
@@ -1426,7 +1434,7 @@ function openZoom(src,rx,ry){let z=document.getElementById("zoomer");
     const h=w*im.naturalHeight/im.naturalWidth;z.scrollLeft=Math.max(0,rx*w-innerWidth/2);z.scrollTop=Math.max(0,ry*h-innerHeight/2)};
   if(im.getAttribute("src")===src&&im.complete)show();else{im.onload=show;im.src=src}}
 function zoomable(sl,pr){
-  const fire=(x,y,tg)=>{const img=tg.closest(".slide")?.querySelector(".photo img")||tg.closest("img")||tg.closest(".slide")?.querySelector("img");
+  const fire=(x,y,tg)=>{clearTimeout(window._pdTap);const img=tg.closest(".slide")?.querySelector(".photo img")||tg.closest("img")||tg.closest(".slide")?.querySelector("img");
     let rx=.5,ry=.5;if(img){const r=img.getBoundingClientRect();rx=Math.min(1,Math.max(0,(x-r.left)/r.width));ry=Math.min(1,Math.max(0,(y-r.top)/r.height))}
     const isStyled=tg.closest(".styled");openZoom(isStyled?isStyled.querySelector("img").src:(HIRES[pr.id]||pr.src),rx,ry)};
   sl.addEventListener("dblclick",e=>{e.preventDefault();fire(e.clientX,e.clientY,e.target)});
