@@ -657,7 +657,9 @@ body.pd-open .product-top{top:calc(var(--hdr-h,56px) + 8px)}
 @media (max-width:640px){body.pd-open .product{padding-top:var(--hdr-h,56px)}}
 /* one tap on the print: everything else fades away so only the picture is left; tap again to bring it back */
 header,.product-top,.product-info,.pd-fade,.product .slide-nav{transition:opacity .45s ease,transform .35s ease}
-body.pd-clean header,body.pd-clean .product-top,body.pd-clean .product-info,body.pd-clean .pd-fade{opacity:.5!important;pointer-events:none}
+body.pd-clean header,body.pd-clean .product-top,body.pd-clean .product-info,body.pd-clean .pd-fade{opacity:.2!important;pointer-events:none}
+.product #slides{transition:transform .45s ease}
+@media (max-width:640px){body.pd-clean .product #slides{transform:scale(.88)}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
