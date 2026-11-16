@@ -660,6 +660,7 @@ header,.product-top,.product-info,.pd-fade,.product .slide-nav{transition:opacit
 body.pd-clean header,body.pd-clean .product-top,body.pd-clean .product-info,body.pd-clean .pd-fade{opacity:.2!important;pointer-events:none}
 .product #slides{transition:transform .45s ease}
 @media (max-width:640px){body.pd-clean .product #slides{transform:scale(.88)}}
+body.pd-clean .product-top{opacity:0!important}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1292,12 +1293,12 @@ function openProduct(pr){curP=pr;
    mo.insertAdjacentHTML("beforeend",seriesNext(se&&se.name));wireSeriesNext(mo)}
   document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
-prod.addEventListener("scroll",()=>prod.classList.toggle("scrolled",prod.scrollTop>30),{passive:true});
+prod.addEventListener("scroll",()=>{prod.classList.toggle("scrolled",prod.scrollTop>30);if(document.body.classList.contains("pd-clean")&&Math.abs(prod.scrollTop-(prod._cleanY??prod.scrollTop))>12)document.body.classList.remove("pd-clean")},{passive:true});
 // single tap / click on the big print toggles the clean view (a double tap still zooms)
 prod.addEventListener("click",e=>{const b=document.body;
   if(b.classList.contains("pd-clean")){e.preventDefault();e.stopPropagation();clearTimeout(window._pdTap);b.classList.remove("pd-clean");return}
   if(!e.target.closest("#slides .slide"))return;
-  clearTimeout(window._pdTap);window._pdTap=setTimeout(()=>b.classList.add("pd-clean"),320)},true);
+  clearTimeout(window._pdTap);window._pdTap=setTimeout(()=>{prod._cleanY=prod.scrollTop;b.classList.add("pd-clean")},320)},true);
 // keep the menu bar visible over the print page and let it slide away / back with the print page's own scrolling
 {const h=document.querySelector("header");let last=0;
  new MutationObserver(()=>{document.body.classList.toggle("pd-open",!prod.hidden);document.body.classList.remove("pd-clean");if(!prod.hidden){h.classList.remove("hide");document.body.classList.remove("hdr-hide");last=0}}).observe(prod,{attributes:true,attributeFilter:["hidden"]});
