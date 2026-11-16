@@ -42,13 +42,12 @@ a:hover,button:hover{color:var(--accent)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 /* overview: no bar behind the phone's status bar, the images run all the way up */
 body:has(#overview:not([hidden])):not(:has(#project:not([hidden]))):not(:has(#product:not([hidden])))::before{display:none}
-/* Fully see-through header while scrolled: text inverts against whatever is behind it */
-body.scrolled::before{background:transparent}
-header.scrolled{background:transparent;color:#fff;mix-blend-mode:difference}
-header.scrolled :is(a,button,span){color:#fff}
-header.scrolled .views button[aria-pressed]{color:#fff}
-header.scrolled .muted,header.scrolled .views button[aria-pressed="false"]{color:#fff;opacity:.55}
-header.scrolled #open-menu[aria-expanded="true"],header.scrolled a:hover,header.scrolled button:hover{color:#fff;opacity:1}
+/* White bar behind the menu: slides up out of view when scrolling down, back down when scrolling up */
+header{transition:transform .35s ease}
+header::before{content:"";position:absolute;inset:0 calc(50% - 50vw);background:var(--bg);z-index:-1}
+header.hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 2px))}
+.submenu.compact{transition:transform .35s ease,opacity .35s ease}
+body.hdr-hide .submenu.compact{transform:translateY(calc(-1 * var(--hdr-h,56px)));opacity:0;pointer-events:none}
 /* with the project menu open, show it normally so the thumbnails keep their colours */
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid transparent;
   display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:baseline;padding-block:18px;font-size:var(--fs-s);letter-spacing:.01em}
@@ -1347,7 +1346,7 @@ const smItems=[...sm.querySelectorAll(".sm-item")];
 let manualOpen=false,userClosed=false,openedAt=0,wasFull=false;
 const START=260; // the project list under the menu appears only after scrolling this far
 function renderMenu(){
-  document.documentElement.style.setProperty("--hdr-h",hdr.getBoundingClientRect().bottom+"px");
+  document.documentElement.style.setProperty("--hdr-h",(hdr.offsetHeight+(parseFloat(getComputedStyle(hdr).top)||0))+"px");
   document.documentElement.style.setProperty("--sm-x",Math.round(smBtn.getBoundingClientRect().left)+"px");
   if(scrollY<8)userClosed=false;
   // each name fades in as its project rises to the middle of the screen, and out again if you scroll back
@@ -1452,7 +1451,11 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
   addEventListener("resize",fade);fade()})();
 
 // ---- See-through header once the page is scrolled ----
-(()=>{const h=document.querySelector("header");const on=()=>{const sc=scrollY>8;h.classList.toggle("scrolled",sc);document.body.classList.toggle("scrolled",sc)};
+(()=>{const h=document.querySelector("header");let last=scrollY;
+  const on=()=>{const y=scrollY,sc=y>8;h.classList.toggle("scrolled",sc);document.body.classList.toggle("scrolled",sc);
+    const sm=document.getElementById("submenu"),menuOpen=document.body.classList.contains("pm-open")||(sm&&!sm.hidden&&!sm.classList.contains("compact"));
+    if(y<80||menuOpen)h.classList.remove("hide");else if(y>last+4)h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");document.body.classList.toggle("hdr-hide",h.classList.contains("hide"));
+    last=y};
   addEventListener("scroll",on,{passive:true});on()})();
 
 // ---- Prints submenu: series with a thumbnail, same as the Projects menu ----
