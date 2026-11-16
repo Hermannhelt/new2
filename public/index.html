@@ -889,7 +889,7 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
       <p class="added" id="added" hidden>Added to cart</p>
       <p class="note">Printed to order. Allow 1–2 weeks for production. Prices include Danish VAT.</p>
       <div class="info-blocks">
-        <details open>
+        <details>
           <summary>Shipping</summary>
           <p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order. Free shipping on orders over €650.</p>
         </details>
@@ -1274,7 +1274,7 @@ function openProduct(pr){curP=pr;
     dragScroll(sl);zoomable(sl,pr);}
   {const t=document.getElementById("product-title");t.innerHTML="<i></i>";t.firstChild.textContent=pr.title;if(PRINT_YEAR[pr.id])t.append(`, ${PRINT_YEAR[pr.id]}`)}
   document.getElementById("product-spec").textContent=pr.series;
-  const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";document.getElementById("pd-buy").open=false;
+  const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";document.getElementById("pd-buy").open=false;document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
   let first=-1;
   sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out)first=k;
     fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${out?"disabled":""}>
