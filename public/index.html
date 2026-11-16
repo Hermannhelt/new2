@@ -682,6 +682,8 @@ header .views{gap:4px}
 #v-shop{margin-left:10px}
 @keyframes cartPulse{0%,100%{color:inherit}30%{color:var(--accent)}}
 #open-cart.pulse{animation:cartPulse 1.4s ease}
+/* Terms of sale in the footer only on the Prints pages (the print page has its own copy) */
+body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms]{display:none}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
