@@ -675,7 +675,8 @@ body.pd-open #printmenu,body.pd-open #submenu{z-index:32}
 body.pd-open.pm-open .product::after{opacity:.75}
 /* Cart always sits furthest to the right; on phones it moves up beside the name */
 #open-cart{margin-left:auto}
-@media (max-width:640px){#open-cart{position:absolute;top:18px;right:max(16px,env(safe-area-inset-right,0px));margin:0}}
+@media (max-width:640px){header nav{justify-self:stretch}#open-cart{order:1}#open-info{order:2}}
+@media (max-width:360px){header nav{column-gap:8px}header .views{gap:3px}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
