@@ -675,7 +675,10 @@ body.pd-open #printmenu,body.pd-open #submenu{z-index:32}
 body.pd-open.pm-open .product::after{opacity:.75}
 /* Cart always sits furthest to the right; on phones it moves up beside the name */
 #open-cart{margin-left:auto}
-@media (max-width:640px){header nav{justify-self:stretch;position:relative;padding-right:72px}#open-cart{position:absolute;right:0;top:0;margin:0}}
+@media (max-width:640px){header nav{justify-self:stretch;column-gap:9px;flex-wrap:nowrap;white-space:nowrap}#v-shop{margin-left:6px}#open-cart{margin-left:auto}}
+@media (max-width:384px){header nav{font-size:11.5px;column-gap:8px}}
+@media (max-width:370px){header nav{font-size:11px;column-gap:6px}#v-shop{margin-left:4px}}
+@media (max-width:350px){header nav{flex-wrap:wrap}}
 @media (max-width:360px){header nav{column-gap:8px}header .views{gap:3px}#v-shop{margin-left:5px}}
 /* Overview / Index sit close together; Prints stands on its own */
 header .views{gap:4px}
