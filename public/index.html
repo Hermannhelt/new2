@@ -752,7 +752,7 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
     </dl>
   </section>
   <section id="shop" aria-label="Prints" hidden>
-    <div class="shop-head" id="shop-head"><h2>Prints</h2><p>Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. Each size is a separate, limited edition. Shipped flat or rolled worldwide.</p></div>
+    <div class="shop-head" id="shop-head"><h2>Prints</h2><p>Archival pigment prints, signed and numbered. Each size is a separate, limited edition. Shipped flat or rolled worldwide.</p></div>
     <div id="series" class="covers"></div>
     <div id="series-detail" hidden></div>
     <section class="terms" aria-labelledby="terms-title">
@@ -1184,7 +1184,7 @@ function openSeries(k){const se=seriesList[k],pr0=se.items[0];
   setView("s");seriesWrap.hidden=true;shopHead.hidden=true;
   seriesDetail.innerHTML=`<div class="pv-head"><button class="pv-back paren" id="sd-back">All prints</button>
       <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1></div>
-    <p class="sd-intro">Archival pigment prints on Hahnemühle Photo Rag, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full photo project ( → )</button>`}</p>
+    <p class="sd-intro">Archival pigment prints, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full photo project ( → )</button>`}</p>
     <div class="grid sd-grid"></div>`;
   const g=seriesDetail.querySelector(".grid");
   se.items.forEach(pr=>{const b=document.createElement("button");b.className="card";
