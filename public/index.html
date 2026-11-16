@@ -649,6 +649,12 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 #series-detail .series-text{margin-left:0}
 .sd-next{margin-top:10px;border-top:0;padding-top:0}.sd-next+.pd-foot,.pd-more+.pd-foot{margin-top:50px}
 .pd-foot{margin-top:70px;padding-inline:0}
+/* print page: the white menu bar stays on top here too, sliding away and back like everywhere else */
+body.pd-open header{z-index:31}
+body.pd-open .panel{z-index:41}body.pd-open .scrim{z-index:40}
+body.pd-open .product{padding-top:calc(var(--hdr-h,56px) + 16px)}
+body.pd-open .product-top{top:calc(var(--hdr-h,56px) + 8px)}
+@media (max-width:640px){body.pd-open .product{padding-top:var(--hdr-h,56px)}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1282,6 +1288,12 @@ function openProduct(pr){curP=pr;
   document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;document.getElementById("product-close").focus()}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
 prod.addEventListener("scroll",()=>prod.classList.toggle("scrolled",prod.scrollTop>30),{passive:true});
+// keep the menu bar visible over the print page and let it slide away / back with the print page's own scrolling
+{const h=document.querySelector("header");let last=0;
+ new MutationObserver(()=>{document.body.classList.toggle("pd-open",!prod.hidden);if(!prod.hidden){h.classList.remove("hide");document.body.classList.remove("hdr-hide");last=0}}).observe(prod,{attributes:true,attributeFilter:["hidden"]});
+ prod.addEventListener("scroll",()=>{const y=prod.scrollTop;if(y<60)h.classList.remove("hide");else if(y>last+4)h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");last=y},{passive:true});
+ // using the menu while a print is open: close the print first, then do what was clicked
+ h.addEventListener("click",e=>{if(!prod.hidden&&e.target.closest("button,a")&&!e.target.closest("#open-cart,#open-info"))prod.hidden=true},true);}
 
 let cart=[];try{cart=JSON.parse(localStorage.getItem("cart-v2")||"[]")}catch(e){}
 cart=cart.filter(c=>prints.some(p=>p.id===c.id));
