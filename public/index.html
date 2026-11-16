@@ -680,6 +680,8 @@ body.pd-open.pm-open .product::after{opacity:.75}
 /* Overview / Index sit close together; Prints stands on its own */
 header .views{gap:4px}
 #v-shop{margin-left:10px}
+@keyframes cartPulse{0%,100%{color:inherit}30%{color:var(--accent)}}
+#open-cart.pulse{animation:cartPulse 1.4s ease}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1323,7 +1325,7 @@ prod.addEventListener("click",e=>{const b=document.body;
 // keep the menu bar visible over the print page and let it slide away / back with the print page's own scrolling
 {const h=document.querySelector("header");let last=0;
  new MutationObserver(()=>{document.body.classList.toggle("pd-open",!prod.hidden);document.body.classList.remove("pd-clean");if(!prod.hidden){h.classList.remove("hide");document.body.classList.remove("hdr-hide");last=0}}).observe(prod,{attributes:true,attributeFilter:["hidden"]});
- prod.addEventListener("scroll",()=>{const y=prod.scrollTop;if(y<60)h.classList.remove("hide");else if(y>last+4)h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");last=y},{passive:true});
+ prod.addEventListener("scroll",()=>{const y=prod.scrollTop;if(y<60)h.classList.remove("hide");else if(y>last+4&&!(Date.now()-(h._hold||0)<2500))h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");last=y},{passive:true});
  // using the menu while a print is open: close the print first, then do what was clicked
  h.addEventListener("click",e=>{if(!prod.hidden&&e.target.closest("button,a")&&!e.target.closest("#open-cart,#open-info,#v-shop,#open-menu"))prod.hidden=true},true);}
 
@@ -1331,6 +1333,8 @@ let cart=[];try{cart=JSON.parse(localStorage.getItem("cart-v2")||"[]")}catch(e){
 cart=cart.filter(c=>prints.some(p=>p.id===c.id));
 function saveCart(){try{localStorage.setItem("cart-v2",JSON.stringify(cart))}catch(e){}renderCart()}
 document.getElementById("add-btn").onclick=()=>{const sel=document.querySelector('#product-sizes input:checked');if(!sel)return;
+  {const h=document.querySelector("header");h.classList.remove("hide");document.body.classList.remove("hdr-hide","pd-clean");h._hold=Date.now();
+   const c=document.getElementById("open-cart");c.classList.remove("pulse");void c.offsetWidth;c.classList.add("pulse")}
   const k=+sel.value,ex=cart.find(c=>c.id===curP.id&&c.k===k);
   if(ex)ex.q++;else cart.push({id:curP.id,k,q:1});saveCart();document.getElementById("added").hidden=false};
 
@@ -1498,7 +1502,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
 (()=>{const h=document.querySelector("header");let last=scrollY;
   const on=()=>{const y=scrollY,sc=y>8;h.classList.toggle("scrolled",sc);document.body.classList.toggle("scrolled",sc);
     const sm=document.getElementById("submenu"),menuOpen=document.body.classList.contains("pm-open")||(sm&&!sm.hidden&&!sm.classList.contains("compact"));
-    if(y<80||menuOpen)h.classList.remove("hide");else if(y>last+4)h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");document.body.classList.toggle("hdr-hide",h.classList.contains("hide"));
+    if(y<80||menuOpen)h.classList.remove("hide");else if(y>last+4&&!(Date.now()-(h._hold||0)<2500))h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");document.body.classList.toggle("hdr-hide",h.classList.contains("hide"));
     last=y};
   addEventListener("scroll",on,{passive:true});on()})();
 
