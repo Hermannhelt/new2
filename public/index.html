@@ -673,6 +673,9 @@ body.pd-clean .product-top{opacity:0!important}
 body.pd-open #printmenu,body.pd-open #submenu{z-index:32}
 .product::after{content:"";position:fixed;inset:0;background:var(--bg);opacity:0;pointer-events:none;z-index:20;transition:opacity .5s ease}
 body.pd-open.pm-open .product::after{opacity:.75}
+/* Cart always sits furthest to the right; on phones it moves up beside the name */
+#open-cart{margin-left:auto}
+@media (max-width:640px){#open-cart{position:absolute;top:18px;right:max(16px,env(safe-area-inset-right,0px));margin:0}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
