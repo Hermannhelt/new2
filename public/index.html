@@ -721,7 +721,7 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
   <a href="#top" class="name">Ken Hermann</a>
   <span class="role muted">Photographer &amp; Director</span>
   <nav>
-    <button id="open-menu" aria-expanded="false" aria-controls="submenu">Select ( + )</button>
+    <button id="open-menu" aria-expanded="false" aria-controls="submenu">Selects ( + )</button>
     <button id="v-comm" aria-pressed="false" hidden>Commissions</button>
     <div class="views" role="group" aria-label="View">
       <button id="v-overview" aria-pressed="true">Overview</button><span class="muted">/</span>
@@ -1416,7 +1416,7 @@ function renderMenu(){
     else{el.style.opacity="";el.style.transform="";el.classList.remove("current")}});
   if(full&&!wasFull)smItems.forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""});
   wasFull=full;
-  const vis=!sm.hidden;smBtn.setAttribute("aria-expanded",vis);smBtn.textContent=vis?"Select ( − )":"Select ( + )";
+  const vis=!sm.hidden;smBtn.setAttribute("aria-expanded",vis);smBtn.textContent=vis?"Selects ( − )":"Selects ( + )";
 }
 function menu(open){manualOpen=open;if(open&&window.closePrintMenu)window.closePrintMenu();if(open){openedAt=Date.now();openedY=scrollY;userClosed=false}renderMenu()}
 let openedY=0;
