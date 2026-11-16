@@ -661,6 +661,8 @@ body.pd-clean header,body.pd-clean .product-top,body.pd-clean .product-info,body
 .product #slides{transition:transform .45s ease}
 @media (max-width:640px){body.pd-clean .product #slides{transform:scale(.88)}}
 body.pd-clean .product-top{opacity:0!important}
+/* no close cross on the print page: the menu bar takes you on */
+.product .product-top{display:none!important}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1291,7 +1293,7 @@ function openProduct(pr){curP=pr;
        const go=()=>{openProduct(o);prod.scrollTo(0,0)};el.querySelector(".pd-row-img").onclick=go;el.querySelector(".pd-row-btn").onclick=go;g.appendChild(el)})}
    if(se)mo.insertAdjacentHTML("beforeend",seriesText(se.name));
    mo.insertAdjacentHTML("beforeend",seriesNext(se&&se.name));wireSeriesNext(mo)}
-  document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;document.getElementById("product-close").focus()}
+  document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;prod.tabIndex=-1;prod.focus({preventScroll:true})}
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
 prod.addEventListener("scroll",()=>{prod.classList.toggle("scrolled",prod.scrollTop>30);if(document.body.classList.contains("pd-clean")&&Math.abs(prod.scrollTop-(prod._cleanY??prod.scrollTop))>12)document.body.classList.remove("pd-clean")},{passive:true});
 // single tap / click on the big print toggles the clean view (a double tap still zooms)
