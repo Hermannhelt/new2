@@ -669,6 +669,10 @@ body.pd-clean .product-top{opacity:0!important}
 #series .cover .thumb.plain{height:clamp(440px,86vh,1000px);aspect-ratio:auto}
 #series .cover .thumb.plain>img{object-fit:contain}
 @media (max-width:640px){#series .cover .thumb.plain{height:auto;aspect-ratio:4/5}#series .cover .thumb.plain>img{object-fit:cover}}
+/* menus drop down over an open print page, which stays where it is behind them */
+body.pd-open #printmenu,body.pd-open #submenu{z-index:32}
+.product::after{content:"";position:fixed;inset:0;background:var(--bg);opacity:0;pointer-events:none;z-index:20;transition:opacity .5s ease}
+body.pd-open.pm-open .product::after{opacity:.75}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1125,7 +1129,7 @@ const seriesText=name=>SERIES_TEXT[name]?`<div class="series-text"><h3>${name}</
 // list of print series at the bottom of print pages, rolling out like the project list
 const seriesNext=cur=>`<div class="pv-next sd-next"><button class="paren sd-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to prints</button></div>`;
 function wireSeriesNext(root){const n=root.querySelector(".sd-next");if(!n)return;
-  n.querySelector(".sd-top").onclick=()=>{prod.hidden=true;scrollTo(0,0);setTimeout(()=>window.openPrintMenu&&window.openPrintMenu(),60)};
+  n.querySelector(".sd-top").onclick=()=>{prod.scrollTo({top:0});document.querySelector("header").classList.remove("hide");setTimeout(()=>window.openPrintMenu&&window.openPrintMenu(),60)};
   n.querySelectorAll("[data-se]").forEach(b=>b.onclick=()=>{const se=seriesList.find(x=>x.k===+b.dataset.se);openProduct(se.items[0]);prod.scrollTo(0,0)});
 }
 const PRINT_YEAR={"0-0":2016,"0-2":2016,"0-3":2016,"0-5":2016,"0-6":2016,"0-9":2016,"0-11":2016}; // year shown after the title on the print page
@@ -1183,7 +1187,7 @@ const shopEl=document.getElementById("shop"),vS=document.getElementById("v-shop"
 const projEl=document.getElementById("project");
 let pvObs=null;
 let curPI=-1;
-function openProject(pi,start){curPI=pi;
+function openProject(pi,start){curPI=pi;if(typeof prod!=="undefined")prod.hidden=true;
   const p=projects[pi],pad=n=>String(n).padStart(2,"0"),ratio=i=>p.ratios?p.ratios[i]:(p.ratio||ratios[i%ratios.length]);
   setView("o");ov.hidden=true;document.querySelector(".intro").hidden=true;vO.setAttribute("aria-pressed",false);
   // varied rhythm: large centred, a staggered pair, small left, medium right, pair, small right ...
@@ -1307,13 +1311,14 @@ prod.addEventListener("scroll",()=>{prod.classList.toggle("scrolled",prod.scroll
 prod.addEventListener("click",e=>{const b=document.body;
   if(b.classList.contains("pd-clean")){e.preventDefault();e.stopPropagation();clearTimeout(window._pdTap);b.classList.remove("pd-clean");return}
   if(!e.target.closest("#slides .slide"))return;
+  if(b.classList.contains("pm-open")||!document.getElementById("submenu").hidden&&!document.getElementById("submenu").classList.contains("compact"))return;
   clearTimeout(window._pdTap);window._pdTap=setTimeout(()=>{prod._cleanY=prod.scrollTop;b.classList.add("pd-clean")},320)},true);
 // keep the menu bar visible over the print page and let it slide away / back with the print page's own scrolling
 {const h=document.querySelector("header");let last=0;
  new MutationObserver(()=>{document.body.classList.toggle("pd-open",!prod.hidden);document.body.classList.remove("pd-clean");if(!prod.hidden){h.classList.remove("hide");document.body.classList.remove("hdr-hide");last=0}}).observe(prod,{attributes:true,attributeFilter:["hidden"]});
  prod.addEventListener("scroll",()=>{const y=prod.scrollTop;if(y<60)h.classList.remove("hide");else if(y>last+4)h.classList.add("hide");else if(y<last-4)h.classList.remove("hide");last=y},{passive:true});
  // using the menu while a print is open: close the print first, then do what was clicked
- h.addEventListener("click",e=>{if(!prod.hidden&&e.target.closest("button,a")&&!e.target.closest("#open-cart,#open-info"))prod.hidden=true},true);}
+ h.addEventListener("click",e=>{if(!prod.hidden&&e.target.closest("button,a")&&!e.target.closest("#open-cart,#open-info,#v-shop,#open-menu"))prod.hidden=true},true);}
 
 let cart=[];try{cart=JSON.parse(localStorage.getItem("cart-v2")||"[]")}catch(e){}
 cart=cart.filter(c=>prints.some(p=>p.id===c.id));
