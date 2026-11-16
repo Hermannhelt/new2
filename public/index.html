@@ -676,7 +676,10 @@ body.pd-open.pm-open .product::after{opacity:.75}
 /* Cart always sits furthest to the right; on phones it moves up beside the name */
 #open-cart{margin-left:auto}
 @media (max-width:640px){header nav{justify-self:stretch}#open-cart{order:1}#open-info{order:2}}
-@media (max-width:360px){header nav{column-gap:8px}header .views{gap:3px}}
+@media (max-width:360px){header nav{column-gap:8px}header .views{gap:3px}#v-shop{margin-left:5px}}
+/* Overview / Index sit close together; Prints stands on its own */
+header .views{gap:4px}
+#v-shop{margin-left:10px}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -716,7 +719,7 @@ body.pd-open.pm-open .product::after{opacity:.75}
     <button id="v-comm" aria-pressed="false" hidden>Commissions</button>
     <div class="views" role="group" aria-label="View">
       <button id="v-overview" aria-pressed="true">Overview</button><span class="muted">/</span>
-      <button id="v-index" aria-pressed="false">Index</button><span class="muted">/</span>
+      <button id="v-index" aria-pressed="false">Index</button>
       <button id="v-shop" aria-pressed="false" aria-expanded="false" aria-controls="printmenu">Prints ( + )</button>
     </div>
     <button id="open-info" class="paren">Info</button>
