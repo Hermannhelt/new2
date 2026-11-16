@@ -1406,7 +1406,7 @@ function renderMenu(){
   const showList=!ov.hidden&&scrollY>START;
   const vals=smItems.map((el,i)=>{const pr=document.getElementById("p-"+i);if(!pr||ov.hidden)return 0;
     return Math.min(1,Math.max(0,(mid+band-pr.getBoundingClientRect().top)/band))});
-  const auto=showList&&vals.some(v=>v>0)&&!userClosed&&!manualOpen;
+  const auto=false; // the project list no longer rolls out by itself while scrolling Overview
   const full=manualOpen;
   sm.hidden=!(auto||full);
   sm.classList.toggle("compact",auto);
