@@ -689,6 +689,8 @@ header .views{gap:4px}
 body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms]{display:none}
 /* project pages: no "Back to overview" at the top; the project starts right under the menu */
 #project #pv-back{display:none}
+/* dropdown thumbnails: just the picture and the name (no numerals or counts) */
+#submenu .sm-item>small,#printmenu .sm-item>small,#submenu .sm-label>i,#submenu .sm-num{display:none!important}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
