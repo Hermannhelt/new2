@@ -691,6 +691,14 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 #project #pv-back{display:none}
 /* dropdown thumbnails: just the picture and the name (no numerals or counts) */
 #submenu .sm-item>small,#printmenu .sm-item>small,#submenu .sm-label>i,#submenu .sm-num{display:none!important}
+/* price inside the Add to cart button */
+#add-btn{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-inline:18px}
+/* phones: a sliver of the next picture shows on the right, so it is clear you can swipe */
+@media (max-width:640px){.product #slides{aspect-ratio:var(--arp);gap:6px}.product #slides>.slide{flex:0 0 88%}}
+.pd-progress{height:2px;background:var(--line);margin:14px 0 0;overflow:hidden;justify-self:center;width:min(240px,40%)}
+#product:focus{outline:none}
+.pd-progress i{display:block;height:100%;background:var(--fg);transition:transform .12s linear}
+@media (max-width:640px){.pd-progress{margin:10px 16px 0;width:calc(100% - 32px)}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1264,7 +1272,7 @@ function openProduct(pr){curP=pr;
   {const pi=document.getElementById("product-img"),pp=PAPER[pr.id];
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
-    pi.innerHTML=`<div class="slides" id="slides" style="--ar:${rr}">
+    pi.innerHTML=`<div class="slides" id="slides" style="--ar:${rr};--arp:${rr/.88}">
         <div class="slide clean hero" aria-label="${pr.title}"><img src="${pr.src}" alt="${pr.title}"></div>
         <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled${/-oak\.jpg/.test(STYLED[pr.id])?" zoom":""}" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
         <div class="slide room" style="--fr:${rr}" aria-label="${pr.title}, framed in a living room">
@@ -1273,9 +1281,13 @@ function openProduct(pr){curP=pr;
         </div></div>
       <div class="slide-nav" role="tablist">${["Image","Print",...(STYLED[pr.id]?["Styled"]:[]),"In a room"].map((t,n)=>`<button class="paren" data-s="${n}" aria-current="${n===0}">${t}</button>`).join("")}<span class="muted slide-hint">Swipe to see it framed · double-click to zoom</span><span class="muted zoom-hint">Double-tap to zoom</span></div>`;
     const sl=pi.querySelector("#slides"),navB=pi.querySelectorAll(".slide-nav [data-s]");
-    const go=n=>sl.scrollTo({left:n*sl.clientWidth,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    const go=n=>sl.scrollTo({left:(sl.children[n]?sl.children[n].offsetLeft-sl.children[0].offsetLeft:0),behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
     navB.forEach(b=>b.onclick=()=>go(+b.dataset.s));pi._go=go;
-    sl.addEventListener("scroll",()=>{const n=Math.round(sl.scrollLeft/sl.clientWidth);navB.forEach(b=>b.setAttribute("aria-current",+b.dataset.s===n))},{passive:true});
+    sl.addEventListener("scroll",()=>{const n=Math.round(sl.scrollLeft/(sl.children[1]?sl.children[1].offsetLeft-sl.children[0].offsetLeft:sl.clientWidth));navB.forEach(b=>b.setAttribute("aria-current",+b.dataset.s===n))},{passive:true});
+    // thin progress line under the pictures: shows how many there are and where you are
+    {const n=sl.children.length;sl.insertAdjacentHTML("afterend",`<div class="pd-progress" aria-hidden="true"><i style="width:${100/n}%"></i></div>`);
+     const bar=pi.querySelector(".pd-progress i"),upd=()=>{const max=sl.scrollWidth-sl.clientWidth;bar.style.transform=`translateX(${(max>0?sl.scrollLeft/max:0)*(n-1)*100}%)`};
+     sl.addEventListener("scroll",upd,{passive:true});upd()}
     dragScroll(sl);zoomable(sl,pr);}
   {const t=document.getElementById("product-title");t.innerHTML="<i></i>";t.firstChild.textContent=pr.title;if(PRINT_YEAR[pr.id])t.append(`, ${PRINT_YEAR[pr.id]}`)}
   document.getElementById("product-spec").textContent=pr.series;
@@ -1289,6 +1301,7 @@ function openProduct(pr){curP=pr;
   const r=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
   const fmt=n=>(Math.round(n*10)/10).toString();
   const lines=()=>{const sel=fs.querySelector("input:checked");const k=sel?+sel.value:0,sz=sizesOf(pr)[k];
+    document.getElementById("add-btn").innerHTML=`<span>Add to cart</span><span>${kr(sz.price)}</span>`;
     const dims=(pr.land?sz.l:sz.p).match(/[\d.]+/g).map(Number);
     const room=document.querySelector("#product-img .room");if(room)room.style.setProperty("--cm",dims[0]+4);const w=dims[0];let iw=w*(pr.land?.82:.8),ih=iw/r;
     const pp=document.querySelector("#product-img .slide .paper"),mat=document.querySelector("#product-img .mat");
