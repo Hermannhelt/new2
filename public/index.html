@@ -722,6 +722,9 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 #pd-gallery .gal-buy.in{opacity:1}
 #pd-gallery .gal-buy .btn{pointer-events:auto}
 #pd-gallery .gal-buy .btn{width:100%;max-width:520px;margin:0 auto;display:flex;justify-content:center;gap:8px}
+/* no Buy toggle: sizes and the Add to cart button (with price) show straight away */
+#pd-buy>summary{display:none}
+#pd-buy{margin-top:26px}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -919,7 +922,7 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
       <div class="spec-lines" id="product-lines"></div>
       <hr class="pd-rule">
       <div class="pd-thumbs" id="product-thumbs" aria-label="More views"></div>
-      <details class="pd-buy" id="pd-buy"><summary><span class="when-closed">Buy</span><span class="when-open">Close</span></summary>
+      <details class="pd-buy" id="pd-buy" open><summary><span class="when-closed">Buy</span><span class="when-open">Close</span></summary>
       <fieldset class="sizes" id="product-sizes"><legend>Size</legend></fieldset>
       <button class="btn" id="add-btn">Add to cart</button>
       <p class="added" id="added" hidden>Added to cart</p>
@@ -1314,7 +1317,7 @@ function openProduct(pr){curP=pr;
     dragScroll(sl);zoomable(sl,pr);}
   {const t=document.getElementById("product-title");t.innerHTML="<i></i>";t.firstChild.textContent=pr.title;if(PRINT_YEAR[pr.id])t.append(`, ${PRINT_YEAR[pr.id]}`)}
   document.getElementById("product-spec").textContent=pr.series;
-  const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";document.getElementById("pd-buy").open=false;document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
+  const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";document.getElementById("pd-buy").open=true;document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
   let first=-1;
   sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out)first=k;
     fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${out?"disabled":""}>
