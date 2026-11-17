@@ -725,6 +725,10 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 /* no Buy toggle: sizes and the Add to cart button (with price) show straight away */
 #pd-buy>summary{display:none}
 #pd-buy{margin-top:26px}
+#pd-buy .sizes{display:grid;transition:opacity .35s ease;}
+#pd-buy.sz-closed .sizes{display:none}
+#pd-buy:not(.sz-closed) .sizes{animation:szIn .4s ease}
+@keyframes szIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1317,7 +1321,7 @@ function openProduct(pr){curP=pr;
     dragScroll(sl);zoomable(sl,pr);}
   {const t=document.getElementById("product-title");t.innerHTML="<i></i>";t.firstChild.textContent=pr.title;if(PRINT_YEAR[pr.id])t.append(`, ${PRINT_YEAR[pr.id]}`)}
   document.getElementById("product-spec").textContent=pr.series;
-  const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";document.getElementById("pd-buy").open=true;document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
+  const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";{const pb=document.getElementById("pd-buy");pb.open=true;pb.classList.toggle("sz-closed",sizesOf(pr).length>1)}document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
   let first=-1;
   sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out)first=k;
     fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${out?"disabled":""}>
@@ -1327,7 +1331,8 @@ function openProduct(pr){curP=pr;
   const r=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
   const fmt=n=>(Math.round(n*10)/10).toString();
   const lines=()=>{const sel=fs.querySelector("input:checked");const k=sel?+sel.value:0,sz=sizesOf(pr)[k];
-    document.getElementById("add-btn").innerHTML=`<span>Add to cart</span><span>${kr(sz.price)}</span>`;
+    {const closed=document.getElementById("pd-buy").classList.contains("sz-closed"),mn=Math.min(...sizesOf(pr).map(x=>x.price));
+     document.getElementById("add-btn").innerHTML=`<span>Add to cart</span><span>${closed&&sizesOf(pr).length>1?`From ${kr(mn)}`:kr(sz.price)}</span>`}
     const dims=(pr.land?sz.l:sz.p).match(/[\d.]+/g).map(Number);
     const room=document.querySelector("#product-img .room");if(room)room.style.setProperty("--cm",dims[0]+4);const w=dims[0];let iw=w*(pr.land?.82:.8),ih=iw/r;
     const pp=document.querySelector("#product-img .slide .paper"),mat=document.querySelector("#product-img .mat");
@@ -1399,6 +1404,10 @@ function openGallery(start){
 let cart=[];try{cart=JSON.parse(localStorage.getItem("cart-v2")||"[]")}catch(e){}
 cart=cart.filter(c=>prints.some(p=>p.id===c.id));
 function saveCart(){try{localStorage.setItem("cart-v2",JSON.stringify(cart))}catch(e){}renderCart()}
+// first tap on Add to cart rolls out the sizes; the next one adds the chosen size
+document.getElementById("pd-buy").addEventListener("click",e=>{const pb=e.currentTarget;
+  if(e.target.closest("#add-btn")&&pb.classList.contains("sz-closed")){e.stopPropagation();e.preventDefault();pb.classList.remove("sz-closed");
+    const ch=document.querySelector("#product-sizes input:checked");if(ch)ch.dispatchEvent(new Event("change",{bubbles:true}))}},true);
 document.getElementById("add-btn").onclick=()=>{const sel=document.querySelector('#product-sizes input:checked');if(!sel)return;
   {const h=document.querySelector("header");h.classList.remove("hide");document.body.classList.remove("hdr-hide","pd-clean");h._hold=Date.now();
    const c=document.getElementById("open-cart");c.classList.remove("pulse");void c.offsetWidth;c.classList.add("pulse")}
