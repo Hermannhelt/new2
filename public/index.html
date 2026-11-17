@@ -703,6 +703,23 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 /* no small view thumbnails under the text any more (swipe the big picture instead); Buy sits closer */
 #product .pd-thumbs,#product .pd-rule{display:none}
 #product .pd-buy{margin-top:22px}
+/* lookbook view: every picture stacked, full figure, with a sticky Add to cart */
+#pd-gallery{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#pd-gallery[hidden]{display:none}
+#pd-gallery .gal-list{display:flex;flex-direction:column;gap:4px;max-width:min(1000px,calc((100vh - 20px) * var(--ar)));margin:0 auto;padding-bottom:110px}
+@media (max-width:640px){#pd-gallery .gal-list{max-width:none}}
+#pd-gallery .gal-list>.slide{flex:none;width:100%;height:auto;aspect-ratio:var(--ar);padding:6%}
+#pd-gallery .gal-list>.slide.hero,#pd-gallery .gal-list>.slide.styled{aspect-ratio:auto;padding:0}
+#pd-gallery .gal-list>.slide.hero,#pd-gallery .gal-list>.slide.styled{display:block;container-type:normal}
+#pd-gallery .gal-list>.slide.hero img,#pd-gallery .gal-list>.slide.styled img{position:static!important;display:block;width:100%!important;height:auto!important;max-height:none!important;object-fit:contain!important;transform:none!important}
+#pd-gallery .gal-close{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;z-index:2;width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.72);color:#1a1a1a;cursor:pointer}
+#pd-gallery .gal-close::before,#pd-gallery .gal-close::after{content:"";position:absolute;left:50%;top:50%;width:22px;height:.8px;background:currentColor;transform:translate(-50%,-50%) rotate(45deg)}
+#pd-gallery .gal-close::after{transform:translate(-50%,-50%) rotate(-45deg)}
+#pd-gallery .gal-ticks{position:fixed;left:10px;top:calc(18px + env(safe-area-inset-top,0px));z-index:2;display:flex;flex-direction:column;gap:6px}
+#pd-gallery .gal-ticks i{display:block;width:1px;height:14px;background:rgba(0,0,0,.25)}
+#pd-gallery .gal-ticks i.on{background:#000;width:2px}
+#pd-gallery .gal-buy{position:fixed;left:0;right:0;bottom:0;z-index:2;padding:12px max(16px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 60%,transparent)}
+#pd-gallery .gal-buy .btn{width:100%;max-width:520px;margin:0 auto;display:flex;justify-content:center;gap:8px}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1347,7 +1364,25 @@ prod.addEventListener("click",e=>{const b=document.body;
   if(b.classList.contains("pd-clean")){e.preventDefault();e.stopPropagation();clearTimeout(window._pdTap);b.classList.remove("pd-clean");return}
   if(!e.target.closest("#slides .slide"))return;
   if(b.classList.contains("pm-open")||!document.getElementById("submenu").hidden&&!document.getElementById("submenu").classList.contains("compact"))return;
-  clearTimeout(window._pdTap);window._pdTap=setTimeout(()=>{prod._cleanY=prod.scrollTop;b.classList.add("pd-clean")},320)},true);
+  const sl=e.target.closest("#slides .slide"),idx=[...sl.parentElement.children].indexOf(sl);
+  clearTimeout(window._pdTap);window._pdTap=setTimeout(()=>openGallery(idx),320)},true);
+// one tap: every picture of the print stacked full-figure, scroll down through them (like a lookbook)
+function openGallery(start){
+  let g=document.getElementById("pd-gallery");
+  if(!g){g=document.createElement("div");g.id="pd-gallery";g.setAttribute("role","dialog");g.setAttribute("aria-label","All pictures");
+    g.innerHTML='<div class="gal-ticks" aria-hidden="true"></div><button class="gal-close" aria-label="Close"></button><div class="gal-list"></div><div class="gal-buy"><button class="btn" id="gal-add"></button></div>';
+    document.body.appendChild(g);
+    const close=()=>{g.hidden=true;document.documentElement.style.overflow=""};
+    g.querySelector(".gal-close").onclick=close;addEventListener("keydown",e=>{if(e.key==="Escape"&&!g.hidden)close()});
+    g.querySelector("#gal-add").onclick=()=>{close();document.getElementById("add-btn").click()};
+    g.addEventListener("scroll",()=>{const items=g.querySelectorAll(".gal-list>.slide");let cur=0;items.forEach((it,i)=>{if(it.offsetTop-g.scrollTop<innerHeight*.45)cur=i});
+      g.querySelectorAll(".gal-ticks i").forEach((t,i)=>t.classList.toggle("on",i===cur))},{passive:true});}
+  const list=g.querySelector(".gal-list"),ticks=g.querySelector(".gal-ticks");list.innerHTML="";ticks.innerHTML="";
+  document.querySelectorAll("#slides>.slide").forEach((el,i)=>{const c=el.cloneNode(true);c.classList.add("gal-item");list.appendChild(c);ticks.insertAdjacentHTML("beforeend",`<i${i===start?' class="on"':""}></i>`)});
+  const ab=document.getElementById("add-btn");g.querySelector("#gal-add").innerHTML=ab.innerHTML;
+  g.style.setProperty("--ar",document.getElementById("slides").style.getPropertyValue("--ar"));
+  g.hidden=false;document.documentElement.style.overflow="hidden";
+  requestAnimationFrame(()=>{const t=list.children[start];g.scrollTop=t?t.offsetTop:0})}
 // keep the menu bar visible over the print page and let it slide away / back with the print page's own scrolling
 {const h=document.querySelector("header");let last=0;
  new MutationObserver(()=>{document.body.classList.toggle("pd-open",!prod.hidden);document.body.classList.remove("pd-clean");if(!prod.hidden){h.classList.remove("hide");document.body.classList.remove("hdr-hide");last=0}}).observe(prod,{attributes:true,attributeFilter:["hidden"]});
