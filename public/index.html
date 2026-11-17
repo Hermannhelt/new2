@@ -700,6 +700,9 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 #product:focus{outline:none}
 .pd-progress i{display:block;height:100%;background:var(--muted);opacity:.7;transition:transform .12s linear}
 @media (max-width:640px){.pd-progress{margin:10px 0 0;width:100%;justify-self:stretch}}
+/* no small view thumbnails under the text any more (swipe the big picture instead); Buy sits closer */
+#product .pd-thumbs,#product .pd-rule{display:none}
+#product .pd-buy{margin-top:22px}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
