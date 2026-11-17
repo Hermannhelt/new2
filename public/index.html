@@ -1326,7 +1326,7 @@ function openProduct(pr){curP=pr;
   document.getElementById("product-spec").textContent=pr.series;
   const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Size</legend>";{const pb=document.getElementById("pd-buy");pb.open=true;pb.classList.toggle("sz-closed",sizesOf(pr).length>1)}document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
   let first=-1;
-  sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out)first=k;
+  sizesOf(pr).forEach((sz,k)=>{const out=pr.left[k]===0;if(!out&&first<0)first=k;
     fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${out?"disabled":""}>
       <span>${pr.land?sz.l:sz.p}<small>${sz.img?`Image ${(pr.land?[...sz.img].reverse():sz.img).join(" × ")} cm · `:""}${out?"Sold out":`${pr.left[k]} of ${edOf(sz)} left`}</small></span><span class="price">${kr(sz.price)}</span></label>`)});
   if(first>=0)fs.querySelector(`#size-${first}`).checked=true;
