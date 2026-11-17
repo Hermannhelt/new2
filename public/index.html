@@ -694,11 +694,11 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 /* price inside the Add to cart button */
 #add-btn{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-inline:18px}
 /* phones: a sliver of the next picture shows on the right, so it is clear you can swipe */
-@media (max-width:640px){.product #slides{aspect-ratio:var(--arp);gap:3px}.product #slides>.slide{flex:0 0 93%}}
+@media (max-width:640px){.product #slides{aspect-ratio:var(--arp);gap:3px}.product #slides>.slide{flex:0 0 95%}}
 .pd-progress{height:1px;background:var(--line);margin:14px 0 0;overflow:hidden;justify-self:center;width:min(240px,40%)}
 #product:focus{outline:none}
 .pd-progress i{display:block;height:100%;background:var(--muted);opacity:.7;transition:transform .12s linear}
-@media (max-width:640px){.pd-progress{margin:10px 0 0;width:93%;justify-self:start}}
+@media (max-width:640px){.pd-progress{margin:10px 0 0;width:100%;justify-self:stretch}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1272,7 +1272,7 @@ function openProduct(pr){curP=pr;
   {const pi=document.getElementById("product-img"),pp=PAPER[pr.id];
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
-    pi.innerHTML=`<div class="slides" id="slides" style="--ar:${rr};--arp:${rr/.93}">
+    pi.innerHTML=`<div class="slides" id="slides" style="--ar:${rr};--arp:${rr/.95}">
         <div class="slide clean hero" aria-label="${pr.title}"><img src="${pr.src}" alt="${pr.title}"></div>
         <div class="slide">${pp?printImg(pr,pr.title):`<img src="${pr.src}" alt="${pr.title}">`}</div>${STYLED[pr.id]?`<div class="slide clean styled${/-oak\.jpg/.test(STYLED[pr.id])?" zoom":""}" aria-label="${pr.title}, styled"><img src="${STYLED[pr.id]}" alt="${pr.title}, framed and styled" loading="lazy"></div>`:""}
         <div class="slide room" style="--fr:${rr}" aria-label="${pr.title}, framed in a living room">
