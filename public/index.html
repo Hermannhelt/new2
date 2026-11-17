@@ -735,6 +735,10 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 /* size options exactly as tall as the Add to cart button */
 #product .size{box-sizing:border-box;height:48px;padding-block:0;line-height:1.2}
 #product .size small{line-height:1.2;margin-top:1px}
+/* our own slim scroll marker on the right (the phone's own is hidden) */
+html{scrollbar-width:none}html::-webkit-scrollbar{display:none}
+#scroll-mark{position:fixed;right:2px;top:0;width:2px;border-radius:2px;background:var(--fg);opacity:0;z-index:35;pointer-events:none;transition:opacity .5s ease}
+#scroll-mark.on{opacity:.35;transition:opacity .15s ease}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1654,6 +1658,11 @@ document.addEventListener("click",async e=>{const b=e.target.closest("[data-copy
 {const f=document.querySelector("footer").cloneNode(true);f.classList.add("pd-foot");f.querySelectorAll("[id]").forEach(x=>x.removeAttribute("id"));
  document.querySelector("#product .product-info").appendChild(f)}
 document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)return;b.classList.remove("blink");void b.offsetWidth;b.classList.add("blink")},true);
+{const m=document.createElement("div");m.id="scroll-mark";m.setAttribute("aria-hidden","true");document.body.appendChild(m);let t;
+ const upd=()=>{const H=document.documentElement.scrollHeight,h=innerHeight;if(H<=h+4){m.classList.remove("on");return}
+   const len=Math.max(36,h*h/H),top=(scrollY/(H-h))*(h-len-8)+4;m.style.height=len+"px";m.style.transform=`translateY(${top}px)`;
+   m.classList.add("on");clearTimeout(t);t=setTimeout(()=>m.classList.remove("on"),900)};
+ addEventListener("scroll",upd,{passive:true})}
 </script>
 </body>
 </html>
