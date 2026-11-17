@@ -706,7 +706,7 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 /* lookbook view: every picture stacked, full figure, with a sticky Add to cart */
 #pd-gallery{position:fixed;inset:0;z-index:50;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 #pd-gallery[hidden]{display:none}
-#pd-gallery .gal-list{display:flex;flex-direction:column;gap:4px;max-width:min(1000px,calc((100vh - 20px) * var(--ar)));margin:0 auto;padding-bottom:110px}
+#pd-gallery .gal-list{display:flex;flex-direction:column;gap:4px;max-width:min(1000px,calc((100vh - 20px) * var(--ar)));margin:0 auto;padding-bottom:0}
 @media (max-width:640px){#pd-gallery .gal-list{max-width:none}}
 #pd-gallery .gal-list>.slide{flex:none;width:100%;height:auto;aspect-ratio:var(--ar);padding:6%}
 #pd-gallery .gal-list>.slide.hero,#pd-gallery .gal-list>.slide.styled{aspect-ratio:auto;padding:0}
@@ -718,7 +718,9 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 #pd-gallery .gal-ticks{position:fixed;left:10px;top:calc(18px + env(safe-area-inset-top,0px));z-index:2;display:flex;flex-direction:column;gap:6px}
 #pd-gallery .gal-ticks i{display:block;width:1px;height:14px;background:rgba(0,0,0,.25)}
 #pd-gallery .gal-ticks i.on{background:#000;width:2px}
-#pd-gallery .gal-buy{position:fixed;left:0;right:0;bottom:0;z-index:2;padding:12px max(16px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 60%,transparent)}
+#pd-gallery .gal-buy{position:fixed;left:0;right:0;bottom:0;z-index:2;padding:12px max(16px,env(safe-area-inset-left,0px)) calc(14px + env(safe-area-inset-bottom,0px));background:none;pointer-events:none;opacity:0;transition:opacity .6s ease}
+#pd-gallery .gal-buy.in{opacity:1}
+#pd-gallery .gal-buy .btn{pointer-events:auto}
 #pd-gallery .gal-buy .btn{width:100%;max-width:520px;margin:0 auto;display:flex;justify-content:center;gap:8px}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
@@ -1382,6 +1384,7 @@ function openGallery(start){
   const ab=document.getElementById("add-btn");g.querySelector("#gal-add").innerHTML=ab.innerHTML;
   g.style.setProperty("--ar",document.getElementById("slides").style.getPropertyValue("--ar"));
   g.hidden=false;document.documentElement.style.overflow="hidden";
+  {const bb=g.querySelector(".gal-buy");bb.classList.remove("in");clearTimeout(g._bt);g._bt=setTimeout(()=>bb.classList.add("in"),1000)}
   requestAnimationFrame(()=>{const t=list.children[start];g.scrollTop=t?t.offsetTop:0})}
 // keep the menu bar visible over the print page and let it slide away / back with the print page's own scrolling
 {const h=document.querySelector("header");let last=0;
