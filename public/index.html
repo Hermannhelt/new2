@@ -732,6 +732,9 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 #pd-buy .sizes{display:grid;overflow:hidden;max-height:420px;opacity:1;margin:12px 0 0;transition:max-height .6s cubic-bezier(.2,.7,.2,1),opacity .5s ease .08s,margin .6s ease}
 #pd-buy.sz-closed .sizes{max-height:0;opacity:0;margin-top:0;transition:none}
 #pd-buy .sizes+.added,#pd-buy .added{margin-top:10px}
+/* size options exactly as tall as the Add to cart button */
+#product .size{box-sizing:border-box;height:48px;padding-block:0;line-height:1.2}
+#product .size small{line-height:1.2;margin-top:1px}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
