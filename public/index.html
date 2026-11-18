@@ -1352,7 +1352,7 @@ function openProduct(pr){curP=pr;
   const fmt=n=>(Math.round(n*10)/10).toString();
   const lines=()=>{const sel=fs.querySelector("input:checked");const k=sel?+sel.value:0,sz=sizesOf(pr)[k];
     {const closed=document.getElementById("pd-buy").classList.contains("sz-closed"),mn=Math.min(...sizesOf(pr).map(x=>x.price));
-     document.getElementById("add-btn").innerHTML=`<span>Add to cart</span><span>${closed&&sizesOf(pr).length>1?`From ${kr(mn)}`:kr(sz.price)}</span>`}
+     document.getElementById("add-btn").innerHTML=closed&&sizesOf(pr).length>1?`<span>Buy</span><span>From ${kr(mn)}</span>`:`<span>Add to cart</span><span>${kr(sz.price)}</span>`}
     const dims=(pr.land?sz.l:sz.p).match(/[\d.]+/g).map(Number);
     const room=document.querySelector("#product-img .room");if(room)room.style.setProperty("--cm",dims[0]+4);const w=dims[0];let iw=w*(pr.land?.82:.8),ih=iw/r;
     const pp=document.querySelector("#product-img .slide .paper"),mat=document.querySelector("#product-img .mat");
