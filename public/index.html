@@ -811,11 +811,9 @@ body.pd-open:has(#submenu:not([hidden]):not(.compact)) .product::after{opacity:.
 #printmenu[hidden]{display:none!important}
 #printmenu::-webkit-scrollbar{display:none}
 /* slider dashes under the Selects / Prints thumbnails */
-.submenu:not(.compact){padding-bottom:38px}
-.menu-dots{position:fixed;left:0;right:0;z-index:7;display:flex;justify-content:center;gap:6px;pointer-events:none;opacity:0;transition:opacity .3s ease}
+.menu-dots{position:fixed;left:0;right:0;z-index:7;height:1px;background:var(--line);overflow:hidden;pointer-events:none;opacity:0;transition:opacity .3s ease}
 .menu-dots.on{opacity:1}
-.menu-dots i{display:block;width:14px;height:1px;background:var(--line)}
-.menu-dots i.on{background:var(--fg);opacity:.75}
+.menu-dots i{display:block;height:100%;background:var(--fg);opacity:.75;transition:transform .12s linear}
 body.pd-open .menu-dots{z-index:33}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
@@ -1755,10 +1753,9 @@ document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)ret
 ["submenu","printmenu"].forEach(id=>{const m=document.getElementById(id),d=document.createElement("div");d.className="menu-dots";d.setAttribute("aria-hidden","true");document.body.appendChild(d);
   const upd=()=>{const items=[...m.querySelectorAll(".sm-item")],vis=!m.hidden&&!m.classList.contains("compact")&&items.length>1&&m.scrollWidth>m.clientWidth+2;
     if(!vis){d.classList.remove("on");return}
-    if(d.children.length!==items.length)d.innerHTML="<i></i>".repeat(items.length);
-    const r=m.getBoundingClientRect();d.style.top=(r.bottom-20)+"px";
-    const max=m.scrollWidth-m.clientWidth,step=items[1].offsetLeft-items[0].offsetLeft,k=m.scrollLeft>=max-2?items.length-1:Math.round(m.scrollLeft/step);
-    [...d.children].forEach((x,i)=>x.classList.toggle("on",i===k));d.classList.add("on")};
+    const n=items.length;if(!d.firstChild)d.innerHTML="<i></i>";const bar=d.firstChild;bar.style.width=(100/n)+"%";
+    const r=m.getBoundingClientRect();d.style.top=(r.bottom-1)+"px";
+    const max=m.scrollWidth-m.clientWidth;bar.style.transform=`translateX(${(max>0?m.scrollLeft/max:0)*(n-1)*100}%)`;d.classList.add("on")};
   m.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);addEventListener("scroll",upd,{passive:true});
   new MutationObserver(()=>{upd();setTimeout(upd,60);setTimeout(upd,500)}).observe(m,{attributes:true,attributeFilter:["hidden","class"],childList:true});
   const h=document.querySelector("header");new MutationObserver(()=>setTimeout(upd,380)).observe(h,{attributes:true,attributeFilter:["class"]})});
