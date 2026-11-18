@@ -828,6 +828,11 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .ov-slide img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;user-select:none}
 .ov-progress{width:100%!important;margin:0!important;justify-self:stretch}
 @media (max-width:640px){.ov-swipe{--h:calc(95vw / .8);margin-inline:-16px;width:auto;max-width:none}.ov-slides{align-items:flex-end}.ov-slide{width:95vw;height:auto;aspect-ratio:var(--r)}.ov-slides{scroll-padding-left:0}}
+/* project rows on Overview: no browser scrollbar, our thin line instead */
+.strip{scrollbar-width:none;padding-bottom:0}
+.strip::-webkit-scrollbar{display:none}
+.strip-progress{margin:0 0 0 calc(3.2em + 12px)!important;width:auto!important;justify-self:stretch!important;align-self:auto}
+@media (max-width:640px){.strip-progress{margin-left:0!important}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1227,6 +1232,11 @@ projects.forEach((p,pi)=>{if(p.hidden)return;
     const open=()=>openProject(pi,i);f.onclick=open;f.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();open()}};
     strip.appendChild(f);
   }
+  // same thin slider line as under the other swipe rows
+  {const ln=document.createElement("div");ln.className="pd-progress strip-progress";ln.setAttribute("aria-hidden","true");ln.innerHTML="<i></i>";strip.after(ln);
+   const bar=ln.firstChild,upd=()=>{const max=strip.scrollWidth-strip.clientWidth;ln.style.visibility=max>2?"visible":"hidden";
+     const frac=strip.clientWidth/Math.max(strip.scrollWidth,1);bar.style.width=(frac*100)+"%";bar.style.transform=`translateX(${(max>0?strip.scrollLeft/max:0)*(1/frac-1)*100}%)`};
+   strip.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);setTimeout(upd,300);setTimeout(upd,1500);upd()}
   addText();
   ov.appendChild(s);
 });
