@@ -19,14 +19,14 @@
 <style>
 /* Layout: quiet index of numbered projects, each a horizontal film-strip of frames; info and archive live in overlays */
 :root{
-  --bg:#fafaf9; --fg:#151514; --muted:#8b8a85; --line:#e3e2de; --frame:#efeeea; --accent:#8c2b1d; --glass:rgba(250,250,249,.62);
+  --bg:#fafaf9; --fg:#151514; --muted:#8b8a85; --line:#e3e2de; --frame:#efeeea; --accent:var(--fg); --glass:rgba(250,250,249,.62);
   --sans:"Figtree",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --serif:"Instrument Serif","Iowan Old Style",Georgia,serif;
   --fs-s:12px; --fs-m:14px; --fs-l:clamp(28px,4.2vw,52px);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#121211; --fg:#ecebe7; --muted:#83827d; --line:#2a2a28; --frame:#1c1c1b; --accent:#d4664f; --glass:rgba(18,18,17,.6); color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#121211; --fg:#ecebe7; --muted:#83827d; --line:#2a2a28; --frame:#1c1c1b; --accent:#d4664f; --glass:rgba(18,18,17,.6); color-scheme:dark}
+  --bg:#121211; --fg:#ecebe7; --muted:#83827d; --line:#2a2a28; --frame:#1c1c1b; --accent:var(--fg); --glass:rgba(18,18,17,.6); color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121211; --fg:#ecebe7; --muted:#83827d; --line:#2a2a28; --frame:#1c1c1b; --accent:var(--fg); --glass:rgba(18,18,17,.6); color-scheme:dark}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
