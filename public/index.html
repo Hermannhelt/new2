@@ -1361,7 +1361,7 @@ function openProduct(pr){curP=pr;
     else{if(pp)pp.style.padding="";if(mat)mat.style.padding=""}
     const inch=x=>x.map(n=>(Math.round(n/2.54*10)/10).toString()).join(" × ");
     document.getElementById("product-lines").innerHTML=
-      `<p>Signed, inscribed with title, numbered and dated on artist's label fixed to reverse</p><p>Archival pigment print</p>`+
+      `<p>Archival pigment print</p><p>Signed, inscribed with title, numbered and dated on artist's label fixed to reverse</p>`+
       `<p>Print ${dims.slice(0,2).join(" × ")} cm / ${inch(dims.slice(0,2))} inches</p><p>Image ${fmt(iw)} × ${fmt(ih)} cm without white border</p>`+
       `<p>Edition of ${edLabel(sz)}${sz.ap?"s":""} · ${pr.left[k]} available</p><p class="pd-price">${kr(sz.price)}</p>`;
     // thumbnails of the other views; tap one to show it large at the top
