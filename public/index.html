@@ -848,7 +848,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .feature:not(.no-thumbs).seen .feat-main img.on{transform:scale(1.06)}
 .sm-thumb video{width:100%;height:100%;object-fit:cover;display:block}
 /* ---- Workshop page: same parts as a print page ---- */
-#workshop{display:grid;gap:0;margin-top:-6px}
+#workshop{display:grid;gap:0;margin-top:-6px;padding-bottom:80px}
 #workshop[hidden]{display:none}
 .ws-img{display:grid;grid-template-columns:minmax(0,1fr)}
 .ws-slides{display:flex;gap:3px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
@@ -901,6 +901,10 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .ws-blocks a{text-decoration:underline;text-underline-offset:3px}
 /* phones: name on line 1, the whole menu on line 2 – never a third line */
 @media (max-width:640px){header nav,header nav .views{flex-wrap:nowrap!important;white-space:nowrap}header nav{min-width:0;overflow:visible}}
+.ws-bar{position:fixed;left:0;right:0;bottom:0;z-index:8;padding:10px max(16px,env(safe-area-inset-left,0px)) calc(12px + env(safe-area-inset-bottom,0px));transform:translateY(110%);transition:transform .45s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+.ws-bar.on{transform:none}
+.ws-bar .btn{display:flex;justify-content:space-between;align-items:center;height:48px;padding:0 18px;max-width:560px;width:100%;pointer-events:auto;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+@media (min-width:641px){.ws-bar{display:flex;justify-content:flex-start;padding-left:16px}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1572,6 +1576,12 @@ document.getElementById("v-comm").onclick=()=>{setView("c");scrollTo(0,0)};
      if(d.url){location.href=d.url;return}throw new Error(d.error||"Payment could not start")}
    catch(err){msg.textContent=err.message+". Please try again, or email ken@kenhermann.dk.";msg.hidden=false;bk.disabled=false}};
  bk.onclick=book;document.querySelectorAll("[data-ws-book]").forEach(a=>a.onclick=book);
+ // once you scroll past the Book button, a copy slides up from the bottom of the screen; scroll back up and it slides away
+ {const bar=document.createElement("div");bar.className="ws-bar";bar.setAttribute("aria-hidden","true");
+  bar.innerHTML='<button class="btn" type="button" tabindex="-1"><span>Book your place</span><span>€300 deposit</span></button>';document.body.appendChild(bar);
+  bar.querySelector("button").onclick=e=>{bar.querySelector("button").disabled=true;book(e).finally?.(()=>{bar.querySelector("button").disabled=false})};
+  const upd=()=>{const on=!wsEl.hidden&&bk.getBoundingClientRect().bottom<0;bar.classList.toggle("on",on);bar.setAttribute("aria-hidden",!on);bar.querySelector("button").tabIndex=on?0:-1};
+  addEventListener("scroll",upd,{passive:true});new MutationObserver(upd).observe(wsEl,{attributes:true,attributeFilter:["hidden"]});upd()}
  if(new URLSearchParams(location.search).get("workshop")==="booked"){history.replaceState(null,"",location.pathname+"#workshop");
    setTimeout(()=>{openWS();msg.textContent="Thank you – your deposit is received and your place is reserved. A confirmation email is on its way.";msg.hidden=false;
      setTimeout(()=>msg.scrollIntoView({block:"center"}),300)},0)}}
