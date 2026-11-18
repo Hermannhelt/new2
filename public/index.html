@@ -899,6 +899,8 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 @media (max-width:365px){header nav{column-gap:6px!important;font-size:10.5px!important}#v-shop,#v-ws{margin-left:4px!important}}
 .ws-lead{color:var(--fg);font-size:14px;line-height:1.45;margin-bottom:12px!important}
 .ws-blocks a{text-decoration:underline;text-underline-offset:3px}
+/* phones: name on line 1, the whole menu on line 2 – never a third line */
+@media (max-width:640px){header nav,header nav .views{flex-wrap:nowrap!important;white-space:nowrap}header nav{min-width:0;overflow:visible}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1967,6 +1969,11 @@ function addSlider(row){if(row._slider)return;const ln=document.createElement("d
     const frac=row.clientWidth/Math.max(row.scrollWidth,1);bar.style.width=(frac*100)+"%";bar.style.transform=`translateX(${(max>0?row.scrollLeft/max:0)*(1/frac-1)*100}%)`};
   row.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);new ResizeObserver(upd).observe(row);setTimeout(upd,300);setTimeout(upd,1500);upd()}
 document.querySelectorAll(".feat-thumbs,.ix-thumbs").forEach(addSlider);
+// if a phone renders the menu wider than the screen (bigger fonts, zoom), shrink it a little so Cart stays on line 2
+{const nav=document.querySelector("header nav");const fit=()=>{nav.style.fontSize="";if(innerWidth>640)return;
+   let fs=parseFloat(getComputedStyle(nav).fontSize),i=0;const room=()=>document.getElementById("open-cart").getBoundingClientRect().right<=innerWidth-8;
+   while(!room()&&fs>9&&i<12){fs-=.25;nav.style.fontSize=fs+"px";i++}};
+ addEventListener("resize",fit);document.fonts&&document.fonts.ready.then(fit);setTimeout(fit,400);fit()}
 </script>
 </body>
 </html>
