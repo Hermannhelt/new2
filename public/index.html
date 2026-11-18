@@ -37,7 +37,7 @@ button:focus-visible,a:focus-visible,.frame:focus-visible{outline:1px solid var(
 a{color:inherit;text-decoration:none}
 a:hover,button:hover{color:var(--accent)}
 .muted{color:var(--muted)}
-.paren::before{content:"( "}.paren::after{content:" )"}
+.paren::before,.paren::after{content:none}
 
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 /* overview: no bar behind the phone's status bar, the images run all the way up */
@@ -54,7 +54,7 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var
 header .name{font-weight:500}
 header nav{display:flex;flex-wrap:wrap;gap:8px 14px;justify-self:end;justify-content:flex-end}
 header .name{white-space:nowrap;text-transform:uppercase;letter-spacing:.12em}
-#open-menu[aria-expanded="true"],#v-shop[aria-expanded="true"]{color:var(--accent)}
+#open-menu[aria-expanded="true"],#v-shop[aria-expanded="true"]{color:var(--fg)}
 .submenu{position:fixed;left:0;right:0;top:var(--hdr-h,56px);z-index:6;display:flex;gap:14px;overflow-x:auto;background:var(--bg);border-bottom:1px solid var(--line);
   padding-block:16px 18px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));scrollbar-width:none}
 .sm-thumb{position:relative}
@@ -123,7 +123,7 @@ body.pm-open main,body.pm-open footer{opacity:.25}
   .strip .frame:hover,.strip .frame:focus-visible{opacity:1}
   .frame img{transition:transform .9s cubic-bezier(.2,.7,.2,1)}
   .frame:hover img,.frame:focus-visible img{transform:scale(1.05)}
-  .frame::after{content:"( View )";position:absolute;right:8px;bottom:6px;font-size:10px;letter-spacing:.06em;color:#fff;mix-blend-mode:difference;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+  .frame::after{content:"View";position:absolute;right:8px;bottom:6px;font-size:10px;letter-spacing:.06em;color:#fff;mix-blend-mode:difference;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
   .frame:hover::after,.frame:focus-visible::after{opacity:1;transform:none}
   .card .thumb img{transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s}
   .card:hover .thumb img,.card:focus-visible .thumb img{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,.2)}
@@ -532,8 +532,8 @@ footer{display:grid;gap:14px;font-size:var(--fs-s);color:var(--muted);padding-bl
 .info-blocks details{border-bottom:1px solid var(--line)}
 .info-blocks summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;padding:14px 0;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg)}
 .info-blocks summary::-webkit-details-marker{display:none}
-.info-blocks summary::after{content:"( + )";letter-spacing:0;color:var(--muted)}
-.info-blocks details[open] summary::after{content:"( − )"}
+.info-blocks summary::after{content:"+";letter-spacing:0;color:var(--muted)}
+.info-blocks details[open] summary::after{content:"−"}
 .info-blocks p{margin:0 0 16px;font-size:13px;line-height:1.6;color:var(--muted)}
 .info-blocks dl{margin:0 0 16px;display:grid;gap:12px}
 .info-blocks dt{font-size:13px;color:var(--fg)}
@@ -748,6 +748,16 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 .pd-dots i.on{background:var(--fg);opacity:.75}
 .pd-card,.pd-card:hover,.pd-card:active,.pd-card:focus{color:var(--fg)!important}.pd-card:hover .pd-card-t,.pd-card:active .pd-card-t{color:var(--fg)!important}
 .pd-foot .foot-links [data-terms]{display:none}
+/* Header D: light, plain words, one thin line under the item in use */
+header nav{font-weight:300;font-size:13px;column-gap:16px}
+header nav .views{gap:16px}
+#v-shop{margin-left:0;color:var(--fg)}
+header nav button{text-decoration:none!important}
+.views button[aria-pressed="true"],#open-menu[aria-expanded="true"],#v-shop[aria-expanded="true"],#open-info[aria-expanded="true"],#open-cart[aria-expanded="true"]{color:var(--fg);text-decoration:underline!important;text-decoration-thickness:1px!important;text-underline-offset:5px!important}
+header nav:has(#open-menu[aria-expanded="true"]) .views button[aria-pressed="true"],header nav:has(#v-shop[aria-expanded="true"]) .views button[aria-pressed="true"]:not(#v-shop){text-decoration:none!important}
+@media (max-width:640px){header nav{column-gap:14px}header nav .views{gap:14px}#v-shop{margin-left:0}}
+@media (max-width:384px){header nav{font-size:12px;column-gap:11px}header nav .views{gap:11px}}
+@media (max-width:370px){header nav{font-size:11.5px;column-gap:9px}header nav .views{gap:9px}#v-shop{margin-left:0}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -783,12 +793,12 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
   <a href="#top" class="name">Ken Hermann</a>
   <span class="role muted">Photographer &amp; Director</span>
   <nav>
-    <button id="open-menu" aria-expanded="false" aria-controls="submenu">Selects ( + )</button>
+    <button id="open-menu" aria-expanded="false" aria-controls="submenu">Selects</button>
     <button id="v-comm" aria-pressed="false" hidden>Commissions</button>
     <div class="views" role="group" aria-label="View">
-      <button id="v-overview" aria-pressed="true">Overview</button><span class="muted">/</span>
+      <button id="v-overview" aria-pressed="true">Overview</button>
       <button id="v-index" aria-pressed="false">Index</button>
-      <button id="v-shop" aria-pressed="false" aria-expanded="false" aria-controls="printmenu">Prints ( + )</button>
+      <button id="v-shop" aria-pressed="false" aria-expanded="false" aria-controls="printmenu">Prints</button>
     </div>
     <button id="open-info" class="paren">Info</button>
     <button id="open-cart" class="paren">Cart <span id="cart-count">0</span></button>
@@ -988,7 +998,7 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
       <form id="nl-form" novalidate>
         <label for="nl-email" class="sr" style="position:absolute;left:-9999px">Email address</label>
         <input id="nl-email" type="email" placeholder="Your email address" autocomplete="email" required>
-        <button type="submit">Subscribe ( → )</button>
+        <button type="submit">Subscribe →</button>
       </form>
       <p class="nl-err" id="nl-err" hidden>Enter a valid email address, like name@example.com.</p>
       <p class="nl-small" style="margin-top:10px">You can unsubscribe at any time.</p>
@@ -1247,7 +1257,7 @@ function openSeries(k){const se=seriesList[k],pr0=se.items[0];
   setView("s");seriesWrap.hidden=true;shopHead.hidden=true;
   seriesDetail.innerHTML=`<div class="pv-head"><button class="pv-back paren" id="sd-back">All prints</button>
       <span class="numeral">${ROMAN[k]}</span><h1>${se.name}</h1></div>
-    <p class="sd-intro">Archival pigment prints, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full photo project ( → )</button>`}</p>
+    <p class="sd-intro">Archival pigment prints, signed and numbered. ${projects[pr0.pi].hidden?"":`<button class="sd-proj" id="sd-proj">See the full photo project →</button>`}</p>
     <div class="grid sd-grid"></div>`;
   const g=seriesDetail.querySelector(".grid");
   se.items.forEach(pr=>{const b=document.createElement("button");b.className="card";
@@ -1507,7 +1517,7 @@ function renderMenu(){
     else{el.style.opacity="";el.style.transform="";el.classList.remove("current")}});
   if(full&&!wasFull)smItems.forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""});
   wasFull=full;
-  const vis=!sm.hidden;smBtn.setAttribute("aria-expanded",vis);smBtn.textContent=vis?"Selects ( − )":"Selects ( + )";
+  const vis=!sm.hidden;smBtn.setAttribute("aria-expanded",vis);smBtn.textContent="Selects";
 }
 function menu(open){manualOpen=open;if(open&&window.closePrintMenu)window.closePrintMenu();if(open){openedAt=Date.now();openedY=scrollY;userClosed=false}renderMenu()}
 let openedY=0;
@@ -1613,9 +1623,9 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
   dragScroll(pm);
   let t=null;
   let openedAt2=0;
-  function open(){if(!pm.hidden)return;openedAt2=Date.now();if(manualOpen)menu(false);pm.hidden=false;btn.setAttribute("aria-expanded",true);document.body.classList.add("pm-open");btn.textContent="Prints ( − )";
+  function open(){if(!pm.hidden)return;openedAt2=Date.now();if(manualOpen)menu(false);pm.hidden=false;btn.setAttribute("aria-expanded",true);document.body.classList.add("pm-open");btn.textContent="Prints";
     pm.querySelectorAll(".sm-item").forEach(el=>{el.style.animation="none";void el.offsetWidth;el.style.animation=""})}
-  function close(){pm.hidden=true;document.body.classList.remove("pm-open");btn.setAttribute("aria-expanded",false);btn.textContent="Prints ( + )"}
+  function close(){pm.hidden=true;document.body.classList.remove("pm-open");btn.setAttribute("aria-expanded",false);btn.textContent="Prints"}
   window.closePrintMenu=close;window.openPrintMenu=open;
   if(matchMedia("(hover:hover)").matches){
     btn.addEventListener("mouseenter",()=>{clearTimeout(t);open()});
