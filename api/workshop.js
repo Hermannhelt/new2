@@ -10,7 +10,9 @@ const WORKSHOP = {
 };
 
 module.exports = async (req, res) => {
-  if (req.method !== "POST") { res.status(405).json({ error: "Method not allowed" }); return; }
+  // POST from the Book button returns the Stripe URL; GET (a plain link, e.g. in the PDF) redirects straight to Stripe
+  const isLink = req.method === "GET";
+  if (!isLink && req.method !== "POST") { res.status(405).json({ error: "Method not allowed" }); return; }
   if (!process.env.STRIPE_SECRET_KEY) { res.status(500).json({ error: "Payment is not set up yet" }); return; }
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   try {
@@ -40,9 +42,11 @@ module.exports = async (req, res) => {
       success_url: `${origin}/?workshop=booked#workshop`,
       cancel_url: `${origin}/#workshop`,
     });
+    if (isLink) { res.setHeader("Cache-Control", "no-store"); res.writeHead(303, { Location: session.url }); res.end(); return; }
     res.status(200).json({ url: session.url });
   } catch (err) {
     console.error(err);
+    if (isLink) { res.writeHead(303, { Location: "/#workshop" }); res.end(); return; }
     res.status(400).json({ error: "Checkout could not be created" });
   }
 };
