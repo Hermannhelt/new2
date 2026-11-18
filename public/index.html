@@ -837,6 +837,9 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .feat-thumbs::-webkit-scrollbar{display:none}
 .row-progress{margin-top:0!important;justify-self:start!important;align-self:auto}
 .ix-thumbs{padding-bottom:0!important}
+/* Portraits thumbnails: no red marker, no gap under them */
+.feat-thumbs button{border-bottom:0!important;padding:0!important}
+.feat-thumbs button::after{display:none!important}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
