@@ -799,6 +799,10 @@ body.info-open main,body.info-open footer{opacity:.25;transition:opacity .4s eas
 body.info-open.pd-open .product::after{opacity:.75}
 #open-info::after{content:"+";display:inline-block;margin-left:3px;font-weight:300}
 #open-info[aria-expanded="true"]::after{content:"−"}
+/* Selects open: fade the page behind, like Prints */
+main,footer{transition:opacity .4s ease}
+body:has(#submenu:not([hidden]):not(.compact)) main,body:has(#submenu:not([hidden]):not(.compact)) footer{opacity:.25}
+body.pd-open:has(#submenu:not([hidden]):not(.compact)) .product::after{opacity:.75}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
