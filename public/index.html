@@ -1377,8 +1377,8 @@ function openProduct(pr){curP=pr;
        el.querySelector(".pd-card-t").textContent=o.title;
        el.onclick=()=>{openProduct(o);prod.scrollTo(0,0)};g.appendChild(el)});
      // little dash pager under the carousel
-     const n=Math.max(1,Math.ceil(others.length/2));if(n>1){g.insertAdjacentHTML("afterend",`<div class="pd-dots" aria-hidden="true">${"<i></i>".repeat(n)}</div>`);
-       const dots=mo.querySelectorAll(".pd-dots i"),upd=()=>{const max=g.scrollWidth-g.clientWidth,k=max>0?Math.round(g.scrollLeft/max*(n-1)):0;dots.forEach((d,i)=>d.classList.toggle("on",i===k))};
+     const n=others.length;if(n>1){g.insertAdjacentHTML("afterend",`<div class="pd-dots" aria-hidden="true">${"<i></i>".repeat(n)}</div>`);
+       const dots=mo.querySelectorAll(".pd-dots i"),upd=()=>{const max=g.scrollWidth-g.clientWidth,step=g.children[1]?g.children[1].offsetLeft-g.children[0].offsetLeft:1,k=g.scrollLeft>=max-2?n-1:Math.round(g.scrollLeft/step);dots.forEach((d,i)=>d.classList.toggle("on",i===k))};
        g.addEventListener("scroll",upd,{passive:true});upd()}}
    if(se)mo.insertAdjacentHTML("beforeend",seriesText(se.name));
    mo.insertAdjacentHTML("beforeend",seriesNext(se&&se.name));wireSeriesNext(mo)}
