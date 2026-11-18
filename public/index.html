@@ -787,7 +787,7 @@ header nav .views{gap:3px!important}
 header nav{position:relative}
 header nav button{text-decoration:none!important}
 #nav-line{position:absolute;left:0;top:0;height:1px;width:0;background:var(--fg);pointer-events:none;opacity:0;transition:transform .45s cubic-bezier(.3,.7,.2,1),width .45s cubic-bezier(.3,.7,.2,1),opacity .3s ease}
-#nav-line.on{opacity:1}
+#nav-line.on{opacity:.75}
 /* Info rolls down under the menu bar, like Selects and Prints; the page behind fades */
 #panel{top:var(--hdr-h,56px);left:0;right:0;bottom:auto;width:auto;max-height:calc(100dvh - var(--hdr-h,56px));border-left:0;border-bottom:1px solid var(--line);z-index:25;
   padding:22px max(16px,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
@@ -1782,7 +1782,7 @@ document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)ret
  const place=()=>{const t=target();if(!t||!t.offsetParent){ln.classList.remove("on");return}
    const tn=[...t.childNodes].find(n=>n.nodeType===3&&n.textContent.trim());const r=document.createRange();r.selectNodeContents(tn||t);
    const w=r.getBoundingClientRect(),n=nav.getBoundingClientRect();
-   ln.style.transform=`translate(${w.left-n.left}px,${w.bottom-n.top+4}px)`;ln.style.width=w.width+"px";ln.classList.add("on")};
+   ln.style.transform=`translate(${Math.round(w.left-n.left)}px,${Math.round(w.bottom-n.top+4)}px)`;ln.style.width=Math.round(w.width)+"px";ln.classList.add("on")};
  new MutationObserver(place).observe(nav,{subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-expanded","hidden"]});
  addEventListener("resize",place);document.fonts&&document.fonts.ready.then(place);setTimeout(place,300);place()}
 // dashes under the dropdown thumbnails, one per picture, following the swipe
