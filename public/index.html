@@ -771,6 +771,12 @@ header nav #v-shop{margin-left:11px!important}
 @media (max-width:640px){header nav #v-shop{margin-left:9px!important}}
 @media (max-width:384px){header nav .views{gap:4px!important}header nav #v-shop{margin-left:7px!important}}
 @media (max-width:370px){header nav .views{gap:3px!important}header nav #v-shop{margin-left:6px!important}}
+/* Read buttons: same type as the header menu, + that turns into − when open, no colour change */
+.p-toggle{font-family:var(--sans);font-weight:300;font-size:13px;color:var(--fg)}
+.p-toggle:hover,.p-toggle:active,.p-toggle:focus{color:var(--fg)}
+.p-toggle::after{content:"+";display:inline-block;margin-left:3px}
+.p-toggle[aria-expanded="true"]::after{content:"−"}
+@media (max-width:384px){.p-toggle{font-size:12px}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1126,7 +1132,7 @@ projects.forEach((p,pi)=>{if(p.hidden)return;
   const addText=()=>{if(!p.text)return;const t=document.createElement("div");t.className="p-text";
     t.innerHTML=`<button class="paren p-toggle" aria-expanded="false">Read</button><div class="p-more" hidden>${p.sub?`<p class="coda sub">${p.sub}</p>`:""}${p.text.map(x=>`<p>${x}</p>`).join("")}${p.coda?`<p class="coda">${p.coda}</p>`:""}${p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`;
     const b=t.querySelector(".p-toggle"),m=t.querySelector(".p-more");
-    b.onclick=()=>{m.hidden=!m.hidden;b.setAttribute("aria-expanded",!m.hidden);b.textContent=m.hidden?"Read":"Close"};
+    b.onclick=()=>{m.hidden=!m.hidden;b.setAttribute("aria-expanded",!m.hidden);};
     s.appendChild(t)};
   if(p.layout==="video"){s.querySelector(".strip").remove();
     const v=document.createElement("div");v.className="vid";
