@@ -1112,7 +1112,7 @@ const projects=[
       "Some of the street characters do a really good job acting as look-alikes, and they actually look a lot like some of the big Hollywood stars, while others just look like silly grown-ups in poor and dirty costumes. Most of the street characters have one thing in common, though. They are – or once were – pursuing the American dream of becoming someone special and famous. And it is this struggle, mixed with the childish fantasy world, I find interesting.",
       "When I first visited Hollywood Boulevard, I was fascinated by the big contrast between the good look-alikes and the poor ones. I also noticed that the success of the street characters wasn’t about being the most perfect character – it also depended upon acting as the most hyped or popular character, or maybe just having a fun and crazy attitude.",
       "My idea was to give the viewer a glimpse of the person behind the mask and to show a more serious aspect of the character. Normally the street characters are pictured with a funny face in lively settings, but instead I was aiming for the more personal expression of the real person behind the mask. In order to enhance this, several of the portraits were also taken in the characters’ own homes or neighbourhoods."],start:7,client:"Los Angeles",date:null,n:13,img:i=>`img/hollywood/hollywood-${String(i+1).padStart(2,"0")}.jpg`,ratios:[1.266,0.731,0.763,1.386,1.475,0.741,0.769,1.439,0.74,0.747,1.505,0.759,1.427]},
-  {title:"Flower Shop",layout:"feature",cover:{src:"img/flowers/flower-shop-cover.gif",r:525/700},client:"Hanoi",
+  {title:"Flower Shop",layout:"feature",swipe:true,cover:{src:"img/flowers/flower-shop-cover.gif",r:525/700},client:"Hanoi",
     text:["Flower Shop is an exhibition of an art photography series by Danish photographer Ken Hermann, depicting the bicycle flower sellers of Hanoi.",
       "In Hanoi, the bicycle flower sellers are not just vendors; they are keepers of tradition. Ken Hermann’s work seeks to encapsulate this relationship between nature and urbanity. Through a combination of candid street photography and carefully composed images, he conveys their daily lives into a work of art."],
     coda:"To recognize the extraordinary within the ordinary.",date:null,n:10,img:i=>`img/flowers/flower-shop-${String(i+1).padStart(2,"0")}.jpg`,ratios:[0.774,0.774,0.75,0.75,0.75,0.75,0.75,0.75,0.75,0.75]},
@@ -1139,8 +1139,8 @@ function buildSwipe(s,p,pi){
   const w=document.createElement("div");w.className="ov-swipe";
   const r=i=>p.ratios?p.ratios[i]:(p.ratio||.8);
   // every picture cropped to the first one's format here (originals stay untouched in the project); wide pictures are left out
-  const r0=r(0),idx=Array.from({length:p.n},(_,i)=>i).filter(i=>r(i)<=1),N=idx.length;
-  w.innerHTML=`<div class="ov-slides">${idx.map(i=>`<button class="ov-slide" data-i="${i}" style="--r:${r0}" aria-label="${p.title}, image ${i+1} of ${p.n}"><img src="${p.img(i)}" alt="" loading="${i<2?"eager":"lazy"}"></button>`).join("")}</div><div class="pd-progress ov-progress" aria-hidden="true"><i style="width:${100/N}%"></i></div>`;
+  const r0=r(0),idx=Array.from({length:p.n},(_,i)=>i).filter(i=>r(i)<=1),N=idx.length+(p.cover?1:0);
+  w.innerHTML=`<div class="ov-slides">${p.cover?`<button class="ov-slide" data-i="0" style="--r:${r0}" aria-label="${p.title}"><img src="${p.cover.src}" alt="" loading="eager"></button>`:""}${idx.map(i=>`<button class="ov-slide" data-i="${i}" style="--r:${r0}" aria-label="${p.title}, image ${i+1} of ${p.n}"><img src="${p.img(i)}" alt="" loading="${i<2?"eager":"lazy"}"></button>`).join("")}</div><div class="pd-progress ov-progress" aria-hidden="true"><i style="width:${100/N}%"></i></div>`;
   s.appendChild(w);
   const sl=w.querySelector(".ov-slides"),bar=w.querySelector(".ov-progress i");
   const upd=()=>{const max=sl.scrollWidth-sl.clientWidth;bar.style.transform=`translateX(${(max>0?sl.scrollLeft/max:0)*(N-1)*100}%)`};
