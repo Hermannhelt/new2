@@ -1234,6 +1234,13 @@ function info(open){panel.classList.toggle("open",open);panel.setAttribute("aria
   if(open){window.closePrintMenu&&window.closePrintMenu();const sm=document.getElementById("open-menu");if(sm.getAttribute("aria-expanded")==="true")sm.click();
     const h=document.querySelector("header");h.classList.remove("hide");panel.scrollTop=0}}
 window.closeInfo=()=>info(false);
+// scrolling the page while Info is open closes it
+{let y0=0;new MutationObserver(()=>{if(panel.classList.contains("open"))y0=scrollY}).observe(panel,{attributes:true,attributeFilter:["class"]});
+ addEventListener("scroll",()=>{if(panel.classList.contains("open")&&Math.abs(scrollY-y0)>40)info(false)},{passive:true});
+ panel.addEventListener("wheel",e=>{if(panel.scrollTop<=0&&e.deltaY<-10)info(false)},{passive:true});
+ let ty=0;panel.addEventListener("touchstart",e=>{ty=e.touches[0].clientY},{passive:true});
+ panel.addEventListener("touchmove",e=>{const dy=e.touches[0].clientY-ty;const atEnd=panel.scrollTop+panel.clientHeight>=panel.scrollHeight-2;
+   if((panel.scrollTop<=0&&dy>50)||(atEnd&&dy<-50))info(false)},{passive:true})}
 document.addEventListener("click",e=>{if(panel.classList.contains("open")&&!e.target.closest("#panel,header,.panel,#zoomer")){e.preventDefault();e.stopPropagation();info(false)}},true);
 document.getElementById("open-info").onclick=()=>info(!panel.classList.contains("open"));
 document.getElementById("open-menu").addEventListener("click",()=>{if(panel.classList.contains("open"))info(false)},true);
