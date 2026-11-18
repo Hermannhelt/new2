@@ -847,6 +847,56 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .feature:not(.no-thumbs) .feat-bar{display:none}
 .feature:not(.no-thumbs).seen .feat-main img.on{transform:scale(1.06)}
 .sm-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+/* ---- Workshop page: same parts as a print page ---- */
+#workshop{display:grid;gap:0;margin-top:-6px}
+#workshop[hidden]{display:none}
+.ws-img{display:grid;grid-template-columns:minmax(0,1fr)}
+.ws-slides{display:flex;gap:3px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.ws-slides::-webkit-scrollbar{display:none}
+.ws-slides img{flex:0 0 auto;height:min(78vh,820px);width:auto;max-width:none;object-fit:cover;scroll-snap-align:start;display:block}
+.ws-progress{width:100%!important;margin:0!important;justify-self:stretch}
+.ws-info{max-width:560px;padding-top:18px;font-family:"Figtree",var(--sans);font-weight:300}
+.ws-title{font-family:"Figtree",var(--sans);font-weight:300;font-size:15.5px;line-height:1.35;margin:0 0 18px}
+.ws-title i{font-style:italic}
+.ws-lines{font-size:13px;line-height:18px;color:var(--muted)}
+.ws-lines p{margin:0 0 6px}
+.ws-price{margin-top:10px!important}
+.ws-book{display:flex;justify-content:space-between;align-items:center;height:48px;padding:0 18px;margin-top:22px;text-decoration:none;max-width:none}
+#workshop .note{text-align:left}
+.ws-blocks{max-width:none;margin-top:8px}
+.ws-blocks p{font-size:13px;line-height:1.55}
+.ws-blocks b{font-weight:500}
+.ws-day{margin:4px 0 16px}
+.ws-day>b{display:block;font-weight:400;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px}
+.ws-day dl{display:grid;grid-template-columns:84px 1fr;gap:6px 12px;margin:0;font-size:13px;line-height:1.45}
+.ws-day dt{color:var(--muted)}
+.ws-day dd{margin:0;color:var(--muted)}
+.ws-day dd span{display:block;color:var(--fg)}
+.ws-small{font-size:12px!important;color:var(--muted);font-style:italic}
+.ws-more,.ws-quotes{margin-top:46px}
+.ws-cards{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.ws-cards::-webkit-scrollbar{display:none}
+.ws-cards figure{flex:0 0 44%;margin:0;scroll-snap-align:start}
+.ws-cards img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+.ws-cards figcaption{margin-top:10px;font-size:13.5px}
+@media (min-width:641px){.ws-cards figure{flex-basis:30%}}
+.ws-progress2{width:100%!important;margin:16px 0 0!important}
+.ws-quotes blockquote{margin:0 0 22px}
+.ws-quotes blockquote p{margin:0 0 6px;font-size:14px;line-height:1.55;font-style:italic}
+.ws-quotes cite{font-style:normal;font-size:12px;color:var(--muted)}
+.ws-q{font-size:13px;line-height:1.55;color:var(--muted);margin:30px 0 10px}
+@media (max-width:640px){.ws-img{margin:0 -16px}.ws-slides img{height:auto;width:95vw;aspect-ratio:4/5}}
+/* small line on Overview pointing to the workshop */
+.ws-teaser{font-family:"Figtree",var(--sans);font-weight:300;font-size:12.5px;margin:2px 0 5vh;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ws-teaser[hidden]{display:none}
+.ws-teaser button{font:inherit;color:var(--fg);padding:0}
+.ws-badge{display:inline-block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--fg);padding:2px 6px;line-height:1.3;cursor:pointer}
+#v-ws{margin-left:11px;color:var(--fg)!important}
+@media (max-width:640px){#v-ws{margin-left:9px}}
+/* header with Workshop: tighter so everything stays on one line on phones */
+@media (max-width:640px){header nav{column-gap:10px!important;font-size:11.5px!important}#v-shop,#v-ws{margin-left:7px!important}header nav .views{gap:2px!important}}
+@media (max-width:384px){header nav{column-gap:8px!important;font-size:11px!important}#v-shop,#v-ws{margin-left:5px!important}}
+@media (max-width:365px){header nav{column-gap:6px!important;font-size:10.5px!important}#v-shop,#v-ws{margin-left:4px!important}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -888,6 +938,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
       <button id="v-overview" aria-pressed="true">Overview</button><span class="muted">/</span>
       <button id="v-index" aria-pressed="false">Index</button>
       <button id="v-shop" aria-pressed="false" aria-expanded="false" aria-controls="printmenu">Prints</button>
+      <button id="v-ws" aria-pressed="false">Workshop</button>
     </div>
     <button id="open-info" class="paren" aria-expanded="false" aria-controls="panel">Info</button>
     <button id="open-cart" class="paren">Cart <span id="cart-count">0</span></button>
@@ -898,6 +949,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 
 <main id="top">
   <p class="intro">Photographer and director working across advertising, editorial and fine art — between <em>Copenhagen</em> and wherever the work leads.</p>
+  <p class="ws-teaser" id="ws-teaser"><button>Spring workshop, Strömsborg · April 1–4, 2027</button><span class="ws-badge">Book</span></p>
   <section id="overview" aria-label="Selected projects"></section>
   <section id="index" class="index" aria-label="Archive" hidden></section>
   <section id="project" aria-label="Project" hidden></section>
@@ -929,6 +981,51 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
         <div><h3>About the works</h3><p>These works are available as limited editions. Each print is hand-signed and numbered, and all prints larger than A2 include a certificate of authenticity. Prints are sold unframed unless stated otherwise, but custom framing can be provided upon request.</p></div>
       </div>
     </section>
+  </section>
+  <section id="workshop" aria-label="Workshop" hidden>
+    <div class="ws-img"><div class="ws-slides" id="ws-slides">
+      <img src="img/workshop/house.jpg" alt="Strömsborg, the house by the lake" style="object-position:50% 60%">
+      <img src="img/flowermen/flower-men-12.jpg" alt="Flower Men">
+      <img src="img/workshop/kitchen.jpg" alt="The kitchen" loading="lazy">
+      <img src="img/workshop/sauna.jpg" alt="The sauna" loading="lazy">
+      <img src="img/workshop/rooms.jpg" alt="A bedroom" loading="lazy">
+      <img src="img/workshop/bokh.jpg" alt="Bökh" loading="lazy">
+    </div><div class="pd-progress ws-progress" aria-hidden="true"><i></i></div></div>
+    <div class="ws-info">
+      <p class="pd-artist">Ken Hermann</p>
+      <p class="pd-series">Photography Workshop</p>
+      <h2 class="ws-title"><i>Strömsborg</i>, April 1–4, 2027</h2>
+      <div class="ws-lines"><p>A 3-day portrait photography workshop in the Swedish countryside, two hours from Copenhagen Airport. Studio and location, natural light, flash and continuous light.</p><p>5–10 participants · Accommodation and all meals included</p><p class="ws-price">Early bird €1,600 before January 1, 2027 · €1,900</p></div>
+      <a class="btn ws-book" href="https://www.paypal.com/ncp/payment/2F9YCADQBNWWE" target="_blank" rel="noopener"><span>Book your place</span><span>€300 deposit</span></a>
+      <p class="note">Include your name and “Workshop April 2027” in the payment note. You will receive a confirmation email once your payment is received.</p>
+      <div class="info-blocks ws-blocks">
+        <details><summary>Who is it for</summary><p>This workshop is designed for both amateur and professional photographers, as well as anyone passionate about photography who wishes to enhance their ability to create stunning images. Participants should have a basic understanding of their cameras and equipment, including basic post-production knowledge. The main focus of the workshop will be portraiture and working with light in both studio and on location.</p></details>
+        <details><summary>What you will learn</summary><p>Ken will help you discover your unique photographic vision by sharing his extensive experience, guiding you in defining your style, lighting techniques and creative process. The workshop is relaxed and hands-on, blending technical skill with a poetic appreciation of light, with plenty of practical shooting and personal feedback.</p>
+          <p><b>Mastering light.</b> Experiment with different lighting techniques and sources, and learn how they affect your image and help you find your personal voice.</p>
+          <p><b>Mastering portraiture.</b> Ken shares his personal approach and practical tips for connecting with subjects in new environments. We will use each other as subjects and have one shoot with a model.</p>
+          <p><b>Editing and post production.</b> Learn essential techniques for getting the most out of your digital files and refining your own photographic style.</p></details>
+        <details><summary>Itinerary</summary>
+          <div class="ws-day"><b>Day 1 – Thursday</b><dl><dt>16:00</dt><dd><span>Arrival</span>Welcome and introductions.</dd><dt>18:30</dt><dd><span>Dinner</span></dd><dt></dt><dd><span>Cinematic Lighting</span>An introduction to cinematic lighting and how and why I use light in my work. We’ll go through lighting equipment and which setups and tools suit different assignments and locations.</dd><dt>Evening</dt><dd><span>Social – getting to know each other</span></dd></dl></div>
+          <div class="ws-day"><b>Day 2 – Friday</b><dl><dt>08:00–09:00</dt><dd><span>Breakfast</span></dd><dt>Morning</dt><dd><span>Location shoot – “Bilkirkegården”</span>Working with flash and daylight: shaping and controlling natural light while introducing artificial light.</dd><dt>13:00</dt><dd><span>Lunch</span></dd><dt>Afternoon</dt><dd><span>Location shoot – “Værkstedet”</span>A cinematic lighting session focused on creating atmosphere, depth and mood on location.</dd><dt>19:00</dt><dd><span>Dinner</span></dd><dt></dt><dd><span>Review &amp; Debrief</span>Going through the day’s images together and sharing experiences and ideas.</dd><dt>Evening</dt><dd><span>Social</span></dd></dl></div>
+          <div class="ws-day"><b>Day 3 – Saturday</b><dl><dt>08:00–09:00</dt><dd><span>Breakfast</span></dd><dt>Morning</dt><dd><span>Location shoot – “The Bridge”</span>A hands-on location shoot exploring light, composition and storytelling.</dd><dt>13:00</dt><dd><span>Lunch</span></dd><dt>Afternoon</dt><dd><span>Group session – “The Forest”</span>Working in groups on location, creating images and experimenting with different approaches to lighting and storytelling.</dd><dt></dt><dd><span>Studio session</span>Shooting in the studio with natural light, continuous light, strobes and unconventional lighting techniques.</dd><dt>19:00</dt><dd><span>Dinner</span></dd><dt></dt><dd><span>Review &amp; Debrief</span>Going through the day’s images together and sharing experiences and ideas.</dd><dt>Evening</dt><dd><span>Social</span></dd></dl></div>
+          <div class="ws-day"><b>Day 4 – Sunday</b><dl><dt>08:00–09:00</dt><dd><span>Breakfast</span></dd><dt>10:00–11:00</dt><dd><span>Wrap-up &amp; goodbye</span></dd></dl></div>
+          <p class="ws-small">This itinerary is a guide only. The program, locations and timings may change depending on the weather, light and the group.</p></details>
+        <details><summary>The place</summary><p>The workshop takes place in an ideal setting – Ken’s house Strömsborg by the lake, surrounded by the stunning Swedish countryside in Småland, just two hours from Copenhagen Airport. The house accommodates up to 20 people. There is a Yoga Shala that doubles as a photo studio, as well as a sauna and beautiful natural surroundings for relaxation between sessions. Hosting the workshop here keeps costs reasonable by eliminating hotel expenses.</p></details>
+        <details><summary>What’s included</summary><p><b>Included.</b> Accommodation (private rooms with shared bathrooms), all meals and snacks cooked by Ken, beverages (alcoholic and non-alcoholic).</p><p><b>Not included.</b> International airfare and transport to the house. Copenhagen Airport is 2 hours from the house – Ken will help arrange shared transport if necessary.</p><p><b>Equipment.</b> Please bring your own laptop and camera; studio lighting will be provided at the workshop.</p></details>
+        <details><summary>Payment &amp; cancellation</summary><p>To reserve your spot, pay the €300 deposit. Please include your name and “Workshop April 2027” in the payment note. You will receive a confirmation email once your payment is received.</p><p>The €300 deposit is non-refundable and secures your place. By 1 February 2027 I will confirm that the workshop is going ahead. The remaining balance is due by 15 February 2027.</p><p>Cancellations before 15 February 2027: the balance is refunded, the deposit is retained. Cancellations on or after 15 February 2027 are non-refundable.</p><p>Your place can be transferred to another person, or your deposit moved to a future workshop.</p><p>If the workshop is cancelled by me, including if the minimum number of participants is not reached by 1 February 2027, you will receive a full refund.</p><p>Payments can also be made via Wise or direct bank transfer – email me for details.</p></details>
+      </div>
+      <div class="ws-more"><p class="pd-more-h">The house</p><div class="ws-cards" id="ws-cards">
+        <figure><img src="img/workshop/kitchen.jpg" alt="" loading="lazy"><figcaption>Kitchen</figcaption></figure>
+        <figure><img src="img/workshop/sauna.jpg" alt="" loading="lazy"><figcaption>Sauna</figcaption></figure>
+        <figure><img src="img/workshop/rooms.jpg" alt="" loading="lazy"><figcaption>Rooms</figcaption></figure>
+        <figure><img src="img/workshop/house.jpg" alt="" loading="lazy"><figcaption>The lake</figcaption></figure>
+      </div><div class="pd-progress ws-progress2" aria-hidden="true"><i></i></div></div>
+      <div class="ws-quotes"><p class="pd-more-h">Participants say</p>
+        <blockquote><p>“What truly sets Ken's workshop apart is that he actively demonstrates his creative process. Unlike other workshops where the photographer simply critiques your photos and stays on the sidelines, Ken is fully engaged — you get to witness an artist at work. On top of that, the experience includes three days of incredible food, all personally prepared by Ken, in a location so stunning you'll never want to leave.”</p><cite>Christian Palm, spring workshop 2025</cite></blockquote>
+        <blockquote><p>“I arrived with the feeling that I had become a little stuck in my creativity and in my way of photographing, but I left with an open mind and renewed inspiration. For me, this was the best photography workshop I have ever attended!”</p><cite>Laurry Ramirez, fall workshop 2026</cite></blockquote>
+      </div>
+      <p class="ws-q">Questions? Email ken@kenhermann.com. Detailed workshop information, including packing and equipment lists, will be sent as the workshop dates approach.</p>
+    </div>
   </section>
 </main>
 
@@ -1453,6 +1550,17 @@ setView=function(v){projEl.querySelectorAll("video").forEach(x=>x.pause());projE
   if(v==="c"){ov.hidden=true;document.getElementById("index").hidden=true;vO.setAttribute("aria-pressed",false);vI.setAttribute("aria-pressed",false)}};
 vO.onclick=()=>setView("o");vI.onclick=()=>setView("i");
 document.getElementById("v-comm").onclick=()=>{setView("c");scrollTo(0,0)};
+// ---- Workshop view ----
+{const wsEl=document.getElementById("workshop"),vW=document.getElementById("v-ws"),_sv=setView;
+ setView=function(v){_sv(v);wsEl.hidden=v!=="w";vW.setAttribute("aria-pressed",v==="w");
+   if(v==="w"){ov.hidden=true;document.getElementById("index").hidden=true;document.querySelector(".intro").hidden=true;vO.setAttribute("aria-pressed",false);vI.setAttribute("aria-pressed",false)}
+   document.getElementById("ws-teaser").hidden=v!=="o"};
+ const openWS=()=>{if(typeof prod!=="undefined")prod.hidden=true;window.closePrintMenu&&window.closePrintMenu();window.closeInfo&&window.closeInfo();setView("w");scrollTo(0,0)};
+ vW.onclick=openWS;document.querySelector("#ws-teaser").onclick=openWS;
+ const line=(row,bar)=>{const upd=()=>{const max=row.scrollWidth-row.clientWidth,n=row.children.length;bar.style.width=(100/n)+"%";bar.style.transform=`translateX(${(max>0?row.scrollLeft/max:0)*(n-1)*100}%)`};row.addEventListener("scroll",upd,{passive:true});upd()};
+ line(document.getElementById("ws-slides"),wsEl.querySelector(".ws-progress i"));line(document.getElementById("ws-cards"),wsEl.querySelector(".ws-progress2 i"));
+ if(typeof dragScroll==="function"){}
+ if(location.hash==="#workshop")openWS()}
 try{const v=localStorage.getItem("view");if(v)setView(v)}catch(e){}
 
 const prod=document.getElementById("product");let curP=null;
