@@ -788,6 +788,17 @@ header nav{position:relative}
 header nav button{text-decoration:none!important}
 #nav-line{position:absolute;left:0;top:0;height:1px;width:0;background:var(--fg);pointer-events:none;opacity:0;transition:transform .45s cubic-bezier(.3,.7,.2,1),width .45s cubic-bezier(.3,.7,.2,1),opacity .3s ease}
 #nav-line.on{opacity:1}
+/* Info rolls down under the menu bar, like Selects and Prints; the page behind fades */
+#panel{top:var(--hdr-h,56px);left:0;right:0;bottom:auto;width:auto;max-height:calc(100dvh - var(--hdr-h,56px));border-left:0;border-bottom:1px solid var(--line);z-index:25;
+  padding:22px max(16px,env(safe-area-inset-right,0px)) calc(40px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  transform:translateY(-14px);opacity:0;visibility:hidden;transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .35s ease,visibility 0s linear .45s}
+#panel.open{transform:none;opacity:1;visibility:visible;transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .35s ease}
+#panel>*{max-width:620px}
+#panel .panel-top{display:none}
+body.info-open main,body.info-open footer{opacity:.25;transition:opacity .4s ease}
+body.info-open.pd-open .product::after{opacity:.75}
+#open-info::after{content:"+";display:inline-block;margin-left:3px;font-weight:300}
+#open-info[aria-expanded="true"]::after{content:"−"}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -830,7 +841,7 @@ header nav button{text-decoration:none!important}
       <button id="v-index" aria-pressed="false">Index</button>
       <button id="v-shop" aria-pressed="false" aria-expanded="false" aria-controls="printmenu">Prints</button>
     </div>
-    <button id="open-info" class="paren">Info</button>
+    <button id="open-info" class="paren" aria-expanded="false" aria-controls="panel">Info</button>
     <button id="open-cart" class="paren">Cart <span id="cart-count">0</span></button>
   </nav>
 </header>
@@ -1198,8 +1209,15 @@ vO.onclick=()=>setView("o");vI.onclick=()=>setView("i");
 try{if(localStorage.getItem("view")==="i")setView("i")}catch(e){}
 
 const panel=document.getElementById("panel"),scrim=document.getElementById("scrim");
-function info(open){panel.classList.toggle("open",open);panel.setAttribute("aria-hidden",!open);scrim.hidden=!open;if(open)document.getElementById("close-info").focus()}
-document.getElementById("open-info").onclick=()=>info(true);
+function info(open){panel.classList.toggle("open",open);panel.setAttribute("aria-hidden",!open);scrim.hidden=true;
+  const ib=document.getElementById("open-info");ib.setAttribute("aria-expanded",open);document.body.classList.toggle("info-open",open);
+  if(open){window.closePrintMenu&&window.closePrintMenu();const sm=document.getElementById("open-menu");if(sm.getAttribute("aria-expanded")==="true")sm.click();
+    const h=document.querySelector("header");h.classList.remove("hide");panel.scrollTop=0}}
+window.closeInfo=()=>info(false);
+document.addEventListener("click",e=>{if(panel.classList.contains("open")&&!e.target.closest("#panel,header,.panel,#zoomer")){e.preventDefault();e.stopPropagation();info(false)}},true);
+document.getElementById("open-info").onclick=()=>info(!panel.classList.contains("open"));
+document.getElementById("open-menu").addEventListener("click",()=>{if(panel.classList.contains("open"))info(false)},true);
+document.getElementById("v-shop").addEventListener("click",()=>{if(panel.classList.contains("open"))info(false)},true);
 document.getElementById("close-info").onclick=()=>info(false);scrim.onclick=()=>info(false);
 
 function media(p,i,img){const c=p.clips&&p.clips[i],al=p.alts&&p.alts[i];
@@ -1708,7 +1726,7 @@ document.addEventListener("click",async e=>{const b=e.target.closest("[data-copy
  document.querySelector("#product .product-info").appendChild(f)}
 document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)return;b.classList.remove("blink");void b.offsetWidth;b.classList.add("blink")},true);
 {const nav=document.querySelector("header nav"),ln=document.createElement("span");ln.id="nav-line";ln.setAttribute("aria-hidden","true");nav.appendChild(ln);
- const target=()=>nav.querySelector('#open-menu[aria-expanded="true"],#v-shop[aria-expanded="true"]')||nav.querySelector('.views button[aria-pressed="true"]');
+ const target=()=>nav.querySelector('#open-menu[aria-expanded="true"],#v-shop[aria-expanded="true"],#open-info[aria-expanded="true"]')||nav.querySelector('.views button[aria-pressed="true"]');
  const place=()=>{const t=target();if(!t||!t.offsetParent){ln.classList.remove("on");return}
    const tn=[...t.childNodes].find(n=>n.nodeType===3&&n.textContent.trim());const r=document.createRange();r.selectNodeContents(tn||t);
    const w=r.getBoundingClientRect(),n=nav.getBoundingClientRect();
