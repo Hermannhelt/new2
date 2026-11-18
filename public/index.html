@@ -846,6 +846,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 /* Portraits: no image counter, gentler zoom on the main picture */
 .feature:not(.no-thumbs) .feat-bar{display:none}
 .feature:not(.no-thumbs).seen .feat-main img.on{transform:scale(1.06)}
+.sm-thumb video{width:100%;height:100%;object-fit:cover;display:block}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1617,12 +1618,19 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!prod.hidden)pro
 // Opens by hover/click at the top of the page; unfolds by itself, in step with scrolling, further down.
 const sm=document.getElementById("submenu"),smBtn=document.getElementById("open-menu"),hdr=document.querySelector("header");
 projects.forEach((p,pi)=>{if(p.hidden)return;const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",pi);b.title=p.title;
-  b.innerHTML=`<span class="sm-thumb">${p.video?`<img src="${p.video.poster}" alt="" loading="lazy">`:p.img?`<img src="${p.img(0)}" alt="" loading="lazy">`:""}<i class="sm-num">${ROMAN[pi]}</i></span>
+  b.innerHTML=`<span class="sm-thumb">${p.video?`<video src="${p.video.src}#t=${p.video.start||0}" poster="${p.video.poster}" muted loop playsinline preload="none" aria-hidden="true"></video>`:p.img?`<img src="${p.img(0)}" alt="" loading="lazy">`:""}<i class="sm-num">${ROMAN[pi]}</i></span>
     <small>${ROMAN[pi]} · ${p.video?(p.n?`Film · ${p.n} images`:"Film"):`${p.n} images`}</small><b>${p.title}</b><span class="sm-label"><i>${ROMAN[pi]}</i>${p.title}</span>`;
   if(!p.img&&!p.video)paint(b.querySelector(".sm-thumb"),p,0,pi);
   b.onclick=()=>{manualOpen=false;openProject(pi,0);renderMenu()};
   sm.appendChild(b)});
 const smItems=[...sm.querySelectorAll(".sm-item")];
+// film thumbnails in Selects play while the menu is open
+{const vids=[...sm.querySelectorAll(".sm-thumb video")];
+ vids.forEach(v=>{const t0=parseFloat((v.getAttribute("src").split("#t=")[1])||0);v.addEventListener("loadedmetadata",()=>{if(v.currentTime<t0)v.currentTime=t0});
+   v.addEventListener("timeupdate",()=>{if(v.duration&&v.currentTime>v.duration-.3)v.currentTime=t0})});
+ const sync=()=>{const on=!sm.hidden&&!sm.classList.contains("compact")&&!matchMedia("(prefers-reduced-motion: reduce)").matches;
+   vids.forEach(v=>{if(on){v.preload="auto";v.play().catch(()=>{})}else v.pause()})};
+ new MutationObserver(sync).observe(sm,{attributes:true,attributeFilter:["hidden","class"]})}
 let manualOpen=false,userClosed=false,openedAt=0,wasFull=false;
 const START=260; // the project list under the menu appears only after scrolling this far
 function renderMenu(){
