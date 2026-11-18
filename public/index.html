@@ -803,6 +803,13 @@ body.info-open.pd-open .product::after{opacity:.75}
 main,footer{transition:opacity .4s ease}
 body:has(#submenu:not([hidden]):not(.compact)) main,body:has(#submenu:not([hidden]):not(.compact)) footer{opacity:.25}
 body.pd-open:has(#submenu:not([hidden]):not(.compact)) .product::after{opacity:.75}
+/* Selects / Prints dropdowns: thumbnails the same size as the "More from" pictures on the print pages */
+.submenu:not(.compact) .sm-item,#printmenu .sm-item{width:min(calc((100vw - 32px) * .44),170px)!important;flex:0 0 auto}
+.submenu:not(.compact) .sm-thumb,#printmenu .sm-thumb{aspect-ratio:4/5}
+.submenu:not(.compact){gap:8px}
+#printmenu{display:flex!important;gap:8px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+#printmenu[hidden]{display:none!important}
+#printmenu::-webkit-scrollbar{display:none}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
