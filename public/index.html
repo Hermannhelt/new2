@@ -833,6 +833,10 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .strip::-webkit-scrollbar{display:none}
 .strip-progress{margin:-14px 0 0 calc(3.2em + 12px)!important;width:auto!important;justify-self:stretch!important;align-self:auto}
 @media (max-width:640px){.strip-progress{margin-left:0!important;margin-top:-14px!important}}
+.feat-thumbs{scrollbar-width:none!important;padding-bottom:0!important;margin-bottom:0!important}
+.feat-thumbs::-webkit-scrollbar{display:none}
+.row-progress{margin-top:0!important;justify-self:start!important;align-self:auto}
+.ix-thumbs{padding-bottom:0!important}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1814,6 +1818,14 @@ document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)ret
       else{clearTimeout(t);el.classList.remove("closing");P.set.call(el,false)}}})});
 // tapping Overview / Index while a dropdown is open closes it
 ["v-overview","v-index"].forEach(id=>document.getElementById(id).addEventListener("click",()=>{if(manualOpen)menu(false);window.closePrintMenu&&window.closePrintMenu()}));
+// thin slider line flush under every sideways thumbnail row (projects, Index)
+function addSlider(row){if(row._slider)return;const ln=document.createElement("div");ln.className="pd-progress row-progress";ln.setAttribute("aria-hidden","true");ln.innerHTML="<i></i>";row.after(ln);row._slider=ln;
+  const cs=getComputedStyle(row);ln.style.width=row.getBoundingClientRect().width?"":"";
+  const bar=ln.firstChild,upd=()=>{const r=row.getBoundingClientRect(),pr=row.parentElement.getBoundingClientRect();{ln.style.setProperty("margin-top","0px","important");const g=ln.getBoundingClientRect().top-r.bottom;if(r.height&&g>0&&g<40)ln.style.setProperty("margin-top",(-g)+"px","important")}ln.style.marginLeft=(r.left-pr.left)+"px";ln.style.width=r.width+"px";
+    const max=row.scrollWidth-row.clientWidth;ln.style.visibility=max>2&&r.width>0?"visible":"hidden";
+    const frac=row.clientWidth/Math.max(row.scrollWidth,1);bar.style.width=(frac*100)+"%";bar.style.transform=`translateX(${(max>0?row.scrollLeft/max:0)*(1/frac-1)*100}%)`};
+  row.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);new ResizeObserver(upd).observe(row);setTimeout(upd,300);setTimeout(upd,1500);upd()}
+document.querySelectorAll(".feat-thumbs,.ix-thumbs").forEach(addSlider);
 </script>
 </body>
 </html>
