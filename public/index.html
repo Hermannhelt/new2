@@ -1996,6 +1996,15 @@ document.querySelectorAll(".feat-thumbs,.ix-thumbs").forEach(addSlider);
    let fs=parseFloat(getComputedStyle(nav).fontSize),i=0;const room=()=>document.getElementById("open-cart").getBoundingClientRect().right<=innerWidth-8;
    while(!room()&&fs>9&&i<12){fs-=.25;nav.style.fontSize=fs+"px";i++}};
  addEventListener("resize",fit);document.fonts&&document.fonts.ready.then(fit);setTimeout(fit,400);fit()}
+// the name in the header always takes you back to Overview, from anywhere
+document.querySelector("header .name").addEventListener("click",e=>{e.preventDefault();
+  try{prod.hidden=true}catch(_){}
+  const g=document.getElementById("pd-gallery");if(g&&!g.hidden){g.hidden=true;document.documentElement.style.overflow=""}
+  const z=document.getElementById("zoomer");if(z&&!z.hidden){z.hidden=true;document.documentElement.style.overflow=""}
+  const lb=document.getElementById("lb");if(lb&&!lb.hidden)lb.querySelector("#lb-close")?.click();
+  window.closePrintMenu&&window.closePrintMenu();window.closeInfo&&window.closeInfo();
+  if(typeof manualOpen!=="undefined"&&manualOpen)menu(false);
+  setView("o");if(location.hash)history.replaceState(null,"",location.pathname);scrollTo({top:0,behavior:"smooth"})});
 </script>
 </body>
 </html>
