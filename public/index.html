@@ -910,8 +910,9 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .lb-top button,.lb-bottom button,#lb-title,#lb-count{font:inherit}
 .lb-top button:hover,.lb-bottom button:hover,.lb-top button:active,.lb-bottom button:active{color:inherit}
 @media (max-width:640px){.lb-top,.lb-bottom{font-size:11.5px}}@media (max-width:384px){.lb-top,.lb-bottom{font-size:11px}}
-.lb-progress{width:100%!important;margin:0 0 4px!important;justify-self:stretch}
-.lb-progress i{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.lb-dots{display:flex;justify-content:center;gap:5px;margin:0 0 6px}
+.lb-dots i{display:block;flex:0 1 14px;min-width:3px;height:1px;background:var(--line)}
+.lb-dots i.on{background:var(--fg);opacity:.75}
 #lb-close:focus:not(:focus-visible),#lb-prev:focus:not(:focus-visible),#lb-next:focus:not(:focus-visible){outline:none}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
@@ -1216,7 +1217,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 <div class="lightbox" id="lightbox" hidden role="dialog" aria-label="Image viewer">
   <div class="lb-top"><span id="lb-title"></span><button id="lb-close" class="paren">Close</button></div>
   <div class="lb-stage"><button class="tap l" tabindex="-1" id="lb-tap-l" aria-label="Previous image"></button><div class="lb-img" id="lb-img"></div><button class="tap r" tabindex="-1" id="lb-tap-r" aria-label="Next image"></button></div>
-  <div class="pd-progress lb-progress" aria-hidden="true"><i></i></div>
+  <div class="lb-dots" aria-hidden="true"></div>
   <div class="lb-bottom"><button id="lb-prev" class="paren">Prev</button><span id="lb-count" class="muted"></span><button id="lb-next" class="paren">Next</button></div>
 </div>
 
@@ -1419,7 +1420,7 @@ function render(){const[pi,i]=cur,p=projects[pi];lbImg.style.aspectRatio=p.ratio
   if(p.img){lbImg.style.background="none";lbImg.style.aspectRatio="auto";lbImg.style.width="100%";lbImg.style.height="100%";lbImg.innerHTML=media(p,i,`<img src="${p.img(i)}" alt="${p.title}, image ${i+1}">`)}else{lbImg.innerHTML="";paint(lbImg,p,i,pi)}
   document.getElementById("lb-title").textContent=`${ROMAN[pi]}  ${p.title}`;
   document.getElementById("lb-count").textContent=p.captions&&p.captions[i]?p.captions[i]:"";
-  {const bar=document.querySelector(".lb-progress i");bar.style.width=(100/p.n)+"%";bar.style.transform=`translateX(${i*100}%)`}}
+  {const d=document.querySelector(".lb-dots");if(d.children.length!==p.n)d.innerHTML="<i></i>".repeat(p.n);[...d.children].forEach((x,k)=>x.classList.toggle("on",k===i))}}
 function openLB(pi,i){cur=[pi,i];render();lb.hidden=false;document.getElementById("lb-close").focus()}
 function step(d){const p=projects[cur[0]];cur[1]=(cur[1]+d+p.n)%p.n;render()}
 document.getElementById("lb-close").onclick=()=>lb.hidden=true;
