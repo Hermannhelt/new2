@@ -810,6 +810,13 @@ body.pd-open:has(#submenu:not([hidden]):not(.compact)) .product::after{opacity:.
 #printmenu{display:flex!important;gap:8px;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
 #printmenu[hidden]{display:none!important}
 #printmenu::-webkit-scrollbar{display:none}
+/* slider dashes under the Selects / Prints thumbnails */
+.submenu:not(.compact){padding-bottom:38px}
+.menu-dots{position:fixed;left:0;right:0;z-index:7;display:flex;justify-content:center;gap:6px;pointer-events:none;opacity:0;transition:opacity .3s ease}
+.menu-dots.on{opacity:1}
+.menu-dots i{display:block;width:14px;height:1px;background:var(--line)}
+.menu-dots i.on{background:var(--fg);opacity:.75}
+body.pd-open .menu-dots{z-index:33}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1744,6 +1751,17 @@ document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)ret
    ln.style.transform=`translate(${w.left-n.left}px,${w.bottom-n.top+4}px)`;ln.style.width=w.width+"px";ln.classList.add("on")};
  new MutationObserver(place).observe(nav,{subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-expanded","hidden"]});
  addEventListener("resize",place);document.fonts&&document.fonts.ready.then(place);setTimeout(place,300);place()}
+// dashes under the dropdown thumbnails, one per picture, following the swipe
+["submenu","printmenu"].forEach(id=>{const m=document.getElementById(id),d=document.createElement("div");d.className="menu-dots";d.setAttribute("aria-hidden","true");document.body.appendChild(d);
+  const upd=()=>{const items=[...m.querySelectorAll(".sm-item")],vis=!m.hidden&&!m.classList.contains("compact")&&items.length>1&&m.scrollWidth>m.clientWidth+2;
+    if(!vis){d.classList.remove("on");return}
+    if(d.children.length!==items.length)d.innerHTML="<i></i>".repeat(items.length);
+    const r=m.getBoundingClientRect();d.style.top=(r.bottom-20)+"px";
+    const max=m.scrollWidth-m.clientWidth,step=items[1].offsetLeft-items[0].offsetLeft,k=m.scrollLeft>=max-2?items.length-1:Math.round(m.scrollLeft/step);
+    [...d.children].forEach((x,i)=>x.classList.toggle("on",i===k));d.classList.add("on")};
+  m.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);addEventListener("scroll",upd,{passive:true});
+  new MutationObserver(()=>{upd();setTimeout(upd,60);setTimeout(upd,500)}).observe(m,{attributes:true,attributeFilter:["hidden","class"],childList:true});
+  const h=document.querySelector("header");new MutationObserver(()=>setTimeout(upd,380)).observe(h,{attributes:true,attributeFilter:["class"]})});
 </script>
 </body>
 </html>
