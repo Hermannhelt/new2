@@ -762,9 +762,9 @@ header nav:has(#open-menu[aria-expanded="true"]) .views button[aria-pressed="tru
 #open-menu::after,#v-shop::after{content:"+";display:inline-block;margin-left:2px;font-weight:300;text-decoration:none}
 #open-menu[aria-expanded="true"]::after,#v-shop[aria-expanded="true"]::after{content:"−"}
 /* menu words keep their colour when hovered or tapped */
-header nav button:hover,header nav button:active,header nav button:focus{color:inherit}
 header nav #open-menu:hover,header nav #v-shop:hover,header nav #open-info:hover,header nav #open-cart:hover{color:var(--fg)}
-header nav .views button:not(#v-shop):hover{color:inherit}
+header nav .views button:not(#v-shop):not([aria-pressed="true"]):hover,header nav .views button:not(#v-shop):not([aria-pressed="true"]):active{color:var(--muted)}
+header nav .views button[aria-pressed="true"]:hover{color:var(--fg)}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
