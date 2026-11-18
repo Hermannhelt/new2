@@ -735,6 +735,17 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 /* size options exactly as tall as the Add to cart button */
 #product .size{box-sizing:border-box;height:48px;padding-block:0;line-height:1.2}
 #product .size small{line-height:1.2;margin-top:1px}
+/* More from the series: a sideways row of pictures with just the name, like a shop's related products */
+#product .pd-more-grid{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;margin:0 -16px;padding:0 16px;scroll-padding-left:16px}
+#product .pd-more-grid::-webkit-scrollbar{display:none}
+.pd-card{flex:0 0 44%;scroll-snap-align:start;padding:0;border:0;background:none;cursor:pointer;text-align:left;color:var(--fg)}
+.pd-card-img{display:block;aspect-ratio:4/5;overflow:hidden;background:#efeeea}
+.pd-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.pd-card-t{display:block;margin-top:10px;font-size:13.5px;font-weight:300}
+@media (min-width:641px){.pd-card{flex-basis:30%}#product .pd-more-grid{margin:0;padding:0}}
+.pd-dots{display:flex;justify-content:center;gap:6px;margin-top:22px}
+.pd-dots i{display:block;width:14px;height:1.5px;background:var(--line)}
+.pd-dots i.on{background:var(--fg)}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1361,15 +1372,14 @@ function openProduct(pr){curP=pr;
    const others=se?se.items.filter(x=>x!==pr):[];
    if(others.length){mo.innerHTML=`<p class="pd-more-h">More from ${se.name}</p><div class="pd-more-grid"></div>`;
      const g=mo.querySelector(".pd-more-grid");
-     others.forEach(o=>{const z=sizesOf(o),cm=z.map(x=>(o.land?x.l:x.p).replace(/ cm.*/,"")).join(" / ")+" cm";
-       const el=document.createElement("div");el.className="pd-row";
-       el.innerHTML=`<button class="pd-row-img" aria-label="${o.title}"><img src="${o.src}" alt="" loading="lazy"></button>
-         <div class="pd-row-txt"><p class="pd-row-a"><span></span></p><p class="pd-row-s">${o.series}${PRINT_YEAR[o.id]?`, ${PRINT_YEAR[o.id]}`:""}</p>
-         <p>Signed, inscribed with title, numbered and dated on artist's label fixed to reverse</p><p>Archival pigment print</p>
-         <p>${z.length>1?`${z.length} different sizes available`:"1 size available"}</p><p class="pd-row-p">From ${kr(z[0].price)}</p>
-         <button class="pd-row-btn">View</button></div>`;
-       el.querySelector(".pd-row-a span").textContent=o.title;
-       const go=()=>{openProduct(o);prod.scrollTo(0,0)};el.querySelector(".pd-row-img").onclick=go;el.querySelector(".pd-row-btn").onclick=go;g.appendChild(el)})}
+     others.forEach(o=>{const el=document.createElement("button");el.className="pd-card";el.setAttribute("aria-label",o.title);
+       el.innerHTML=`<span class="pd-card-img"><img src="${o.src}" alt="" loading="lazy"></span><span class="pd-card-t"></span>`;
+       el.querySelector(".pd-card-t").textContent=o.title;
+       el.onclick=()=>{openProduct(o);prod.scrollTo(0,0)};g.appendChild(el)});
+     // little dash pager under the carousel
+     const n=Math.max(1,Math.ceil(others.length/2));if(n>1){g.insertAdjacentHTML("afterend",`<div class="pd-dots" aria-hidden="true">${"<i></i>".repeat(n)}</div>`);
+       const dots=mo.querySelectorAll(".pd-dots i"),upd=()=>{const max=g.scrollWidth-g.clientWidth,k=max>0?Math.round(g.scrollLeft/max*(n-1)):0;dots.forEach((d,i)=>d.classList.toggle("on",i===k))};
+       g.addEventListener("scroll",upd,{passive:true});upd()}}
    if(se)mo.insertAdjacentHTML("beforeend",seriesText(se.name));
    mo.insertAdjacentHTML("beforeend",seriesNext(se&&se.name));wireSeriesNext(mo)}
   document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;prod.tabIndex=-1;prod.focus({preventScroll:true})}
