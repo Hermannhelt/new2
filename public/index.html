@@ -1414,6 +1414,8 @@ function openProject(pi,start){curPI=pi;if(typeof prod!=="undefined")prod.hidden
     for(let c=chunks.length-1;c>=0;c--){const at=1+Math.floor(c*step);
       rowList.splice(at,0,`<div class="pv-weave${c%2?" r":""}">${c===0&&p.sub?`<p class="coda sub">${p.sub}</p>`:""}<p>${chunks[c]}</p>${c===chunks.length-1&&p.coda?`<p class="coda">${p.coda}</p>`:""}${c===chunks.length-1&&p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`)}}
   if(p.hero){rowList.shift();}
+  // projects with an animated cover on Overview open on that same cover
+  if(p.cover)rowList.unshift(`<div class="pv-row c"><figure class="pv-fig pv-cover" data-i="0" style="--r:${p.cover.r};--w:78%;--mw:100%"><img src="${p.cover.src}" alt="${p.title}" loading="eager" fetchpriority="high"></figure></div>`);
   rows=rowList.join("");
   const nx=(pi+1)%projects.length;
   projEl.querySelectorAll("video").forEach(v=>v.pause());
