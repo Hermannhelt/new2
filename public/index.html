@@ -843,6 +843,9 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 /* Portraits thumbnail row 20% larger */
 .feat-thumbs{width:min(100%,360px)!important}
 @media (max-width:640px){.feat-thumbs{width:min(calc(100% - 56px),278px)!important}}
+/* Portraits: no image counter, gentler zoom on the main picture */
+.feature:not(.no-thumbs) .feat-bar{display:none}
+.feature:not(.no-thumbs).seen .feat-main img.on{transform:scale(1.06)}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
