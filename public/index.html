@@ -1117,7 +1117,7 @@ const projects=[
       "The market was too congested to frame the kind of clean pictures I like, so I photographed the men along the Hugli River, a tributary of the Ganges. I took my pictures from 12 to 3 p.m., to capture the moody mixture of sunlight and smog. I also used a studio filter to soften the harsh midday light.",
       "Over the course of eight days I photographed about 55 vendors. Most of the portraits took 10 or 15 minutes. That doesn’t sound like much, but it was so hot it felt as if we were burning. At the end of each day’s shoot, I had to go back to my hotel to change all my clothes. I was literally covered with sweat.",
       "My work is an attempt to get beyond stereotypes. Some people think that everyone in India is poor and miserable. This project—a series of beautiful images made in a rough, unlikely environment—is my way of showing otherwise."],
-    credit:'Told to Jeremy Berlin, published in <a href="https://kenhermann.dk/wp-content/uploads/2017/05/Flower-Men_MJ1066_999.pdf" target="_blank" rel="noopener">National Geographic</a>',date:null,n:12,order:[2,3,4,5,6,1,7,8,9,10,11,12],img:function(i){return`img/flowermen/flower-men-${String(this.order[i]).padStart(2,"0")}.jpg`},ratio:.75},
+    credit:'Told to Jeremy Berlin, published in <a href="https://kenhermann.dk/wp-content/uploads/2017/05/Flower-Men_MJ1066_999.pdf" target="_blank" rel="noopener">National Geographic</a>',date:null,n:12,order:[12,3,4,5,6,1,7,8,9,10,11,2],img:function(i){return`img/flowermen/flower-men-${String(this.order[i]).padStart(2,"0")}.jpg`},ratio:.75},
   {title:"Bökh",client:"Inner Mongolia",date:null,n:23,captions:{0:"Bayinduren",1:"Fight",12:"Baoyinzhana"},clips:{1:{src:"video/bokh-02.mp4",poster:"video/bokh-02.jpg"}},
     text:["When a boy is born in Inner Mongolia, his family pray for him to become a wrestler. This ancient tradition is the cornerstone of Mongolian culture, dating back centuries to Genghis Khan’s reign, when he used it to keep his soldiers battle-ready. Khan famously compared wrestling to war, explaining that in both you face enemies who are stronger and more powerful than you, and you must attack. It’s a sentiment these young wrestlers keep very much in mind.",
       "This unique form of wrestling governs status for young men within the community, as it is used as a marker of manliness. The bouts take place in the remote and desolate Grasslands, empty to the horizon except for a few scattered yurts and flocks of sheep. Mongolian wrestling feels like a dance. Opponents meet in the ring with hands outstretched, moving around each other until one of them takes the lead. They engage in long, dramatic grapples which at times resemble intimate embraces. In an instant it’s over."],
@@ -1341,6 +1341,8 @@ function wireSeriesNext(root){const n=root.querySelector(".sd-next");if(!n)retur
   n.querySelector(".sd-top").onclick=()=>{prod.scrollTo({top:0});document.querySelector("header").classList.remove("hide");setTimeout(()=>window.openPrintMenu&&window.openPrintMenu(),60)};
   n.querySelectorAll("[data-se]").forEach(b=>b.onclick=()=>{const se=seriesList.find(x=>x.k===+b.dataset.se);openProduct(se.items[0]);prod.scrollTo(0,0)});
 }
+// picture used for a series on the Prints thumbnails (menu and overview)
+const SERIES_THUMB={"Flower Men":"img/flowermen/flower-men-12.jpg"};
 const PRINT_YEAR={"0-0":2016,"0-2":2016,"0-3":2016,"0-5":2016,"0-6":2016,"0-9":2016,"0-11":2016}; // year shown after the title on the print page
 const PRINT_NAMES={"1-1":"Fight","1-3":"Bökh No. 4","1-6":"Bökh No. 7","1-7":"Bökh No. 8","1-8":"Bökh No. 9","1-9":"Bökh No. 10","1-18":"Bökh No. 19","1-20":"Bökh No. 21","1-21":"Bökh No. 22","2-0":"Horseman","0-0":"Kulwinder","0-2":"Shankar Shah","0-3":"Odhir Gayen","0-5":"Sanjit Malik","0-6":"Shambhunath Dutt","0-9":"Sanju Joshi","0-11":"Angad Ray","5-0":"Ms. Lan","5-1":"Ms. Duyen","5-4":"Mr. Du","5-5":"Ms. Hanh","5-8":"Ms. Luyen"};
 const prints=[[0,0,[28,10,3]],[0,2,[48,10,5]],[0,3,[33,10,3]],[0,5,[45,9,5]],[0,6,[49,10,5]],[0,9,[43,9,4]],[0,11,[28,8,4]],[5,0,[50,7,3]],[5,1,[50,7,3]],[5,4,[50,7,3]],[5,5,[50,7,3]],[5,8,[49,7,3]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,6,[50,10,5]],[1,7,[50,10,5]],[1,8,[50,10,5]],[1,9,[50,10,5]],[1,18,[50,10,5]],[1,20,[50,10,5]],[1,21,[50,10,5]],[LD,0,[5]],[EXP,0,[50,10,5]]]
@@ -1372,7 +1374,7 @@ const PUBLICATIONS=[];
   ix.appendChild(d)}
 // Prints page: one cover image per series; clicking it opens that series with all its prints
 seriesList.forEach(se=>{const b=document.createElement("button");b.className="cover";
-  b.innerHTML=`${thumbFor(se.items[0],se.name)}
+  b.innerHTML=`${SERIES_THUMB[se.name]?`<div class="thumb plain"><img src="${SERIES_THUMB[se.name]}" alt="${se.name}" loading="lazy"></div>`:thumbFor(se.items[0],se.name)}
     <div class="cover-row"><span class="numeral">${ROMAN[se.k]}</span><span class="cover-t">${se.name}</span></div>`;
   b.onclick=()=>{openProduct(se.items[0]);prod.scrollTo(0,0)};seriesWrap.appendChild(b)});
 const seriesDetail=document.getElementById("series-detail"),shopHead=document.getElementById("shop-head");
@@ -1739,7 +1741,7 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
 // ---- Prints submenu: series with a thumbnail, same as the Projects menu ----
 (()=>{const pm=document.getElementById("printmenu"),btn=document.getElementById("v-shop");
   seriesList.forEach(se=>{const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",se.k);b.title=se.name;
-    const mt=se.items[0].src;b.innerHTML=`<span class="sm-thumb${mt?"":" sm-print"}">${mt?`<img src="${mt}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} print${se.items.length===1?"":"s"}</small><b>${se.name}</b>`;
+    const mt=SERIES_THUMB[se.name]||se.items[0].src;b.innerHTML=`<span class="sm-thumb${mt?"":" sm-print"}">${mt?`<img src="${mt}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} print${se.items.length===1?"":"s"}</small><b>${se.name}</b>`;
     b.onclick=()=>{close();openProduct(se.items[0]);prod.scrollTo(0,0)};
     pm.appendChild(b)});
   const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
