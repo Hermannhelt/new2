@@ -758,6 +758,9 @@ header nav:has(#open-menu[aria-expanded="true"]) .views button[aria-pressed="tru
 @media (max-width:640px){header nav{column-gap:14px}header nav .views{gap:14px}#v-shop{margin-left:0}}
 @media (max-width:384px){header nav{font-size:12px;column-gap:11px}header nav .views{gap:11px}}
 @media (max-width:370px){header nav{font-size:11.5px;column-gap:9px}header nav .views{gap:9px}#v-shop{margin-left:0}}
+/* + after Selects and Prints, turning into − while open */
+#open-menu::after,#v-shop::after{content:"+";display:inline-block;margin-left:5px;font-weight:300;text-decoration:none}
+#open-menu[aria-expanded="true"]::after,#v-shop[aria-expanded="true"]::after{content:"−"}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
