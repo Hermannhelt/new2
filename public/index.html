@@ -747,6 +747,7 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
 .pd-dots i{display:block;width:14px;height:1.5px;background:var(--line)}
 .pd-dots i.on{background:var(--fg)}
 .pd-card,.pd-card:hover,.pd-card:active,.pd-card:focus{color:var(--fg)!important}.pd-card:hover .pd-card-t,.pd-card:active .pd-card-t{color:var(--fg)!important}
+.pd-foot .foot-links [data-terms]{display:none}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -965,9 +966,10 @@ body:not(:has(#shop:not([hidden]))) footer:not(.pd-foot) .foot-links [data-terms
         <details>
           <summary>About the works</summary>
           <p>These works are available as limited editions. Each print is hand-signed and numbered, and all prints larger than A2 include a certificate of authenticity. Prints are sold unframed unless stated otherwise, but custom framing can be provided upon request.</p>
+          <p><button class="paren" data-terms>Terms of sale</button></p>
         </details>
       </div>
-      <p class="note"><button class="paren" data-terms>Terms of sale</button></p>
+
       </details>
       <div class="pd-more" id="product-more"></div>
     </div>
