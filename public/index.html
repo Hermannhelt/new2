@@ -1956,12 +1956,13 @@ document.addEventListener("click",async e=>{const b=e.target.closest("[data-copy
  document.querySelector("#product .product-info").appendChild(f)}
 document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)return;b.classList.remove("blink");void b.offsetWidth;b.classList.add("blink")},true);
 {const nav=document.querySelector("header nav"),ln=document.createElement("span");ln.id="nav-line";ln.setAttribute("aria-hidden","true");nav.appendChild(ln);
- const target=()=>nav.querySelector('#open-menu[aria-expanded="true"],#v-shop[aria-expanded="true"],#open-info[aria-expanded="true"]')||nav.querySelector('.views button[aria-pressed="true"]');
+ const target=()=>nav.querySelector('#open-menu[aria-expanded="true"],#v-shop[aria-expanded="true"],#open-info[aria-expanded="true"]')||(document.body.classList.contains("pd-open")?document.getElementById("v-shop"):null)||nav.querySelector('.views button[aria-pressed="true"]');
  const place=()=>{const t=target();if(!t||!t.offsetParent){ln.classList.remove("on");return}
    const tn=[...t.childNodes].find(n=>n.nodeType===3&&n.textContent.trim());const r=document.createRange();r.selectNodeContents(tn||t);
    const w=r.getBoundingClientRect(),n=nav.getBoundingClientRect();
    ln.style.transform=`translate(${Math.round(w.left-n.left)}px,${Math.round(w.bottom-n.top+4)}px)`;ln.style.width=Math.round(w.width)+"px";ln.classList.add("on")};
  new MutationObserver(place).observe(nav,{subtree:true,attributes:true,attributeFilter:["aria-pressed","aria-expanded","hidden"]});
+ new MutationObserver(place).observe(document.body,{attributes:true,attributeFilter:["class"]});new ResizeObserver(place).observe(nav);
  addEventListener("resize",place);document.fonts&&document.fonts.ready.then(place);setTimeout(place,300);place()}
 // dashes under the dropdown thumbnails, one per picture, following the swipe
 ["submenu","printmenu"].forEach(id=>{const m=document.getElementById(id),d=document.createElement("div");d.className="menu-dots";d.setAttribute("aria-hidden","true");document.body.appendChild(d);
