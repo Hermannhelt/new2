@@ -815,6 +815,11 @@ body.pd-open:has(#submenu:not([hidden]):not(.compact)) .product::after{opacity:.
 .menu-dots.on{opacity:1}
 .menu-dots i{display:block;height:100%;background:var(--fg);opacity:.75;transition:transform .12s linear}
 body.pd-open .menu-dots{z-index:33}
+/* dropdowns slide slowly up out of sight when they close */
+.submenu{clip-path:inset(0 0 0 0);transition:clip-path .55s cubic-bezier(.4,0,.2,1),opacity .55s ease}
+.submenu.closing{clip-path:inset(0 0 100% 0);opacity:.4;pointer-events:none}
+.submenu.closing .sm-item{transform:translateY(-14px);transition:transform .55s cubic-bezier(.4,0,.2,1)}
+body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!important}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1759,6 +1764,15 @@ document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)ret
   m.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);addEventListener("scroll",upd,{passive:true});
   new MutationObserver(()=>{upd();setTimeout(upd,60);setTimeout(upd,500)}).observe(m,{attributes:true,attributeFilter:["hidden","class"],childList:true});
   const h=document.querySelector("header");new MutationObserver(()=>setTimeout(upd,380)).observe(h,{attributes:true,attributeFilter:["class"]})});
+// closing a dropdown: let it slide up first, then hide it
+["submenu","printmenu"].forEach(id=>{const el=document.getElementById(id),P=Object.getOwnPropertyDescriptor(HTMLElement.prototype,"hidden");let t;
+  Object.defineProperty(el,"hidden",{configurable:true,
+    get(){return P.get.call(el)||el.classList.contains("closing")},
+    set(v){if(v){if(P.get.call(el)||el.classList.contains("closing"))return;el.classList.add("closing");clearTimeout(t);
+        t=setTimeout(()=>{if(el.classList.contains("closing")){P.set.call(el,true);el.classList.remove("closing")}},560)}
+      else{clearTimeout(t);el.classList.remove("closing");P.set.call(el,false)}}})});
+// tapping Overview / Index while a dropdown is open closes it
+["v-overview","v-index"].forEach(id=>document.getElementById(id).addEventListener("click",()=>{if(manualOpen)menu(false);window.closePrintMenu&&window.closePrintMenu()}));
 </script>
 </body>
 </html>
