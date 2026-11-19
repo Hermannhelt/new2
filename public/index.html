@@ -853,7 +853,8 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .ws-img{display:grid;grid-template-columns:minmax(0,1fr)}
 .ws-slides{display:flex;gap:3px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .ws-slides::-webkit-scrollbar{display:none}
-.ws-slides img{flex:0 0 auto;height:min(78vh,820px);width:auto;max-width:none;object-fit:cover;scroll-snap-align:start;display:block}
+.ws-slides video{aspect-ratio:4/5;background:#111}
+.ws-slides img,.ws-slides video{flex:0 0 auto;height:min(78vh,820px);width:auto;max-width:none;object-fit:cover;scroll-snap-align:start;display:block}
 .ws-progress{width:100%!important;margin:0!important;justify-self:stretch}
 .ws-info{max-width:560px;padding-top:18px;font-family:"Figtree",var(--sans);font-weight:300}
 .ws-title{font-family:"Figtree",var(--sans);font-weight:300;font-size:15.5px;line-height:1.35;margin:0 0 18px}
@@ -885,7 +886,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .ws-quotes blockquote p{margin:0 0 6px;font-size:14px;line-height:1.55;font-style:italic}
 .ws-quotes cite{font-style:normal;font-size:12px;color:var(--muted)}
 .ws-q{font-size:13px;line-height:1.55;color:var(--muted);margin:30px 0 10px}
-@media (max-width:640px){.ws-img{margin:0 -16px}.ws-slides img{height:auto;width:95vw;aspect-ratio:4/5}}
+@media (max-width:640px){.ws-img{margin:0 -16px}.ws-slides img,.ws-slides video{height:auto;width:95vw;aspect-ratio:4/5}}
 /* small line on Overview pointing to the workshop */
 .ws-teaser{font-family:"Figtree",var(--sans);font-weight:300;font-size:12.5px;margin:2px 0 5vh;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .ws-teaser[hidden]{display:none}
@@ -1002,6 +1003,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
   <section id="workshop" aria-label="Workshop" hidden>
     <div class="ws-img"><div class="ws-slides" id="ws-slides">
       <img src="img/workshop/house.jpg" alt="Strömsborg, the house by the lake" style="object-position:50% 60%">
+      <video src="img/workshop/reel.mp4" poster="img/workshop/reel-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Workshop film"></video>
       <img src="img/workshop/ws-01.jpg" alt="Ken in the forest" loading="lazy">
       <img src="img/workshop/ws-02.jpg" alt="Reviewing images on location" loading="lazy">
       <img src="img/workshop/ws-03.jpg" alt="Teaching on location among the old cars" loading="lazy">
