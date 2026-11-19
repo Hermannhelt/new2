@@ -14,7 +14,32 @@ module.exports = async (req, res) => {
     const items = Array.isArray(body.items) ? body.items.slice(0, 20) : [];
     const origin = `https://${req.headers.host}`;
     let subtotal = 0;
-    const line_items = items.map(({ id, k, q }) => {
+    const line_items = items.map(({ id, k, q, p }) => {
+      if (id === "book") {
+        const bk = catalog.book, opt = bk.options[Number(k)];
+        const qty = Math.max(1, Math.min(5, parseInt(q, 10) || 1));
+        if (!opt) throw new Error("Unknown book option");
+        let withPrint = "";
+        if (opt.k === 1) {
+          const pp = catalog.prints.find(x => x.id === p && x.series === bk.bundleSeries);
+          if (!pp) throw new Error("Choose a print");
+          withPrint = pp.title;
+        }
+        subtotal += opt.price * qty;
+        return {
+          quantity: qty,
+          price_data: {
+            currency: catalog.currency,
+            unit_amount: opt.price * 100,
+            product_data: {
+              name: withPrint ? `${bk.title} – Book + ${withPrint}` : `${bk.title} – Book`,
+              description: opt.label,
+              images: [`${origin}/${bk.image}`],
+              metadata: { book: "flower-men", option: opt.label, print: withPrint },
+            },
+          },
+        };
+      }
       const pr = catalog.prints.find(p => p.id === id);
       const size = pr && pr.sizes[Number(k)];
       const qty = Math.max(1, Math.min(5, parseInt(q, 10) || 1));

@@ -915,6 +915,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 .lb-dots i{display:block;flex:0 1 14px;min-width:3px;height:1px;background:var(--line)}
 .lb-dots i.on{background:var(--fg);opacity:.75}
 #lb-close:focus:not(:focus-visible),#lb-prev:focus:not(:focus-visible),#lb-next:focus:not(:focus-visible){outline:none}
+.book-pick{display:grid;gap:6px;margin-top:6px;font-size:13px}.book-pick[hidden]{display:none}.book-pick select{height:48px;padding:0 12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;border-radius:0}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1464,6 +1465,8 @@ function wireSeriesNext(root){const n=root.querySelector(".sd-next");if(!n)retur
 }
 // picture used for a series on the Prints thumbnails (menu and overview)
 const SERIES_THUMB={"Flower Men":"img/flowermen/flower-men-12.jpg"};
+// The Flower Men book: sold from the Prints menu on its own page; option 1 bundles a small Flower Men print of the buyer's choice
+const BOOK={id:"book",title:"Flower Men",series:"Book",src:"img/book/flower-men-book-cover.jpg",imgs:["cover","spread","stack","detail","spine","dark"].map(n=>`img/book/flower-men-book-${n}.jpg`),opts:[{name:"Book",price:30},{name:"Book + small print",price:380}]};
 const PRINT_YEAR={"0-0":2016,"0-2":2016,"0-3":2016,"0-5":2016,"0-6":2016,"0-9":2016,"0-11":2016}; // year shown after the title on the print page
 const PRINT_NAMES={"1-1":"Fight","1-3":"Bökh No. 4","1-6":"Bökh No. 7","1-7":"Bökh No. 8","1-8":"Bökh No. 9","1-9":"Bökh No. 10","1-18":"Bökh No. 19","1-20":"Bökh No. 21","1-21":"Bökh No. 22","2-0":"Horseman","0-0":"Kulwinder","0-2":"Shankar Shah","0-3":"Odhir Gayen","0-5":"Sanjit Malik","0-6":"Shambhunath Dutt","0-9":"Sanju Joshi","0-11":"Angad Ray","5-0":"Ms. Lan","5-1":"Ms. Duyen","5-4":"Mr. Du","5-5":"Ms. Hanh","5-8":"Ms. Luyen"};
 const prints=[[0,0,[28,10,3]],[0,2,[48,10,5]],[0,3,[33,10,3]],[0,5,[45,9,5]],[0,6,[49,10,5]],[0,9,[43,9,4]],[0,11,[28,8,4]],[5,0,[50,7,3]],[5,1,[50,7,3]],[5,4,[50,7,3]],[5,5,[50,7,3]],[5,8,[49,7,3]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,6,[50,10,5]],[1,7,[50,10,5]],[1,8,[50,10,5]],[1,9,[50,10,5]],[1,18,[50,10,5]],[1,20,[50,10,5]],[1,21,[50,10,5]],[LD,0,[5]],[EXP,0,[50,10,5]]]
@@ -1498,6 +1501,9 @@ seriesList.forEach(se=>{const b=document.createElement("button");b.className="co
   b.innerHTML=`${SERIES_THUMB[se.name]?`<div class="thumb plain"><img src="${SERIES_THUMB[se.name]}" alt="${se.name}" loading="lazy"></div>`:thumbFor(se.items[0],se.name)}
     <div class="cover-row"><span class="numeral">${ROMAN[se.k]}</span><span class="cover-t">${se.name}</span></div>`;
   b.onclick=()=>{openProduct(se.items[0]);prod.scrollTo(0,0)};seriesWrap.appendChild(b)});
+{const b=document.createElement("button");b.className="cover";
+  b.innerHTML=`<div class="thumb plain"><img src="${BOOK.src}" alt="Flower Men book" loading="lazy"></div><div class="cover-row"><span class="numeral">${ROMAN[seriesList.length]}</span><span class="cover-t">Flower Men book</span></div>`;
+  b.onclick=()=>{openBook();prod.scrollTo(0,0)};seriesWrap.appendChild(b)}
 const seriesDetail=document.getElementById("series-detail"),shopHead=document.getElementById("shop-head");
 function openSeries(k){const se=seriesList[k],pr0=se.items[0];
   setView("s");seriesWrap.hidden=true;shopHead.hidden=true;
@@ -1671,6 +1677,34 @@ function openProduct(pr){curP=pr;
    if(se)mo.insertAdjacentHTML("beforeend",seriesText(se.name));
    mo.insertAdjacentHTML("beforeend",seriesNext(se&&se.name));wireSeriesNext(mo)}
   document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;prod.tabIndex=-1;prod.focus({preventScroll:true})}
+function openBook(){curP=BOOK;const pi=document.getElementById("product-img");
+  pi.innerHTML=`<div class="slides" id="slides" style="--ar:1;--arp:${1/.95}">${BOOK.imgs.map((src,n)=>`<div class="slide clean${n?"":" hero"}" aria-label="Flower Men book"><img src="${src}" alt="Flower Men book by Ken Hermann"${n?' loading="lazy"':""}></div>`).join("")}</div>`;
+  {const sl=pi.querySelector("#slides"),n=sl.children.length;sl.insertAdjacentHTML("afterend",`<div class="pd-progress" aria-hidden="true"><i style="width:${100/n}%"></i></div>`);
+   const bar=pi.querySelector(".pd-progress i"),upd=()=>{const max=sl.scrollWidth-sl.clientWidth;bar.style.transform=`translateX(${(max>0?sl.scrollLeft/max:0)*(n-1)*100}%)`};
+   sl.addEventListener("scroll",upd,{passive:true});upd();dragScroll(sl)}
+  {const t=document.getElementById("product-title");t.innerHTML="<i>Flower Men</i>, Kehrer Verlag"}
+  document.getElementById("product-spec").textContent="Book";
+  const fm=prints.filter(p=>p.series==="Flower Men"),small=SERIES_SIZES[0][0];
+  const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Option</legend>";
+  {const pb=document.getElementById("pd-buy");pb.open=true;pb.classList.add("sz-closed")}document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
+  BOOK.opts.forEach((o,k)=>fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${k?"":"checked"}><span>${o.name}<small>${k?`Flower Men print ${small.p}, signed and numbered`:"Hardcover with linen spine"}</small></span><span class="price">${kr(o.price)}</span></label>`));
+  fs.insertAdjacentHTML("beforeend",`<label class="book-pick" hidden><span>Choose your print</span><select id="book-print">${fm.map(p=>`<option value="${p.id}"${p.left[0]===0?" disabled":""}>${p.title}${p.left[0]===0?" (sold out)":""}</option>`).join("")}</select></label>`);
+  const lines=()=>{const k=+(fs.querySelector("input:checked")||{value:0}).value,o=BOOK.opts[k],closed=document.getElementById("pd-buy").classList.contains("sz-closed");
+    fs.querySelector(".book-pick").hidden=k!==1;
+    document.getElementById("add-btn").innerHTML=closed?`<span>Buy</span><span>From ${kr(BOOK.opts[0].price)}</span>`:`<span>Add to cart</span><span>${kr(o.price)}</span>`;
+    document.getElementById("product-lines").innerHTML=`<p>Hardcover with linen spine. Published by Kehrer Verlag</p><p>The Flower Men series collected in one volume</p>${k===1?`<p>With a signed and numbered Flower Men print, ${small.p}</p>`:""}<p class="pd-price">${kr(o.price)}</p>`;
+    document.getElementById("product-thumbs").innerHTML=""};
+  fs.onchange=lines;lines();
+  {const mo=document.getElementById("product-more");mo.innerHTML=`<p class="pd-more-h">More from Flower Men</p><div class="pd-more-grid"></div>`;const g=mo.querySelector(".pd-more-grid");
+   fm.forEach(o=>{const el=document.createElement("button");el.className="pd-card";el.setAttribute("aria-label",o.title);
+     el.innerHTML=`<span class="pd-card-img"><img src="${o.src}" alt="" loading="lazy"></span><span class="pd-card-t"></span>`;el.querySelector(".pd-card-t").textContent=o.title;
+     el.onclick=()=>{openProduct(o);prod.scrollTo(0,0)};g.appendChild(el)});
+   const n=fm.length;g.insertAdjacentHTML("afterend",`<div class="pd-dots" aria-hidden="true">${"<i></i>".repeat(n)}</div>`);
+   const dots=mo.querySelectorAll(".pd-dots i"),upd=()=>{const max=g.scrollWidth-g.clientWidth,step=g.children[1]?g.children[1].offsetLeft-g.children[0].offsetLeft:1,k=g.scrollLeft>=max-2?n-1:Math.round(g.scrollLeft/step);dots.forEach((d,i)=>d.classList.toggle("on",i===k))};
+   g.addEventListener("scroll",upd,{passive:true});upd();
+   mo.insertAdjacentHTML("beforeend",seriesText("Flower Men")+seriesNext("Flower Men"));wireSeriesNext(mo)}
+  document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;prod.tabIndex=-1;prod.focus({preventScroll:true})}
+window.openBook=openBook;
 document.getElementById("product-close").onclick=()=>prod.hidden=true;
 prod.addEventListener("scroll",()=>{prod.classList.toggle("scrolled",prod.scrollTop>30);if(document.body.classList.contains("pd-clean")&&Math.abs(prod.scrollTop-(prod._cleanY??prod.scrollTop))>12)document.body.classList.remove("pd-clean")},{passive:true});
 // single tap / click on the big print toggles the clean view (a double tap still zooms)
@@ -1706,7 +1740,7 @@ function openGallery(start){
  h.addEventListener("click",e=>{if(!prod.hidden&&e.target.closest("button,a")&&!e.target.closest("#open-cart,#open-info,#v-shop,#open-menu"))prod.hidden=true},true);}
 
 let cart=[];try{cart=JSON.parse(localStorage.getItem("cart-v2")||"[]")}catch(e){}
-cart=cart.filter(c=>prints.some(p=>p.id===c.id));
+cart=cart.filter(c=>c.id==="book"||prints.some(p=>p.id===c.id));
 function saveCart(){try{localStorage.setItem("cart-v2",JSON.stringify(cart))}catch(e){}renderCart()}
 // first tap on Add to cart rolls out the sizes; the next one adds the chosen size
 document.getElementById("pd-buy").addEventListener("click",e=>{const pb=e.currentTarget;
@@ -1715,8 +1749,8 @@ document.getElementById("pd-buy").addEventListener("click",e=>{const pb=e.curren
 document.getElementById("add-btn").onclick=()=>{const sel=document.querySelector('#product-sizes input:checked');if(!sel)return;
   {const h=document.querySelector("header");h.classList.remove("hide");document.body.classList.remove("hdr-hide","pd-clean");h._hold=Date.now();
    const c=document.getElementById("open-cart");c.classList.remove("pulse");void c.offsetWidth;c.classList.add("pulse")}
-  const k=+sel.value,ex=cart.find(c=>c.id===curP.id&&c.k===k);
-  if(ex)ex.q++;else cart.push({id:curP.id,k,q:1});saveCart();document.getElementById("added").hidden=false};
+  const k=+sel.value,bp=curP===BOOK&&k===1?(document.getElementById("book-print")||{}).value:undefined,ex=cart.find(c=>c.id===curP.id&&c.k===k&&c.p===bp);
+  if(ex)ex.q++;else cart.push(bp?{id:curP.id,k,p:bp,q:1}:{id:curP.id,k,q:1});saveCart();document.getElementById("added").hidden=false};
 
 const cartEl=document.getElementById("cart");
 function cartPanel(open){cartEl.classList.toggle("open",open);cartEl.setAttribute("aria-hidden",!open);scrim.hidden=!open;if(open)document.getElementById("close-cart").focus()}
@@ -1736,8 +1770,11 @@ function renderCart(){
   const body=document.getElementById("cart-body");
   if(!cart.length){body.innerHTML=`<p class="empty">Your cart is empty. Browse the prints and pick a size to add one.</p>`;return}
   let sub=0;
-  const rows=cart.map((c,idx)=>{const pr=prints.find(p=>p.id===c.id),sz=sizesOf(pr)[c.k];sub+=sz.price*c.q;
-    return`<li><img src="${pr.src}" alt=""><div><div class="ct">${pr.title}</div><small>${pr.land?sz.l:sz.p}</small>
+  const rows=cart.map((c,idx)=>{let pr,sz,sm;
+    if(c.id==="book"){pr=BOOK;sz=BOOK.opts[c.k]||BOOK.opts[0];const bp=c.p&&prints.find(p=>p.id===c.p);sm=c.k===1?`Book + ${bp?bp.title:"print"}, ${SERIES_SIZES[0][0].p}`:"Book, hardcover"}
+    else{pr=prints.find(p=>p.id===c.id);sz=sizesOf(pr)[c.k];sm=pr.land?sz.l:sz.p}
+    sub+=sz.price*c.q;
+    return`<li><img src="${pr.src}" alt=""><div><div class="ct">${pr===BOOK?"Flower Men book":pr.title}</div><small>${sm}</small>
       <div class="qty"><button data-d="-1" data-i="${idx}" aria-label="Fewer">−</button><span>${c.q}</span><button data-d="1" data-i="${idx}" aria-label="More">+</button></div></div>
       <span class="price">${kr(sz.price*c.q)}</span></li>`}).join("");
   const ship=sub>=650?0:35;
@@ -1899,7 +1936,10 @@ document.querySelectorAll(".feat-thumbs,.strip,.submenu,.ix-thumbs").forEach(dra
     const mt=SERIES_THUMB[se.name]||se.items[0].src;b.innerHTML=`<span class="sm-thumb${mt?"":" sm-print"}">${mt?`<img src="${mt}" alt="" loading="lazy">`:printImg(se.items[0])||`<img src="${se.items[0].src}" alt="" loading="lazy">`}</span><small>${ROMAN[se.k]} · ${se.items.length} print${se.items.length===1?"":"s"}</small><b>${se.name}</b>`;
     b.onclick=()=>{close();openProduct(se.items[0]);prod.scrollTo(0,0)};
     pm.appendChild(b)});
-  const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length);
+  {const b=document.createElement("button");b.className="sm-item";b.style.setProperty("--i",seriesList.length);b.title="Flower Men book";
+    b.innerHTML=`<span class="sm-thumb"><img src="${BOOK.src}" alt="" loading="lazy"></span><small>Book · ${kr(BOOK.opts[0].price)}</small><b>Flower Men book</b>`;
+    b.onclick=()=>{close();openBook();prod.scrollTo(0,0)};pm.appendChild(b)}
+  const all=document.createElement("button");all.className="sm-item";all.style.setProperty("--i",seriesList.length+1);
   all.innerHTML=`<span class="sm-thumb" style="display:grid;place-items:center;font-family:var(--serif);font-size:22px">All</span><small>${prints.length} prints</small><b>All prints</b>`;
   all.onclick=()=>{close();setView("s");scrollTo(0,0)};pm.appendChild(all);pm.style.setProperty("--cols",pm.children.length);
   dragScroll(pm);

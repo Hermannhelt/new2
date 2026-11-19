@@ -589,5 +589,22 @@
     }
    ]
   }
- ]
+ ],
+ "book": {
+  "title": "Flower Men",
+  "image": "img/book/flower-men-book-cover.jpg",
+  "options": [
+   {
+    "k": 0,
+    "label": "Book, hardcover (Kehrer Verlag)",
+    "price": 30
+   },
+   {
+    "k": 1,
+    "label": "Book + small Flower Men print, 42 × 59.4 cm (A2), signed and numbered",
+    "price": 380
+   }
+  ],
+  "bundleSeries": "Flower Men"
+ }
 }
