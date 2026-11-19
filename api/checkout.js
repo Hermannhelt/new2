@@ -71,7 +71,7 @@ module.exports = async (req, res) => {
           type: "fixed_amount",
           display_name: shipping ? "Shipping (PostNord / FedEx Express)" : "Free shipping",
           fixed_amount: { amount: shipping * 100, currency: catalog.currency },
-          delivery_estimate: { minimum: { unit: "week", value: 1 }, maximum: { unit: "week", value: 3 } },
+          delivery_estimate: bookOnly ? { minimum: { unit: "business_day", value: 2 }, maximum: { unit: "business_day", value: 7 } } : { minimum: { unit: "week", value: 1 }, maximum: { unit: "week", value: 3 } },
         },
       }],
       phone_number_collection: { enabled: true },

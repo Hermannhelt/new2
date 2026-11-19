@@ -1167,11 +1167,11 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
       <button class="btn" id="add-btn">Add to cart</button>
       <fieldset class="sizes" id="product-sizes"><legend>Size</legend></fieldset>
       <p class="added" id="added" hidden>Added to cart</p>
-      <p class="note">Printed to order. Allow 1–2 weeks for production. Prices include Danish VAT.</p>
+      <p class="note" id="pd-note">Printed to order. Allow 1–2 weeks for production. Prices include Danish VAT.</p>
       <div class="info-blocks">
         <details>
           <summary>Shipping</summary>
-          <p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order, or €15 for the book alone. Free shipping on orders over €650.</p>
+          <p id="pd-prodtime">Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order, or €15 for the book alone. Free shipping on orders over €650.</p>
         </details>
         <details>
           <summary>Delivery</summary>
@@ -1609,7 +1609,7 @@ document.getElementById("v-comm").onclick=()=>{setView("c");scrollTo(0,0)};
 try{const v=localStorage.getItem("view");if(v)setView(v)}catch(e){}
 
 const prod=document.getElementById("product");let curP=null;
-function openProduct(pr){curP=pr;
+function openProduct(pr){curP=pr;document.getElementById("pd-note").textContent="Printed to order. Allow 1–2 weeks for production. Prices include Danish VAT.";document.getElementById("pd-prodtime").hidden=false;
   {const pi=document.getElementById("product-img"),pp=PAPER[pr.id];
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
@@ -1691,6 +1691,8 @@ function openBook(){curP=BOOK;const pi=document.getElementById("product-img");
   fs.insertAdjacentHTML("beforeend",`<label class="book-pick" hidden><span>Choose your print</span><select id="book-print">${fm.map(p=>`<option value="${p.id}"${p.left[0]===0?" disabled":""}>${p.title}${p.left[0]===0?" (sold out)":""}</option>`).join("")}</select></label>`);
   const lines=()=>{const k=+(fs.querySelector("input:checked")||{value:0}).value,o=BOOK.opts[k],closed=document.getElementById("pd-buy").classList.contains("sz-closed");
     fs.querySelector(".book-pick").hidden=k!==1;
+    document.getElementById("pd-note").textContent=k===0?"In stock and shipped right away. Prices include Danish VAT.":"The print is made to order. Allow 1–2 weeks for production. Prices include Danish VAT.";
+    document.getElementById("pd-prodtime").hidden=k===0;
     document.getElementById("add-btn").innerHTML=closed?`<span>Buy</span><span>From ${kr(BOOK.opts[0].price)}</span>`:`<span>Add to cart${k===1?` · Save ${kr(BOOK.opts[0].price+small.price-o.price)}`:""}</span><span>${kr(o.price)}</span>`;
     document.getElementById("product-lines").innerHTML=`<p>Hardcover with linen spine. Published by Kehrer Verlag</p><p>The Flower Men series collected in one volume</p>${k===1?`<p>With a signed and numbered Flower Men print, ${small.p}</p>`:""}<p class="pd-price">${kr(o.price)}</p>`;
     document.getElementById("product-thumbs").innerHTML=""};
