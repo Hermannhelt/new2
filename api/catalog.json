@@ -602,9 +602,10 @@
    {
     "k": 1,
     "label": "Book + small Flower Men print, 42 × 59.4 cm (A2), signed and numbered",
-    "price": 380
+    "price": 330
    }
   ],
   "bundleSeries": "Flower Men"
- }
+ },
+ "bookShipping": 15
 }

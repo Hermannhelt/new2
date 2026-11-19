@@ -990,7 +990,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
     <section class="terms" aria-labelledby="terms-title">
       <div><h2 id="terms-title">Terms</h2><button class="paren terms-open" data-terms>Terms of sale</button></div>
       <div class="terms-grid">
-        <div><h3>Shipping</h3><p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order. Free shipping on orders over €650.</p></div>
+        <div><h3>Shipping</h3><p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order, or €15 for the book alone. Free shipping on orders over €650.</p></div>
         <div><h3>Delivery</h3>
           <dl>
             <div><dt>Denmark</dt><dd>via PostNord. Arriving 2–3 days after dispatch.</dd></div>
@@ -1100,7 +1100,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
     <h3>3. Prices and payment</h3>
     <p>All prices are in euro (EUR) and include 25% Danish VAT.</p>
     <ul>
-      <li>Shipping is €35 per order and free on orders over €650. The total is shown at checkout before you pay.</li>
+      <li>Shipping is €35 per order (€15 for the book alone) and free on orders over €650. The total is shown at checkout before you pay.</li>
       <li>For deliveries outside the EU, import duties and local taxes may apply. These are paid by the buyer.</li>
       <li>Payment is made by card through Stripe. We never see or store your card details.</li>
       <li>Your card is charged when you complete your order.</li>
@@ -1171,7 +1171,7 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
       <div class="info-blocks">
         <details>
           <summary>Shipping</summary>
-          <p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order. Free shipping on orders over €650.</p>
+          <p>Each order is printed to order. Please allow 1–2 weeks for production time.</p><p>Shipping is €35 per order, or €15 for the book alone. Free shipping on orders over €650.</p>
         </details>
         <details>
           <summary>Delivery</summary>
@@ -1466,7 +1466,7 @@ function wireSeriesNext(root){const n=root.querySelector(".sd-next");if(!n)retur
 // picture used for a series on the Prints thumbnails (menu and overview)
 const SERIES_THUMB={"Flower Men":"img/flowermen/flower-men-12.jpg"};
 // The Flower Men book: sold from the Prints menu on its own page; option 1 bundles a small Flower Men print of the buyer's choice
-const BOOK={id:"book",title:"Flower Men",series:"Book",src:"img/book/flower-men-book-cover.jpg",imgs:["cover","spread","stack","detail","spine","dark"].map(n=>`img/book/flower-men-book-${n}.jpg`),opts:[{name:"Book",price:30},{name:"Book + small print",price:380}]};
+const BOOK={id:"book",title:"Flower Men",series:"Book",src:"img/book/flower-men-book-cover.jpg",imgs:["cover","spread","stack","detail","spine","dark"].map(n=>`img/book/flower-men-book-${n}.jpg`),opts:[{name:"Book",price:30},{name:"Book + small print",price:330}]};
 const PRINT_YEAR={"0-0":2016,"0-2":2016,"0-3":2016,"0-5":2016,"0-6":2016,"0-9":2016,"0-11":2016}; // year shown after the title on the print page
 const PRINT_NAMES={"1-1":"Fight","1-3":"Bökh No. 4","1-6":"Bökh No. 7","1-7":"Bökh No. 8","1-8":"Bökh No. 9","1-9":"Bökh No. 10","1-18":"Bökh No. 19","1-20":"Bökh No. 21","1-21":"Bökh No. 22","2-0":"Horseman","0-0":"Kulwinder","0-2":"Shankar Shah","0-3":"Odhir Gayen","0-5":"Sanjit Malik","0-6":"Shambhunath Dutt","0-9":"Sanju Joshi","0-11":"Angad Ray","5-0":"Ms. Lan","5-1":"Ms. Duyen","5-4":"Mr. Du","5-5":"Ms. Hanh","5-8":"Ms. Luyen"};
 const prints=[[0,0,[28,10,3]],[0,2,[48,10,5]],[0,3,[33,10,3]],[0,5,[45,9,5]],[0,6,[49,10,5]],[0,9,[43,9,4]],[0,11,[28,8,4]],[5,0,[50,7,3]],[5,1,[50,7,3]],[5,4,[50,7,3]],[5,5,[50,7,3]],[5,8,[49,7,3]],[1,1,[50,10,5]],[1,3,[50,10,5]],[1,6,[50,10,5]],[1,7,[50,10,5]],[1,8,[50,10,5]],[1,9,[50,10,5]],[1,18,[50,10,5]],[1,20,[50,10,5]],[1,21,[50,10,5]],[LD,0,[5]],[EXP,0,[50,10,5]]]
@@ -1777,7 +1777,7 @@ function renderCart(){
     return`<li><img src="${pr.src}" alt=""><div><div class="ct">${pr===BOOK?"Flower Men book":pr.title}</div><small>${sm}</small>
       <div class="qty"><button data-d="-1" data-i="${idx}" aria-label="Fewer">−</button><span>${c.q}</span><button data-d="1" data-i="${idx}" aria-label="More">+</button></div></div>
       <span class="price">${kr(sz.price*c.q)}</span></li>`}).join("");
-  const ship=sub>=650?0:35;
+  const ship=sub>=650?0:cart.every(c=>c.id==="book"&&c.k===0)?15:35;
   body.innerHTML=`<ul class="cart-items">${rows}</ul><div class="totals"><div><span>Subtotal</span><span class="price">${kr(sub)}</span></div>
     <div><span>Shipping</span><span class="price">${ship?kr(ship):"Free"}</span></div><div class="sum"><span>Total incl. VAT</span><span class="price">${kr(sub+ship)}</span></div></div>
     <button class="btn" id="checkout">Checkout</button><p class="note" id="checkout-note" hidden></p>

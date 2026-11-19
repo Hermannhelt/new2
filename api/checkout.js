@@ -60,7 +60,8 @@ module.exports = async (req, res) => {
       };
     });
     if (!line_items.length) { res.status(400).json({ error: "Your cart is empty" }); return; }
-    const shipping = subtotal >= catalog.freeShippingFrom ? 0 : catalog.shipping;
+    const bookOnly = items.every(it => it.id === "book" && Number(it.k) === 0);
+    const shipping = subtotal >= catalog.freeShippingFrom ? 0 : bookOnly ? catalog.bookShipping : catalog.shipping;
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items,
