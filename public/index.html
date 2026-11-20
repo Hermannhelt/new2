@@ -1752,7 +1752,7 @@ document.getElementById("add-btn").onclick=()=>{const sel=document.querySelector
   {const h=document.querySelector("header");h.classList.remove("hide");document.body.classList.remove("hdr-hide","pd-clean");h._hold=Date.now();
    const c=document.getElementById("open-cart");c.classList.remove("pulse");void c.offsetWidth;c.classList.add("pulse")}
   const k=+sel.value,bp=curP===BOOK&&k===1?(document.getElementById("book-print")||{}).value:undefined,ex=cart.find(c=>c.id===curP.id&&c.k===k&&c.p===bp);
-  if(ex)ex.q++;else cart.push(bp?{id:curP.id,k,p:bp,q:1}:{id:curP.id,k,q:1});saveCart();document.getElementById("added").hidden=false};
+  if(ex)ex.q++;else cart.push(bp?{id:curP.id,k,p:bp,q:1}:{id:curP.id,k,q:1});saveCart();document.getElementById("added").hidden=false;setTimeout(()=>cartPanel(true),150)};
 
 const cartEl=document.getElementById("cart");
 function cartPanel(open){cartEl.classList.toggle("open",open);cartEl.setAttribute("aria-hidden",!open);scrim.hidden=!open;if(open)document.getElementById("close-cart").focus()}
@@ -1783,7 +1783,8 @@ function renderCart(){
   body.innerHTML=`<ul class="cart-items">${rows}</ul><div class="totals"><div><span>Subtotal</span><span class="price">${kr(sub)}</span></div>
     <div><span>Shipping</span><span class="price">${ship?kr(ship):"Free"}</span></div><div class="sum"><span>Total incl. VAT</span><span class="price">${kr(sub+ship)}</span></div></div>
     <button class="btn" id="checkout">Checkout</button><p class="note" id="checkout-note" hidden></p>
-    <p class="note">Free shipping on orders over ${kr(650)}.</p>`;
+    <p class="note">Free shipping on orders over ${kr(650)}.</p><p style="text-align:center;margin-top:18px"><button class="paren" id="keep-shopping" style="font-family:var(--sans)">Continue shopping</button></p>`;
+  document.getElementById("keep-shopping").onclick=()=>cartPanel(false);
   body.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{const c=cart[+b.dataset.i];c.q+=+b.dataset.d;if(c.q<1)cart.splice(+b.dataset.i,1);saveCart()});
   document.getElementById("checkout").onclick=async()=>{
     const btn=document.getElementById("checkout"),note=document.getElementById("checkout-note");
