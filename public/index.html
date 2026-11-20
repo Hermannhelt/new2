@@ -917,9 +917,11 @@ body:has(#submenu.closing) main,body:has(#submenu.closing) footer{opacity:1!impo
 #lb-close:focus:not(:focus-visible),#lb-prev:focus:not(:focus-visible),#lb-next:focus:not(:focus-visible){outline:none}
 .book-pick{display:grid;gap:6px;margin-top:6px;font-size:13px}.book-pick[hidden]{display:none}.book-pick select{height:48px;padding:0 12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;border-radius:0}
 /* cart slides in from the side as a sheet that only covers its contents; the site stays visible, dimmed, around it */
-#cart{width:min(440px,88%);bottom:auto;max-height:100%;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));border-bottom:1px solid var(--line);box-shadow:-18px 18px 40px -24px rgba(0,0,0,.35)}
+#cart{width:100%;border-left:0;bottom:auto;max-height:100%;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px));border-bottom:1px solid var(--line)}
+body.cart-open #scrim{background:var(--bg);opacity:.75}
+@media (min-width:900px){#cart{width:min(440px,100%);border-left:1px solid var(--line)}}
 #scrim:not([hidden]){animation:scrimIn .45s ease both}
-@keyframes scrimIn{from{opacity:0}to{opacity:1}}
+@keyframes scrimIn{from{opacity:0}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1759,7 +1761,7 @@ document.getElementById("add-btn").onclick=()=>{const sel=document.querySelector
   if(ex)ex.q++;else cart.push(bp?{id:curP.id,k,p:bp,q:1}:{id:curP.id,k,q:1});saveCart();document.getElementById("added").hidden=false;setTimeout(()=>cartPanel(true),150)};
 
 const cartEl=document.getElementById("cart");
-function cartPanel(open){cartEl.classList.toggle("open",open);cartEl.setAttribute("aria-hidden",!open);scrim.hidden=!open;if(open)document.getElementById("close-cart").focus()}
+function cartPanel(open){cartEl.classList.toggle("open",open);document.body.classList.toggle("cart-open",open);cartEl.setAttribute("aria-hidden",!open);scrim.hidden=!open;if(open)document.getElementById("close-cart").focus()}
 document.getElementById("open-cart").onclick=()=>cartPanel(true);
 document.getElementById("close-cart").onclick=()=>cartPanel(false);
 const termsEl=document.getElementById("terms-panel");
