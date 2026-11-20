@@ -1626,7 +1626,7 @@ document.getElementById("v-comm").onclick=()=>{setView("c");scrollTo(0,0)};
 try{const v=localStorage.getItem("view");if(v)setView(v)}catch(e){}
 
 const prod=document.getElementById("product");let curP=null;
-function openProduct(pr){curP=pr;document.getElementById("pd-press").hidden=true;document.getElementById("pd-note").textContent="Printed to order. Allow 1–2 weeks for production. Prices include Danish VAT.";document.getElementById("pd-prodtime").hidden=false;
+function openProduct(pr){curP=pr;document.getElementById("pd-press").hidden=pr.series!=="Flower Men";document.getElementById("pd-note").textContent="Printed to order. Allow 1–2 weeks for production. Prices include Danish VAT.";document.getElementById("pd-prodtime").hidden=false;
   {const pi=document.getElementById("product-img"),pp=PAPER[pr.id];
     const rr=projects[pr.pi].ratios?projects[pr.pi].ratios[+pr.id.split("-")[1]]:(projects[pr.pi].ratio||.75);
     // two slides: the print itself, and the print framed on a living-room wall (swipe or drag between them)
