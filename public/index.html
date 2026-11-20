@@ -922,6 +922,7 @@ body.cart-open #scrim{background:var(--bg);opacity:.9;-webkit-backdrop-filter:bl
 @media (min-width:900px){#cart{width:min(440px,100%);border-left:1px solid var(--line)}}
 #scrim:not([hidden]){animation:scrimIn .45s ease both}
 @keyframes scrimIn{from{opacity:0}}
+.product .slide.clean.bk{padding:0}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1684,7 +1685,7 @@ function openProduct(pr){curP=pr;document.getElementById("pd-note").textContent=
    mo.insertAdjacentHTML("beforeend",seriesNext(se&&se.name));wireSeriesNext(mo)}
   document.getElementById("added").hidden=true;prod.classList.remove("scrolled");prod.hidden=false;prod.tabIndex=-1;prod.focus({preventScroll:true})}
 function openBook(){curP=BOOK;const pi=document.getElementById("product-img");
-  pi.innerHTML=`<div class="slides" id="slides" style="--ar:1;--arp:${1/.95}">${BOOK.imgs.map((src,n)=>`<div class="slide clean${n?"":" hero"}" aria-label="Flower Men book"><img src="${src}" alt="Flower Men book by Ken Hermann"${n?' loading="lazy"':""}></div>`).join("")}</div>`;
+  pi.innerHTML=`<div class="slides" id="slides" style="--ar:1;--arp:${1/.95}">${BOOK.imgs.map((src,n)=>`<div class="slide clean bk${n?"":" hero"}" aria-label="Flower Men book"><img src="${src}" alt="Flower Men book by Ken Hermann"${n?' loading="lazy"':""}></div>`).join("")}</div>`;
   {const sl=pi.querySelector("#slides"),n=sl.children.length;sl.insertAdjacentHTML("afterend",`<div class="pd-progress" aria-hidden="true"><i style="width:${100/n}%"></i></div>`);
    const bar=pi.querySelector(".pd-progress i"),upd=()=>{const max=sl.scrollWidth-sl.clientWidth;bar.style.transform=`translateX(${(max>0?sl.scrollLeft/max:0)*(n-1)*100}%)`};
    sl.addEventListener("scroll",upd,{passive:true});upd();dragScroll(sl)}
