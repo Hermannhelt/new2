@@ -1202,6 +1202,7 @@ body.cart-open #scrim{background:var(--bg);opacity:.9;-webkit-backdrop-filter:bl
             <li><a href="https://www.nationalgeographic.com/magazine/2017/05/flower-men-market-kolkata-india/" target="_blank" rel="noopener">National Geographic</a></li>
             <li><a href="https://www.spiegel.de/panorama/gesellschaft/ken-hermann-kolkatas-blumenverk-a-1172786.html" target="_blank" rel="noopener">Der Spiegel</a></li>
             <li><a href="https://edition.cnn.com/2015/04/26/world/cnnphotos-india-flower-sellers/index.html" target="_blank" rel="noopener">CNN</a></li>
+            <li><a href="pdf/independent-flower-men.pdf" target="_blank" rel="noopener">The Independent</a></li>
           </ul>
         </details>
         <details>
@@ -1262,7 +1263,7 @@ const projects=[
       "Over the course of eight days I photographed about 55 vendors. Most of the portraits took 10 or 15 minutes. That doesn’t sound like much, but it was so hot it felt as if we were burning. At the end of each day’s shoot, I had to go back to my hotel to change all my clothes. I was literally covered with sweat.",
       "My work is an attempt to get beyond stereotypes. Some people think that everyone in India is poor and miserable. This project—a series of beautiful images made in a rough, unlikely environment—is my way of showing otherwise."],
     credit:'Told to Jeremy Berlin, published in <a href="https://kenhermann.dk/wp-content/uploads/2017/05/Flower-Men_MJ1066_999.pdf" target="_blank" rel="noopener">National Geographic</a>',date:null,n:12,order:[12,3,4,5,6,1,7,8,9,10,11,2],img:function(i){return`img/flowermen/flower-men-${String(this.order[i]).padStart(2,"0")}.jpg`},ratio:.75},
-  {title:"Bökh",client:"Inner Mongolia",date:null,n:23,captions:{0:"Bayinduren",1:"Fight",12:"Baoyinzhana"},clips:{1:{src:"video/bokh-02.mp4",poster:"video/bokh-02.jpg"}},
+  {title:"Bökh",client:"Inner Mongolia",date:null,n:23,film:{src:"video/bokh-film.mp4",poster:"video/bokh-film.jpg",r:16/9},captions:{0:"Bayinduren",1:"Fight",12:"Baoyinzhana"},clips:{1:{src:"video/bokh-02.mp4",poster:"video/bokh-02.jpg"}},
     text:["When a boy is born in Inner Mongolia, his family pray for him to become a wrestler. This ancient tradition is the cornerstone of Mongolian culture, dating back centuries to Genghis Khan’s reign, when he used it to keep his soldiers battle-ready. Khan famously compared wrestling to war, explaining that in both you face enemies who are stronger and more powerful than you, and you must attack. It’s a sentiment these young wrestlers keep very much in mind.",
       "This unique form of wrestling governs status for young men within the community, as it is used as a marker of manliness. The bouts take place in the remote and desolate Grasslands, empty to the horizon except for a few scattered yurts and flocks of sheep. Mongolian wrestling feels like a dance. Opponents meet in the ring with hands outstretched, moving around each other until one of them takes the lead. They engage in long, dramatic grapples which at times resemble intimate embraces. In an instant it’s over."],
     coda:"One trip. One lift. One throw. And it’s done.",order:[24,2,22,19,23,8,15,11,10,14,7,5,1,20,6,3,12,9,18,4,13,16,17],img:function(i){return`img/bokh/bokh-${String(this.order[i]).padStart(2,"0")}.jpg`},ratio:.75,ratios:[.75,.75,.75,1.3342,.75,.75,1.3342,1.3342,.75,1.3342,.75,.75,.75,.75,.75,.75,1.3342,.75,.75,.75,1.3316,1.3342,.75]},
@@ -1577,6 +1578,7 @@ function openProject(pi,start){curPI=pi;if(typeof prod!=="undefined")prod.hidden
     <span class="numeral">${ROMAN[pi]}</span><h1>${p.title}</h1></div>`)+`
     ${p.text&&!woven?`<div class="pv-text">${p.sub?`<p class="coda sub">${p.sub}</p>`:""}${p.text.map(x=>`<p>${x}</p>`).join("")}${p.coda?`<p class="coda">${p.coda}</p>`:""}${p.credit?`<p class="credit">${p.credit}</p>`:""}</div>`:""}
     ${p.video?`<div class="pv-video"><video src="${p.video.src}" poster="${p.video.poster}" controls playsinline preload="metadata" style="aspect-ratio:${p.video.r}"></video></div>`:""}
+    ${p.film?`<div class="pv-video pv-film"><video src="${p.film.src}" poster="${p.film.poster}" controls playsinline preload="none" style="aspect-ratio:${p.film.r}" aria-label="${p.title}, film"></video></div>`:""}
     <div class="pv-flow">${rows}</div>
     <div class="pv-next"><button class="paren" id="pv-top" style="font-family:var(--sans);font-size:var(--fs-s)">Back to overview</button><ol class="pv-list">${projects.filter(q=>!q.hidden).map((q,k)=>`<li style="--i:${k}"><button data-go="${k}"${k===pi?' class="current" aria-current="true"':""}><i>${ROMAN[k]}</i>${q.title}</button></li>`).join("")}</ol></div>`;
   if(!p.img)projEl.querySelectorAll(".pv-fig").forEach(f=>{const d=f.querySelector(".pv-ph");paint(d,p,+f.dataset.i,pi)});
