@@ -925,6 +925,12 @@ body.cart-open #scrim{background:var(--bg);opacity:.9;-webkit-backdrop-filter:bl
 .product .slide.clean.bk{padding:0}
 .slide.bk video{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
 .press-list{list-style:none;margin:0;padding:0}.press-list li{padding:4px 0}.press-list a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+/* keep the shop inside narrow phones: fieldsets default to min-content width, and long labels must wrap or truncate */
+.sizes{min-inline-size:0;min-width:0}
+.size>span{min-width:0}.size small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.product-info,.product-img,#pd-buy{min-width:0;max-width:100%}
+.book-pick select{width:100%;min-width:0}
+@media (max-width:400px){#add-btn{font-size:14px;padding-inline:14px;gap:8px}#add-btn span{white-space:nowrap}}
 .pd-more{margin-top:46px;text-align:left}
 .pd-more-h{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 14px}
 .pd-more-grid{display:grid;gap:44px}
@@ -1704,7 +1710,7 @@ function openBook(){curP=BOOK;const pi=document.getElementById("product-img");
   const fm=prints.filter(p=>p.series==="Flower Men"),small=SERIES_SIZES[0][0];
   const fs=document.getElementById("product-sizes");fs.innerHTML="<legend>Option</legend>";
   {const pb=document.getElementById("pd-buy");pb.open=true;pb.classList.add("sz-closed")}document.querySelectorAll("#product .info-blocks details").forEach(d=>d.open=false);
-  BOOK.opts.forEach((o,k)=>fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${k?"":"checked"}><span>${o.name}<small>${k?`Flower Men print ${small.p}, signed and numbered. Save ${kr(BOOK.opts[0].price+small.price-o.price)}`:"Hardcover with linen spine"}</small></span><span class="price">${kr(o.price)}</span></label>`));
+  BOOK.opts.forEach((o,k)=>fs.insertAdjacentHTML("beforeend",`<label class="size"><input type="radio" name="size" id="size-${k}" value="${k}" ${k?"":"checked"}><span>${o.name}<small>${k?`Signed A2 print · Save ${kr(BOOK.opts[0].price+small.price-o.price)}`:"Hardcover with linen spine"}</small></span><span class="price">${kr(o.price)}</span></label>`));
   fs.insertAdjacentHTML("beforeend",`<label class="book-pick" hidden><span>Choose your print</span><select id="book-print">${fm.map(p=>`<option value="${p.id}"${p.left[0]===0?" disabled":""}>${p.title}${p.left[0]===0?" (sold out)":""}</option>`).join("")}</select></label>`);
   const lines=()=>{const k=+(fs.querySelector("input:checked")||{value:0}).value,o=BOOK.opts[k],closed=document.getElementById("pd-buy").classList.contains("sz-closed");
     fs.querySelector(".book-pick").hidden=k!==1;
